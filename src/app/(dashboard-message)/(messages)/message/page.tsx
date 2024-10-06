@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import Sheet from '@mui/joy/Sheet';
 import ChatsPane from '../../components/ChatsPane';
 import MessagesPane from '../../components/MessagesPane';
@@ -30,7 +30,7 @@ const UPDATE_GROUP_NAME_EVENT = "updateGroupName";
 const MESSAGE_DELETE_EVENT = "messageDeleted";
 
 
-export default function MyMessages() {
+ function Page() {
 
   const { socket } = useSocket()
   const { data } = useSession();
@@ -457,4 +457,12 @@ export default function MyMessages() {
 
       </Sheet>
     );
+  }
+
+  export default function Message(){
+    return(
+      <Suspense fallback={<div>Loading...</div>}>
+      <Page />
+    </Suspense>
+    )
   }

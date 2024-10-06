@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import React, { Suspense } from 'react';
 import {
   Form,
   FormField,
@@ -15,7 +16,7 @@ import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
-import { useToast } from '@/components/ui/use-toast';
+import { toast, useToast } from '@/components/ui/use-toast';
 import { resetSchema } from '@/schemas/signInSchema';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
@@ -24,7 +25,7 @@ import api from '@/api';
 import { ApiResponse } from '@/types/ApiResponse';
 import { AxiosError } from 'axios';
 
-export default function ResetPasswordForm() {
+function ResetPassword() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token'); // Get the query parameter 'token'
@@ -38,7 +39,6 @@ export default function ResetPasswordForm() {
     },
   });
 
-  const { toast } = useToast();
 
   const onSubmit = async (data: z.infer<typeof resetSchema>) => {
     setIsSubmitting(true);
@@ -79,7 +79,8 @@ export default function ResetPasswordForm() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen ">
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="flex justify-center items-center min-h-screen ">
       <div className="w-full max-w-md p-8 space-y-8 bg-card text-card-foreground  border-2 rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold text-foreground tracking-tight lg:text-5xl mb-6">
@@ -137,6 +138,18 @@ export default function ResetPasswordForm() {
           </p>
         </div>
       </div>
+      
     </div>
+    </Suspense>
+    
   );
 }
+
+export default function Reset(){
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResetPassword />
+    </Suspense>
+    
+  );
+};

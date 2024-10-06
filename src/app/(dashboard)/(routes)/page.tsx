@@ -14,7 +14,7 @@ function Home() {
 
   const [courseData, setCourseData] = useState([{ _id: "" }])
   useEffect(() => {
-    if (data.status = "authenticated" && user){
+    if ( user){
       api.patch("/v1/courses/course/getAllCourses", {}, {
         headers: {
           'Authorization': `Bearer ${user.accessToken}`,

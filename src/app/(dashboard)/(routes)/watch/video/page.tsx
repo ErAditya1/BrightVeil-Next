@@ -2,7 +2,7 @@
 
 import { Card, CardContent, Chip, Divider, Typography } from '@mui/joy';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import MiniVideoCard from '../../(courses)/components/MiniVideoCard';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import FollowButton from '@/components/FollowButton';
@@ -17,7 +17,7 @@ import { useSession } from 'next-auth/react';
 import AvatarLayout from '@/components/AvatarLayout';
 
 
-function ExploreCourse() {
+function Page() {
   const router = useRouter();
   const [loading, setLoading] = useState(true)
   const searchParams = useSearchParams();
@@ -242,4 +242,10 @@ function ExploreCourse() {
   )
 }
 
-export default ExploreCourse
+export default function Video(){
+  return(
+    <Suspense fallback={<div>Loading...</div>}>
+      <Page />
+    </Suspense>
+  )
+}

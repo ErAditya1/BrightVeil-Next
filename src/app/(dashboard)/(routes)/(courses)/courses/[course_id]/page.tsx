@@ -15,7 +15,15 @@ import CustomVideoPlayer from '../../components/YoutubePlayer';
 import api from '@/api';
 import { useSession } from 'next-auth/react';
 import AvatarLayout from '@/components/AvatarLayout';
+import { UserInterface } from '@/interfaces/user';
+type playingTyps = {
 
+  author: UserInterface
+  videoId: string,
+  title: string,
+  thumbnail: string,
+  _id: string
+}
 function ExploreCourse() {
   const [loading, setLoading] = useState(true)
   const { course_id} = useParams()
@@ -41,7 +49,7 @@ function ExploreCourse() {
     thumbnail:'',
     _id: ''
   })
-  const [playingVideoData, setPlayingVideoData] = useState();
+  const [playingVideoData, setPlayingVideoData] = useState<playingTyps>();
   const [mapVideos, setMapVideos] = useState(true);
   
   const  user  = useSession()?.data?.user
@@ -92,13 +100,7 @@ useEffect(()=>{
 },[playingVideo])
 console.log(playingVideoData)
 
-type playingTyps = {
-  
-    videoId: string,
-    title: string,
-    thumbnail: string,
-    _id: string
-}
+
 
 
 const onPlaying = (items:{videoId: string, title: string,thumbnail: string, _id: string}) => {
@@ -129,7 +131,7 @@ const onPlaying = (items:{videoId: string, title: string,thumbnail: string, _id:
             <div className='flex flex-row flex-wrap items-center'>
               <React.Fragment>
                 
-                <AvatarLayout className="h-12 w-12 mr-1 text-xl" src={playingVideoData?.author?.avatar?.secure_url} name={playingVideoData?.author.name}/>
+                <AvatarLayout className="h-12 w-12 mr-1 text-xl" src={playingVideoData?.author?.avatar?.url} name={playingVideoData?.author.name}/>
                 <div className="card-content mx-2">
                   <Typography level="title-md" className="line-clamp-1">Yosemite National Park</Typography>
                   <Typography level="body-sm"> Username</Typography>
@@ -168,7 +170,7 @@ const onPlaying = (items:{videoId: string, title: string,thumbnail: string, _id:
               mapVideos &&
               videos.map((video) => {
                 return (
-                  <MiniVideoCard  onPlaying={onPlaying} key={video._id} _id = {video._id} videoId={video.videoId} thumbnail={video?.thumbnail?.secure_url} title={video?.title} channelName={video?.channelName} uploadedDate={video.uploadedDate} views={video?.views}/>
+                  <MiniVideoCard   key={video._id} _id = {video._id} videoId={video.videoId} thumbnail={video?.thumbnail?.secure_url} title={video?.title} channelName={video?.channelName} uploadedDate={video.uploadedDate} views={video?.views}/>
                 )
               })
             }
