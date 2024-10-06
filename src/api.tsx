@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-export const API_URL = 'https://lms-backend-mh2d.onrender.com/api'
-
+export const API_URL = process.env.SERVER_URI || 'https://lms-backend-mh2d.onrender.com/api'
 
 const createInstance = (baseURL:string)=>{
    
