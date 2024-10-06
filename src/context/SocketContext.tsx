@@ -13,7 +13,7 @@ const getSocket = (token:string) => {
    
   // Create a socket connection with the provided URI and authentication
 
-  return socketio('http://localhost:8000', {
+  return socketio('https://lms-backend-mh2d.onrender.com', {
     withCredentials: true,
     auth: { token },
   });
