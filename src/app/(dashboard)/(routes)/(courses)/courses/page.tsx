@@ -4,7 +4,7 @@ import CourseCard from '../components/CourseCard'
 import api from '@/api'
 import { useSession } from 'next-auth/react'
 
-function page() {
+function Page() {
   const  user  = useSession()?.data?.user
   const [courseData, setCourseData] = useState([{_id:""}]) 
   useEffect( () => {
@@ -40,4 +40,4 @@ function page() {
   )
 }
 
-export default page
+export default Page

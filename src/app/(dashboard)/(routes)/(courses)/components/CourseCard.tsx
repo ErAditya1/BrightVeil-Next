@@ -14,8 +14,9 @@ import { IconMoneybag } from '@tabler/icons-react';
 import { AspectRatio, Card, CardOverflow, Divider, Typography } from '@mui/joy';
 import api from '@/api';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
-export default function CourseCard({_id}:any) {
+export default function CourseCard({_id,key}:any) {
   const user = useSession()?.data?.user
   // TODO: Add loading state and fetch course data from API
   const [courseData, setCourseData] = React.useState({
@@ -57,7 +58,7 @@ export default function CourseCard({_id}:any) {
 
   const [isLoading, setIsLoading] = React.useState(true);
   return (
-    <Link href={`/courses/${_id}`}>
+    <Link href={`/courses/${_id}`} key={key}>
       <Card  className="bg-card   text-card-foreground">
       <CardOverflow>
         <AspectRatio ratio="2">
@@ -65,10 +66,11 @@ export default function CourseCard({_id}:any) {
             isLoading ? (
               <Skeleton className=" w-full rounded" />
             ) : (
-              <img
+              <Image
                 src={courseData?.thumbnail?.secure_url}
-                srcSet={courseData?.thumbnail?.secure_url}
                 loading="lazy"
+                width={500}
+                height={500}
                 alt=""
               />
             )

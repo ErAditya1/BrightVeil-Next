@@ -16,11 +16,12 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { BookOpen} from 'lucide-react';
 import Link from 'next/link';
 import { IconMoneybag } from '@tabler/icons-react';
+import Image from 'next/image';
 
-export default function VideoCard() {
+export default function VideoCard({key}:any) {
   const [isLoading, setIsLoading] = React.useState(false);
   return (
-    <Link href='/courses/abcd'>
+    <Link href='/courses/abcd' key={key}>
       <Card variant="outlined" className="bg-card dark:bg-card text-card-foreground">
       <CardOverflow>
         <AspectRatio ratio="2">
@@ -28,10 +29,11 @@ export default function VideoCard() {
             isLoading ? (
               <Skeleton className=" w-full rounded" />
             ) : (
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?auto=format&fit=crop&w=318"
-                srcSet="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?auto=format&fit=crop&w=318&dpr=2 2x"
                 loading="lazy"
+                width={500}
+                height={500}
                 alt=""
               />
             )

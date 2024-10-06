@@ -14,6 +14,7 @@ import { addChatLastMessage, addChats, addMessages, addNewChat, addReceivedMessa
 import { useSearchParams } from 'next/navigation';
 import { AxiosError } from 'axios';
 import { ApiResponse } from '@/types/ApiResponse';
+import Image from 'next/image';
 
 const CONNECTED_EVENT = "connected";
 const DISCONNECT_EVENT = "disconnect";
@@ -443,7 +444,11 @@ export default function MyMessages() {
         {
           !selectedChat?._id ?
             <div className="w-full h-full flex justify-center items-center bg-background">
-              <img src="/whatsapp.gif" className="h-20 w-20 rounded-full" alt="whatsapp loading button" />
+              <Image src="/whatsapp.gif" 
+              loading="lazy"
+              width={500}
+              height={500}
+              className="h-20 w-20 rounded-full" alt="whatsapp loading button" />
             </div>
             : <MessagesPane />
 

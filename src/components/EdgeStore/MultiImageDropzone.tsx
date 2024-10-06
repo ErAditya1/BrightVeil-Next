@@ -1,6 +1,7 @@
 'use client';
 
 import { UploadCloudIcon, X } from 'lucide-react';
+import Image from 'next/image';
 import * as React from 'react';
 import { useDropzone, type DropzoneOptions } from 'react-dropzone';
 import { twMerge } from 'tailwind-merge';
@@ -100,7 +101,7 @@ const MultiImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
         });
 
         // styling
-        
+
 
         // error validation messages
         const errorMessage = React.useMemo(() => {
@@ -128,9 +129,12 @@ const MultiImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
                             key={index}
                             className={variants.image + ' aspect-square h-full'}
                         >
-                            <img
+                            <Image
                                 className="h-full w-full rounded-md object-cover"
                                 src={imageUrls[index]}
+                                loading="lazy"
+                                width={500}
+                                height={500}
                                 alt={typeof file === 'string' ? file : file.name}
                             />
                             {/* Progress Bar */}
@@ -160,22 +164,22 @@ const MultiImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
                         </div>
                     ))}
 
-                    
+
                 </div>
                 {/* Dropzone */}
                 {(!value || value.length < (dropzoneOptions?.maxFiles ?? 0)) && (
-                        <div
-                            {...getRootProps({
-                                className: '',
-                            })}
-                        >
-                            {/* Main File Input */}
-                            <input ref={ref} {...getInputProps()} />
-                            <div className="flex flex-col items-center justify-center text-xs bbb-400">
-                                <UploadCloudIcon className="mb-2 h-7 w-7" />
-                            </div>
+                    <div
+                        {...getRootProps({
+                            className: '',
+                        })}
+                    >
+                        {/* Main File Input */}
+                        <input ref={ref} {...getInputProps()} />
+                        <div className="flex flex-col items-center justify-center text-xs bbb-400">
+                            <UploadCloudIcon className="mb-2 h-7 w-7" />
                         </div>
-                    )}
+                    </div>
+                )}
                 {/* Error Text */}
                 <div className="mt-1 text-xs text-red-500">
                     {customError ?? errorMessage}

@@ -88,7 +88,7 @@ export default function AddCourseForm() {
                         Create Your course
                     </h1>
                     <p className="mb-4">What would name you like for your course?
-                        Don't worry you can change it latter
+                        Don&apos;t worry you can change it latter
                     </p>
                 </div>
 

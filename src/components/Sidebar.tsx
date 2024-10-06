@@ -172,138 +172,138 @@ export default function AdminSidebar() {
 
     <Sheet
       
-      sx={{
-        position: { xs: 'fixed', md: 'sticky' },
-        transform: {
-          xs: 'translateX(calc(100% * (var(--SideNavigation-slideIn, 0) - 1)))',
-          md: 'none',
+    sx={{
+      position: { xs: 'fixed', md: 'sticky' },
+      transform: {
+        xs: 'translateX(calc(100% * (var(--SideNavigation-slideIn, 0) - 1)))',
+        md: 'none',
+      },
+      transition: 'transform 0.4s, width 0.4s',
+      zIndex: 10,
+      height: '100dvh',
+      width: 'var(--Sidebar-width)',
+      top: 0,
+      p: 2,
+      flexShrink: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 2,
+      borderRight: '1px solid',
+      borderColor: 'divider',
+    }}
+    className="Sidebar  dark:bg-card text-foreground "
+  >
+
+    <GlobalStyles
+      styles={(theme) => ({
+        ':root': {
+          '--Sidebar-width': '220px',
+          [theme.breakpoints.up('lg')]: {
+            '--Sidebar-width': '240px',
+          },
         },
-        transition: 'transform 0.4s, width 0.4s',
-        zIndex: 10,
-        height: '100dvh',
-        width: 'var(--Sidebar-width)',
+      })}
+      
+    />
+    <Box
+      className="Sidebar-overlay"
+      sx={{
+        position: 'fixed',
+        zIndex: 9998,
         top: 0,
-        p: 2,
-        flexShrink: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        opacity: 'var(--SideNavigation-slideIn)',
+        transition: 'opacity 0.4s',
+        transform: {
+          xs: 'translateX(calc(100% * (var(--SideNavigation-slideIn, 0) - 1) + var(--SideNavigation-slideIn, 0) * var(--Sidebar-width, 0px)))',
+          lg: 'translateX(-100%)',
+        },
+      }}
+      onClick={() => closeSidebar()}
+    />
+    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+
+      <GoBackButton />
+      <IconButton variant="soft" color="primary" size="sm">
+        <BrightnessAutoRoundedIcon />
+      </IconButton>
+      <Typography level="title-lg">innovadi</Typography>
+      <ColorSchemeToggle sx={{ ml: 'auto' }} />
+
+    </Box>
+
+    <Box
+      sx={{
+        minHeight: 0,
+        overflow: 'hidden auto',
+        flexGrow: 1,
         display: 'flex',
         flexDirection: 'column',
-        gap: 2,
-        borderRight: '1px solid',
-        borderColor: 'divider',
+        [`& .${listItemButtonClasses.root}`]: {
+          gap: 1.5,
+        },
       }}
-      className="Sidebar  dark:bg-card text-foreground "
     >
-
-      <GlobalStyles
-        styles={(theme) => ({
-          ':root': {
-            '--Sidebar-width': '220px',
-            [theme.breakpoints.up('lg')]: {
-              '--Sidebar-width': '240px',
-            },
-          },
-        })}
-        
-      />
-      <Box
-        className="Sidebar-overlay"
+      <List
+        size="sm"
         sx={{
-          position: 'fixed',
-          zIndex: 9998,
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          opacity: 'var(--SideNavigation-slideIn)',
-          transition: 'opacity 0.4s',
-          transform: {
-            xs: 'translateX(calc(100% * (var(--SideNavigation-slideIn, 0) - 1) + var(--SideNavigation-slideIn, 0) * var(--Sidebar-width, 0px)))',
-            lg: 'translateX(-100%)',
-          },
-        }}
-        onClick={() => closeSidebar()}
-      />
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-
-        <GoBackButton />
-        <IconButton variant="soft" color="primary" size="sm">
-          <BrightnessAutoRoundedIcon />
-        </IconButton>
-        <Typography level="title-lg">innovadi</Typography>
-        <ColorSchemeToggle sx={{ ml: 'auto' }} />
-
-      </Box>
-
-      <Box
-        sx={{
-          minHeight: 0,
-          overflow: 'hidden auto',
-          flexGrow: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          [`& .${listItemButtonClasses.root}`]: {
-            gap: 1.5,
-          },
+          gap: 1,
+          '--List-nestedInsetStart': '30px',
+          '--ListItem-radius': (theme) => theme.vars.radius.sm,
         }}
       >
-        <List
-          size="sm"
-          sx={{
-            gap: 1,
-            '--List-nestedInsetStart': '30px',
-            // '--ListItem-radius': (theme) => theme.vars.radius.sm,
-          }}
-        >
-          {menuItem.map((item, index) => {
-            if (item.subMenu) {
-              return (
-                <ListItem nested>
-                  <Toggler
-                    defaultExpanded
-                    renderToggle={({ open, setOpen }) => (
-                      <ListItemButton onClick={() => setOpen(!open)}>
-                        {item.icon}
-                        <ListItemContent>
-                          <Typography level="title-sm" className="text-card-foreground">{item.label}</Typography>
-                        </ListItemContent>
-                        <KeyboardArrowDownIcon
-                          sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
-                        />
-                      </ListItemButton>
-                    )}
-                  >
-                    <List>
-                      {
-                        item.subMenu.map((subItem) => (
-                          <ListItem className=" ">
-                            <ListItemButton >
-                              {subItem.icon}
-                              <ListItemContent>
-                                <Link href={subItem.href} prefetch={false}><Typography className="font-thin text-xs text-card-foreground">{subItem.label}</Typography></Link>
-                              </ListItemContent>
-                            </ListItemButton>
-                          </ListItem>
+        {menuItem.map((item, index) => {
+          if (item.subMenu) {
+            return (
+              <ListItem nested key={index}>
+                <Toggler
+                  defaultExpanded
+                  renderToggle={({ open, setOpen }) => (
+                    <ListItemButton onClick={() => setOpen(!open)}>
+                      {item.icon}
+                      <ListItemContent>
+                        <Typography level="title-sm">{item.label}</Typography>
+                      </ListItemContent>
+                      <KeyboardArrowDownIcon
+                        sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
+                      />
+                    </ListItemButton>
+                  )}
+                >
+                  <List>
+                    {
+                      item.subMenu.map((subItem,index) => (
+                        <ListItem className=" " key={index}>
+                          <ListItemButton >
+                            {subItem.icon}
+                            <ListItemContent>
+                              <Link href={subItem.href}><Typography className="font-thin text-xs">{subItem.label}</Typography></Link>
+                            </ListItemContent>
+                          </ListItemButton>
+                        </ListItem>
 
-                        ))
-                      }
-                    </List>
-                  </Toggler>
-                </ListItem>
-              )
-            }
-            else {
-              return (
-                <ListItem>
-                  <ListItemButton>
-                    {item.icon}
-                    <ListItemContent>
-                      <Link href={item.href} prefetch={false}><Typography level="title-sm" className="text-card-foreground">{item.label}</Typography></Link>
-                    </ListItemContent>
-                  </ListItemButton>
-                </ListItem>
-              )
-            }
-          })}
+                      ))
+                    }
+                  </List>
+                </Toggler>
+              </ListItem>
+            )
+          }
+          else {
+            return (
+              <ListItem key={index}>
+                <ListItemButton>
+                  {item.icon}
+                  <ListItemContent>
+                    <Link href={item.href}><Typography level="title-sm">{item.label}</Typography></Link>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
+            )
+          }
+        })}
 
 
 
@@ -313,62 +313,62 @@ export default function AdminSidebar() {
 
 
 
-        </List>
-        <List
-          size="sm"
-          sx={{
-            mt: 'auto',
-            flexGrow: 0,
-            '--ListItem-radius': (theme) => theme.vars.radius.sm,
-            '--List-gap': '8px',
-            mb: 2,
-          }}
-        >
-          <ListItem>
-            <ListItemButton>
-              <SupportRoundedIcon />
-              Support
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <SettingsRoundedIcon />
-              Settings
-            </ListItemButton>
-          </ListItem>
-        </List>
-        {/* Pro Card */}
-        {/* <Card
-          invertedColors
-          variant="soft"
-          color="warning"
-          size="sm"
-          sx={{ boxShadow: 'none' }}
-          className="hidden"
-        >
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Typography level="title-sm">Upgrade to Pro</Typography>
-            <IconButton size="sm">
-              <CloseRoundedIcon />
-            </IconButton>
-          </Stack>
-          <Typography level="body-xs">
-            Your team has used 80% of your available space. Need more?
-          </Typography>
-          <LinearProgress variant="outlined" value={80} determinate sx={{ my: 1 }} />
-          <Button size="sm" variant="solid">
-            Upgrade plan
-          </Button>
-        </Card> */}
-      </Box>
-      <Divider />
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+      </List>
+      <List
+        size="sm"
+        sx={{
+          mt: 'auto',
+          flexGrow: 0,
+          '--ListItem-radius': (theme) => theme.vars.radius.sm,
+          '--List-gap': '8px',
+          mb: 2,
+        }}
+      >
+        <ListItem>
+          <ListItemButton>
+            <SupportRoundedIcon />
+            Support
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton>
+            <SettingsRoundedIcon />
+            Settings
+          </ListItemButton>
+        </ListItem>
+      </List>
+      {/* Pro Card */}
+      {/* <Card
+        invertedColors
+        variant="soft"
+        color="warning"
+        size="sm"
+        sx={{ boxShadow: 'none' }}
+        className="hidden"
+      >
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Typography level="title-sm">Upgrade to Pro</Typography>
+          <IconButton size="sm">
+            <CloseRoundedIcon />
+          </IconButton>
+        </Stack>
+        <Typography level="body-xs">
+          Your team has used 80% of your available space. Need more?
+        </Typography>
+        <LinearProgress variant="outlined" value={80} determinate sx={{ my: 1 }} />
+        <Button size="sm" variant="solid">
+          Upgrade plan
+        </Button>
+      </Card> */}
+    </Box>
+    <Divider />
+    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
 
 
-        {data.status === "authenticated" && 
-          <User user={user}/>
-        }
-      </Box>
-    </Sheet>
+      {data.status === "authenticated" && 
+      <User user={user}/>
+      }
+    </Box>
+  </Sheet>
   );
 }

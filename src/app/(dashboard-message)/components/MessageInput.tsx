@@ -23,6 +23,7 @@ import { MdOutlineLinkedCamera } from 'react-icons/md';
 import { MultiImageUpload } from '@/components/EdgeStore/MultiImageUpload';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { toast } from '@/components/ui/use-toast';
+import Image from 'next/image';
 
 
 export default function MessageInput() {
@@ -46,7 +47,7 @@ export default function MessageInput() {
       if (textAreaValue) {
         formData.append("content", textAreaValue);
       }
-      if(attachments.length>5){
+      if (attachments.length > 5) {
         toast({
           title: 'Error',
           description: 'Maximum 5 attachments are allowed',
@@ -70,11 +71,11 @@ export default function MessageInput() {
           handleEndTyping()
           setAttachments([])
           // setImageUrls([])
-          imageUrls?.map((url) =>(
+          imageUrls?.map((url) => (
             URL.revokeObjectURL(url)
           ))
           setImageUrls(undefined)
-        }).catch((err) => {}).finally(() => {setLoading(false)});
+        }).catch((err) => { }).finally(() => { setLoading(false) });
 
 
       setTextAreaValue('');
@@ -111,17 +112,22 @@ export default function MessageInput() {
   return (
     <Box sx={{ px: 0, pb: 0 }} className="bg-card">
       {/* <MultiImageUpload/> */}
-      
-        {imageUrls?.length  &&
-        <div className='flex overflow-auto'>
-          {imageUrls?.map((url) => (
 
-            <img src={url} alt="" width='50px' height='50px' className='m-1 ' />
+      {imageUrls?.length &&
+        <div className='flex overflow-auto'>
+          {imageUrls?.map((url,index) => (
+
+            <Image src={url} alt="" className='m-1 w-12 h-12'
+              loading="lazy"
+              key={index}
+              width={500}
+              height={500}
+            />
 
           ))}
-          </div>
-        }
-      
+        </div>
+      }
+
       <FormControl className="flex flex-row px-2">
         <Stack
           direction="row"
@@ -144,12 +150,12 @@ export default function MessageInput() {
                 return url
               });
 
-              if(urls.length > 0){
+              if (urls.length > 0) {
                 setImageUrls(urls)
-              }else{
+              } else {
                 setImageUrls(undefined)
               }
-             
+
 
 
             }} />
@@ -193,11 +199,11 @@ export default function MessageInput() {
           size="sm"
           color="primary"
           sx={{ alignSelf: 'center', borderRadius: 'sm' }}
-          
+
           onClick={handleSubmit}
           className='mx-2'
         >
-          {loading ? <span className=""><AiOutlineLoading3Quarters className='animate-spin'/></span>: <span className=""> <SendRoundedIcon /></span>}
+          {loading ? <span className=""><AiOutlineLoading3Quarters className='animate-spin' /></span> : <span className=""> <SendRoundedIcon /></span>}
         </Button>
       </FormControl>
       {/* <Editor

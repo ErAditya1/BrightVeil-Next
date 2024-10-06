@@ -41,6 +41,7 @@ import BottomGradient from '@/components/BottomGradient';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import Image from 'next/image';
 
 
 export default function EditProfile() {
@@ -61,7 +62,7 @@ export default function EditProfile() {
       mobileNumber: user?.mobileNumber,
       username: user?.username,
       about: user?.about,
-      
+
     }
   })
 
@@ -241,10 +242,11 @@ export default function EditProfile() {
                         maxHeight={200}
                         sx={{ flex: 1, minWidth: 120, borderRadius: '100%' }}
                       >
-                        <img
+                        <Image
                           src={user?.avatar?.url}
-                          srcSet={user?.avatar?.url}
                           loading="lazy"
+                          width={500}
+                          height={500}
                           alt=""
                         />
                       </AspectRatio>
@@ -358,7 +360,7 @@ export default function EditProfile() {
                       Max 200 characters
                     </FormHelperText>
                   </Stack>
-                  
+
 
 
                 </Stack>
@@ -424,7 +426,7 @@ export default function EditProfile() {
           <Divider />
           <Stack spacing={2} sx={{ my: 1 }}>
             <DropZone />
-            
+
           </Stack>
           <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
             <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>

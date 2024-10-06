@@ -6,6 +6,7 @@ import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
+import Image from 'next/image';
 
 export default function MyProfile() {
   return (
@@ -15,9 +16,9 @@ export default function MyProfile() {
         position: 'relative',
         overflow: { xs: 'auto', sm: 'initial' },
       }}
-      
+
     >
-      <Box 
+      <Box
         sx={{
           position: 'absolute',
           display: 'block',
@@ -61,13 +62,14 @@ export default function MyProfile() {
           overflow: 'auto',
           resize: 'horizontal',
         }}
-        className= 'bg-card'
+        className='bg-card'
       >
         <AspectRatio flex ratio="1" maxHeight={182} sx={{ minWidth: 182 }}>
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-            srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
             loading="lazy"
+            width={500}
+            height={500}
             alt=""
           />
         </AspectRatio>

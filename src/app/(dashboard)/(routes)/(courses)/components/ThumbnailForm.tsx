@@ -21,6 +21,7 @@ import { AxiosError } from 'axios';
 import { useSession } from 'next-auth/react';
 import { SingleImageDropzone } from '@/components/EdgeStore/SingleImageDropzone';
 import { useParams } from 'next/navigation';
+import Image from 'next/image';
 
 
 
@@ -101,7 +102,11 @@ export default function ThumbnailForm({ thumbnail }: any) {
                         {
                             thumbnail ? (
                                 <div className=" gap-x-4">
-                                    <img className="object-cover h-40 aspect-video rounded-md" src={thumbnail?.secure_url} alt="thumbnail" />
+                                    <Image className="object-cover h-40 aspect-video rounded-md" src={thumbnail?.secure_url} alt="thumbnail" 
+                                    loading="lazy"
+                                    width={500}
+                                    height={500}
+                                    />
                                 </div>
                             )
                                 :

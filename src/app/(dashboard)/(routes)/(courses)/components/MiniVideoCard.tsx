@@ -27,12 +27,13 @@ type PropsType = {
 export default function MiniVideoCard({  videoId, thumbnail, title, _id, views, uploadedDate, channelName }: PropsType) {
 
     const searchParams = useSearchParams();
+    const {c_id} = useParams()
     let course_id;
      const c = searchParams.get('course');
      if(c) {
        course_id = c;
      } else {
-       course_id = useParams().course_id;
+       course_id = c_id;
      }
      
 
@@ -47,6 +48,7 @@ export default function MiniVideoCard({  videoId, thumbnail, title, _id, views, 
             <div className="h-full aspect-video rounded-lg " >
                 <Image
                     src={thumbnail}
+                    loading="lazy"
                     width={500}
                     height={500}
                     alt=""

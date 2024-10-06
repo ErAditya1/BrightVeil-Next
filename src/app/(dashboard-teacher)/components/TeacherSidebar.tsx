@@ -257,7 +257,7 @@ export default function AdminSidebar() {
           {menuItem.map((item, index) => {
             if (item.subMenu) {
               return (
-                <ListItem nested>
+                <ListItem nested key={index}>
                   <Toggler
                     defaultExpanded
                     renderToggle={({ open, setOpen }) => (
@@ -274,8 +274,8 @@ export default function AdminSidebar() {
                   >
                     <List>
                       {
-                        item.subMenu.map((subItem) => (
-                          <ListItem className=" ">
+                        item.subMenu.map((subItem,index) => (
+                          <ListItem className=" " key={index}>
                             <ListItemButton >
                               {subItem.icon}
                               <ListItemContent>
@@ -293,7 +293,7 @@ export default function AdminSidebar() {
             }
             else {
               return (
-                <ListItem>
+                <ListItem key={index}>
                   <ListItemButton>
                     {item.icon}
                     <ListItemContent>
@@ -366,7 +366,7 @@ export default function AdminSidebar() {
 
 
         {data.status === "authenticated" && 
-        <User user={user} />
+        <User user={user}/>
         }
       </Box>
     </Sheet>

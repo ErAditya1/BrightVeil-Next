@@ -14,7 +14,7 @@ import AddCourseForm from '../components/AddCourse';
 import AddedCourse from '../components/AddedCourse';
 
 
-function profile() {
+function Profile() {
   const user = useSession()?.data?.user
   console.log(user)
   const [placement, setPlacement] = React.useState<
@@ -144,7 +144,7 @@ function profile() {
   )
 }
 
-export default profile
+export default Profile
 
 
 

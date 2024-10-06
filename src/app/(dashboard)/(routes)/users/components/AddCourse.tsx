@@ -91,9 +91,7 @@ export default function AddCourseForm() {
           <h1 className="text-4xl font-extrabold text-foreground tracking-tight lg:text-5xl mb-6">
             Create Your course
           </h1>
-          <p className="mb-4">What would name you like for your course?
-            Don't worry you can change it latter
-          </p>
+          <p className="mb-4">What would name you like for your course? Don&apos;t worry you can change it latter</p>
         </div>
 
         <Form {...form}>

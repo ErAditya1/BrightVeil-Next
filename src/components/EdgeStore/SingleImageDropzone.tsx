@@ -2,6 +2,7 @@
 
 // import { formatFileSize } from '@edgestore/react/utils';
 import { UploadCloudIcon, X } from 'lucide-react';
+import Image from 'next/image';
 import * as React from 'react';
 import { useDropzone, type DropzoneOptions } from 'react-dropzone';
 import { twMerge } from 'tailwind-merge';
@@ -27,7 +28,7 @@ type InputProps = {
 
 const ERROR_MESSAGES = {
   // fileTooLarge(maxSize: number) {
-    // return `The file is too large. Max size is ${formatFileSize(maxSize)}.`;
+  // return `The file is too large. Max size is ${formatFileSize(maxSize)}.`;
   // },
   fileInvalidType() {
     return 'Invalid file type.';
@@ -42,7 +43,7 @@ const ERROR_MESSAGES = {
 
 const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
   (
-    { dropzoneOptions,   value, className, disabled, onChange },
+    { dropzoneOptions, value, className, disabled, onChange },
     ref,
   ) => {
     const imageUrl = React.useMemo(() => {
@@ -124,8 +125,8 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
           {...getRootProps({
             className: dropZoneClassName,
             style: {
-              width:"100%",
-              height:"100%",
+              width: "100%",
+              height: "100%",
             },
           })}
         >
@@ -134,9 +135,12 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
 
           {imageUrl ? (
             // Image Preview
-            <img
+            <Image
               className="h-full aspect-video rounded-md object-cover"
               src={imageUrl}
+              loading="lazy"
+              width={500}
+              height={500}
               alt={acceptedFiles[0]?.name}
             />
           ) : (

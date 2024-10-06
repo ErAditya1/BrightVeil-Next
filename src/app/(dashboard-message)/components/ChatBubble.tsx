@@ -18,6 +18,7 @@ import { MdDelete } from 'react-icons/md';
 import api from '@/api';
 import { useSession } from 'next-auth/react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import Image from 'next/image';
 
 type ChatBubbleProps = ChatMessage & {
   variant: 'sent' | 'received';
@@ -90,17 +91,20 @@ export default function ChatBubble(props: ChatBubbleProps) {
       {!whoPrevious  && <p className='text-xs '>{sender.username}</p>}
 
       {attachments?.length > 0 &&
-        attachments?.map((attachment) =>(
+        attachments?.map((attachment,index) =>(
           <Sheet
           variant="outlined"
+          key={index}
         >
           { attachment.type === 'image'&&
-            <img
+            <Image
               alt="Attachment"
               src={attachment.url}
-              width="100%"
-              height="auto"
-              className='object-cover rounded'
+              loading="lazy"
+              width={500}
+              height={500}
+              className='object-cover rounded w-full h-auto'
+
             />
           }
           { attachment.type==='video' && 

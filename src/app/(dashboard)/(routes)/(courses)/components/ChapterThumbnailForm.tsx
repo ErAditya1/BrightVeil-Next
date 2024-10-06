@@ -11,6 +11,7 @@ import { ApiResponse } from '@/types/ApiResponse';
 import { AxiosError } from 'axios';
 import { useSession } from 'next-auth/react';
 import { SingleImageDropzone } from '@/components/EdgeStore/SingleImageDropzone';
+import Image from 'next/image';
 
 
 
@@ -97,7 +98,7 @@ export default function ChapterThumbnailForm({ thumbnail }: any) {
                         {
                             thumbnail ? (
                                 <div className=" gap-x-4">
-                                    <img className="object-cover h-40 aspect-video rounded-md" src={thumbnail?.secure_url} alt="thumbnail" />
+                                    <Image className="object-cover h-40 aspect-video rounded-md" width={500} height={500} src={thumbnail?.secure_url} alt="thumbnail" />
                                 </div>
                             )
                                 :

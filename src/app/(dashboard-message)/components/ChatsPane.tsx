@@ -22,6 +22,7 @@ import GroupListItem from './GroupListItem';
 import { FaCamera } from 'react-icons/fa6';
 import { toast } from '@/components/ui/use-toast';
 import { addNewChat, selectChat } from '@/store/chat/chatSlice';
+import Image from 'next/image';
 
 type ChatProps = {
   _id: string,
@@ -276,7 +277,11 @@ export default function ChatsPane() {
                                       groupAvatarUrl ?
                                         <label htmlFor="group-icon" className='flex  items-center gap-4 cursor-pointer'>
                                           <div className='h-10 w-10 rounded-full relative'>
-                                            <img src={groupAvatarUrl} alt="" className='w-full h-full rounded-full'/>
+                                            <Image 
+                                            loading="lazy"
+                                            width={500}
+                                            height={500}
+                                            src={groupAvatarUrl} alt="" className='w-full h-full rounded-full'/>
                                             <FaCamera className='h-4 w-4 absolute bottom-0 right-0 rounded bg-gray-800 p-[2px]' />
                                           </div>
                                           
