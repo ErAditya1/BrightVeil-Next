@@ -191,9 +191,9 @@ export default function SignInForm() {
           </form>
         </Form>
         <div className="float-right">
-          <p className='text-blue-500 cursor-pointer'>
+          <Link href='/forget-password' className='text-blue-500 cursor-pointer'>
             Fargot Passward!
-          </p>
+          </Link>
         </div>
         <div className="text-center mt-4">
           <p>
