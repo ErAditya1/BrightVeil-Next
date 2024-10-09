@@ -115,7 +115,7 @@ export default function MessageInput() {
 
       {imageUrls?.length &&
         <div className='flex overflow-auto'>
-          {imageUrls?.map((url,index) => (
+          {imageUrls?.map((url, index) => (
 
             <Image src={url} alt="" className='m-1 w-12 h-12'
               loading="lazy"
@@ -128,41 +128,45 @@ export default function MessageInput() {
         </div>
       }
 
-      <FormControl className="flex flex-row px-2">
+      <FormControl className=" px-2">
         <Stack
           direction="row"
           sx={{
             py: .5,
             pr: 1,
-            borderTop: '1px solid',
-            borderColor: 'divider',
           }}
-          className="flex flex-row"
         >
-          <div className='flex my-auto'>
-            <input type="file" id='file-input' className='hidden' multiple accept="image/png, image/gif, image/jpeg " onChange={(event: any) => {
-              setAttachments(Array.from(event.target.files))
+          <Stack
+            direction="row"
+            sx={{
+              py: .5,
+              pr: 1,
+            }}
+          >
+            <div className='flex my-auto'>
+              <input type="file" id='file-input' className='hidden' multiple accept="image/png, image/gif, image/jpeg " onChange={(event: any) => {
+                setAttachments(Array.from(event.target.files))
 
-              const files = event.target.files
-              const urls = Array.from(files).map((file: any) => {
-                const url = URL.createObjectURL(file)
+                const files = event.target.files
+                const urls = Array.from(files).map((file: any) => {
+                  const url = URL.createObjectURL(file)
 
-                return url
-              });
+                  return url
+                });
 
-              if (urls.length > 0) {
-                setImageUrls(urls)
-              } else {
-                setImageUrls(undefined)
-              }
+                if (urls.length > 0) {
+                  setImageUrls(urls)
+                } else {
+                  setImageUrls(undefined)
+                }
 
 
 
-            }} />
-            <label htmlFor="file-input" className='my-auto'>
-              <MdOutlineLinkedCamera className='m-auto cursor-pointer' size={20} />
-            </label>
-            {/* <IconButton size="sm" variant="plain" color="neutral">
+              }} />
+              <label htmlFor="file-input" className='my-auto'>
+                <MdOutlineLinkedCamera className='m-auto cursor-pointer' size={20} />
+              </label>
+              {/* <IconButton size="sm" variant="plain" color="neutral">
                   <FormatBoldRoundedIcon />
                 </IconButton>
                 <IconButton size="sm" variant="plain" color="neutral">
@@ -174,37 +178,39 @@ export default function MessageInput() {
                 <IconButton size="sm" variant="plain" color="neutral">
                   <FormatListBulletedRoundedIcon />
                 </IconButton> */}
-          </div>
+            </div>
 
+          </Stack>
+          <Textarea
+            className="dark:bg-card w-full"
+            placeholder="Type something here…"
+            aria-label="Message"
+            onChange={handleStartTyping}
+            value={textAreaValue}
+            maxRows={10}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
+                handleSubmit();
+              }
+            }}
+            sx={{
+              '& textarea:first-of-type': {
+                minHeight: 40,
+              },
+            }}
+          />
+          <Button
+            size="sm"
+            color="primary"
+            sx={{ alignSelf: 'center', borderRadius: 'sm' }}
+
+            onClick={handleSubmit}
+            className='mx-2'
+          >
+            {loading ? <span className=""><AiOutlineLoading3Quarters className='animate-spin' /></span> : <span className=""> <SendRoundedIcon /></span>}
+          </Button>
         </Stack>
-        <Textarea
-          className="dark:bg-card w-full"
-          placeholder="Type something here…"
-          aria-label="Message"
-          onChange={handleStartTyping}
-          value={textAreaValue}
-          maxRows={10}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
-              handleSubmit();
-            }
-          }}
-          sx={{
-            '& textarea:first-of-type': {
-              minHeight: 40,
-            },
-          }}
-        />
-        <Button
-          size="sm"
-          color="primary"
-          sx={{ alignSelf: 'center', borderRadius: 'sm' }}
 
-          onClick={handleSubmit}
-          className='mx-2'
-        >
-          {loading ? <span className=""><AiOutlineLoading3Quarters className='animate-spin' /></span> : <span className=""> <SendRoundedIcon /></span>}
-        </Button>
       </FormControl>
       {/* <Editor
       // initialValue={'hey'}
