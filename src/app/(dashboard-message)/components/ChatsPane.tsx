@@ -189,7 +189,7 @@ export default function ChatsPane() {
               p={2}
               pb={1.5}
             >
-              <GoBackButton/>
+              <GoBackButton />
               <Typography
                 fontSize={{ xs: 'md', md: 'lg' }}
                 component="h1"
@@ -208,36 +208,39 @@ export default function ChatsPane() {
               >
                 Messages
               </Typography>
-              <Box>
-                <IconButton
-                  variant="plain"
-                  aria-label="edit"
-                  color="neutral"
-                  size="sm"
-                  // sx={{ display: { xs: 'none', sm: 'unset' } }}
-                  onClick={() => { setIsAddNew(!isAddNew) }}
-                >
-                  <MdAddComment className='text-2xl' />
-                </IconButton>
-                <IconButton
-                  variant="plain"
-                  aria-label="edit"
-                  color="neutral"
-                  size="sm"
-                  onClick={() => {
-                    toggleMessagesPane();
-                  }}
-                  sx={{ display: { sm: 'none' } }}
-                >
-                  <CloseRoundedIcon />
-                </IconButton>
-              </Box>
-              <Dropdown>
+              <div>
+                <Box>
+                  <IconButton
+                    variant="plain"
+                    aria-label="edit"
+                    color="neutral"
+                    size="sm"
+                    // sx={{ display: { xs: 'none', sm: 'unset' } }}
+                    onClick={() => { setIsAddNew(!isAddNew) }}
+                  >
+                    <MdAddComment className='text-2xl' />
+                  </IconButton>
+                  <IconButton
+                    variant="plain"
+                    aria-label="edit"
+                    color="neutral"
+                    size="sm"
+                    onClick={() => {
+                      toggleMessagesPane();
+                    }}
+                    sx={{ display: { sm: 'none' } }}
+                  >
+                    <CloseRoundedIcon />
+                  </IconButton>
+                </Box>
+                <ColorSchemeToggle />
+              </div>
+              {/* <Dropdown>
                 <MenuButton><MoreVertRoundedIcon /></MenuButton>
                 <Menu>
-                  <MenuItem > Theme <ColorSchemeToggle /></MenuItem>
+                  <MenuItem > Theme </MenuItem>
                 </Menu>
-              </Dropdown>
+              </Dropdown> */}
             </Stack>
             <Stack>
               {
