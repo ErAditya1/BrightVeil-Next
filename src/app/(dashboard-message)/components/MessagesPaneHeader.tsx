@@ -9,7 +9,6 @@ import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import CircleIcon from '@mui/icons-material/Circle';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
-import PhoneInTalkRoundedIcon from '@mui/icons-material/PhoneInTalkRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 
 import { toggleMessagesPane } from '@/lib/utils';

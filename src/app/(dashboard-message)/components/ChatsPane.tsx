@@ -3,7 +3,7 @@ import * as React from 'react';
 import Stack from '@mui/joy/Stack';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
-import { Box, Chip, IconButton, Input, ListItemButton } from '@mui/joy';
+import { Box, Chip, Dropdown, IconButton, Input, ListItemButton, Menu, MenuButton, MenuItem } from '@mui/joy';
 import List from '@mui/joy/List';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
@@ -17,25 +17,15 @@ import api from '@/api';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import Typing from './Typing';
 import { TbUsersGroup } from "react-icons/tb";
-import { Avatar } from '@/components/ui/avatar';
 import GroupListItem from './GroupListItem';
 import { FaCamera } from 'react-icons/fa6';
 import { toast } from '@/components/ui/use-toast';
 import { addNewChat, selectChat } from '@/store/chat/chatSlice';
 import Image from 'next/image';
+import ColorSchemeToggle from '@/components/ColorSchemeToggle';
+import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 
-type ChatProps = {
-  _id: string,
-  name: string,
-  username: string,
-  isOnline: boolean,
-  avatar: {
-    url: string,
-  },
-  last_message: string,
-  unread_count: number,
-  last_message_date: Date,
-}[]
+
 
 
 export default function ChatsPane() {
@@ -101,7 +91,7 @@ export default function ChatsPane() {
       }
       if (user?.accessToken) {
         const formData = new FormData();
-        if(groupAvatar){
+        if (groupAvatar) {
           formData.append("avatar", groupAvatar)
         }
         formData.append("name", groupName)
@@ -112,7 +102,7 @@ export default function ChatsPane() {
 
         // console.log(formData.get("avatar"));
 
-        
+
         api.post(`/v1/chat-app/chats/group`, formData, {
           headers: {
             'Authorization': `Bearer ${user?.accessToken}`
@@ -240,6 +230,19 @@ export default function ChatsPane() {
                   <CloseRoundedIcon />
                 </IconButton>
               </Box>
+              <Dropdown>
+                <MenuButton><MoreVertRoundedIcon /></MenuButton>
+                <Menu>
+
+                  
+
+                      
+
+                        <MenuItem > Theme <ColorSchemeToggle/></MenuItem>
+
+                  
+                </Menu>
+              </Dropdown>
             </Stack>
             <Stack>
               {
@@ -277,15 +280,15 @@ export default function ChatsPane() {
                                       groupAvatarUrl ?
                                         <label htmlFor="group-icon" className='flex  items-center gap-4 cursor-pointer'>
                                           <div className='h-10 w-10 rounded-full relative'>
-                                            <Image 
-                                            loading="lazy"
-                                            width={500}
-                                            height={500}
-                                            src={groupAvatarUrl} alt="" className='w-full h-full rounded-full'/>
+                                            <Image
+                                              loading="lazy"
+                                              width={500}
+                                              height={500}
+                                              src={groupAvatarUrl} alt="" className='w-full h-full rounded-full' />
                                             <FaCamera className='h-4 w-4 absolute bottom-0 right-0 rounded bg-gray-800 p-[2px]' />
                                           </div>
-                                          
-                                          
+
+
                                           <p>Add Group Icon(Optional)</p>
                                         </label>
                                         :
