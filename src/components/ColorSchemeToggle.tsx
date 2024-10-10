@@ -10,23 +10,33 @@ import { useTheme } from "next-themes"
 export default function ColorSchemeToggle(props: IconButtonProps) {
   const { onClick, sx, ...other } = props;
   const { mode, setMode } = useColorScheme();
-  const [mounted, setMounted] = React.useState(false);
   const { setTheme } = useTheme();
 
   // useEffect to update theme based on user's color scheme preference
   
   React.useEffect(() => {
       const theme = localStorage.getItem('theme');
-      if(theme=='dark' || window.matchMedia('(prefers-color-scheme: dark)').matches){
-        setMode('dark');
-        setTheme("dark")
-        console.log(theme)
+      console.log(theme);
+      
+      if(theme){
+        if(theme=='dark'){
+          setMode('dark');
+          setTheme("dark")
+        }else{
+          setMode('light');
+          setTheme("light")
+        }
       }else{
-        setMode('light');
-        setTheme("light")
-        console.log("light theme")
+        if(window.matchMedia('(prefers-color-scheme: dark)').matches){
+          setMode('dark');
+          setTheme("dark")
+        }else{
+          setMode('light');
+          setTheme("light")
+        }
       }
-    },[])
+      
+    },[typeof window !== 'undefined'])
  
 
   return (
@@ -48,20 +58,12 @@ export default function ColorSchemeToggle(props: IconButtonProps) {
         }
         onClick?.(event);
       }}
-      sx={[
-        {
-          '& > *:first-of-type': {
-            display: mode === 'dark' ? 'none' : 'initial',
-          },
-          '& > *:last-of-type': {
-            display: mode === 'light' ? 'none' : 'initial',
-          },
-        },
-        ...(Array.isArray(sx) ? sx : [sx]),
-      ]}
+      
     >
-      <DarkModeRoundedIcon />
-      <LightModeIcon />
+      {
+        mode === 'light'? <DarkModeRoundedIcon /> : <LightModeIcon />
+      }
+      
     </IconButton>
   );
 }

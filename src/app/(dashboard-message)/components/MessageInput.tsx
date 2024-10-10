@@ -68,6 +68,10 @@ export default function MessageInput() {
           // console.log(res)
           dispatch(addMessages(res?.data?.data))
           dispatch(addChatLastMessage(res?.data?.data));
+          
+        })
+        .catch((err) => {console.log(err) })
+        .finally(() => { 
           handleEndTyping()
           setAttachments([])
           // setImageUrls([])
@@ -75,7 +79,8 @@ export default function MessageInput() {
             URL.revokeObjectURL(url)
           ))
           setImageUrls(undefined)
-        }).catch((err) => { }).finally(() => { setLoading(false) });
+          setLoading(false) 
+        });
 
 
       setTextAreaValue('');
