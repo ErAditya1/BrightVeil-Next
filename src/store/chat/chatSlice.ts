@@ -300,6 +300,7 @@ export const {
   addNewChat,
   deleteChat,
   addMessages,
+  clearMessages,
   removeDeletedMessage,
   addReceivedMessage,
   deliveredMessage,

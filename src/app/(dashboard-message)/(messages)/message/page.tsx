@@ -10,7 +10,7 @@ import { ChatListItemInterface, ChatMessageInterface } from '@/interfaces/chat';
 import api from '@/api';
 import { LocalStorage } from '@/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { addChatLastMessage, addChats, addMessages, addNewChat, addReceivedMessage, addUnreadCount, addUsers, deleteChat, deliveredMessage, otherStartTyping, otherStopTyping, removeDeletedMessage, selectChat, setCreatedChat, startTyping, stopTyping, updateUserOnline } from '@/store/chat/chatSlice';
+import { addChatLastMessage, addChats, addMessages, addNewChat, addReceivedMessage, addUnreadCount, addUsers, clearMessages, deleteChat, deliveredMessage, otherStartTyping, otherStopTyping, removeDeletedMessage, selectChat, setCreatedChat, startTyping, stopTyping, updateUserOnline } from '@/store/chat/chatSlice';
 import { useSearchParams } from 'next/navigation';
 import { AxiosError } from 'axios';
 import { ApiResponse } from '@/types/ApiResponse';
@@ -155,6 +155,7 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
       .then((res) => {
         console.log(res)
         const data = res.data.data
+        dispatch(clearMessages())
         dispatch(addMessages(data || []))
         dispatch(addUnreadCount(selectedChat?._id))
 
@@ -355,7 +356,7 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
         getMessages();
       }
       // An empty dependency array ensures this useEffect runs only once, similar to componentDidMount.
-    }, [token, selectedChat]);
+    }, [token, selectedChat._id]);
 
 
     // This useEffect handles the setting up and tearing down of socket event listeners.
