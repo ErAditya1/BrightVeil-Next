@@ -24,6 +24,7 @@ import { addNewChat, selectChat } from '@/store/chat/chatSlice';
 import Image from 'next/image';
 import ColorSchemeToggle from '@/components/ColorSchemeToggle';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
+import GoBackButton from '@/components/GoBack';
 
 
 
@@ -188,6 +189,7 @@ export default function ChatsPane() {
               p={2}
               pb={1.5}
             >
+              <GoBackButton/>
               <Typography
                 fontSize={{ xs: 'md', md: 'lg' }}
                 component="h1"
@@ -233,14 +235,7 @@ export default function ChatsPane() {
               <Dropdown>
                 <MenuButton><MoreVertRoundedIcon /></MenuButton>
                 <Menu>
-
-                  
-
-                      
-
-                        <MenuItem > Theme <ColorSchemeToggle/></MenuItem>
-
-                  
+                  <MenuItem > Theme <ColorSchemeToggle /></MenuItem>
                 </Menu>
               </Dropdown>
             </Stack>

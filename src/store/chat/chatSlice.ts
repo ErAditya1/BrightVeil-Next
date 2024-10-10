@@ -170,7 +170,9 @@ const chatSlice = createSlice({
         state.isOtherTyping = false;
     },
     selectChat: (state, action) => {
-      state.messages = [];
+      if(state.selectedChat._id !== action.payload._id){
+        state.messages = [];
+      }
       state.isTyping = false;
       state.isOtherTyping = false;
       state.selectedChat = action.payload;
