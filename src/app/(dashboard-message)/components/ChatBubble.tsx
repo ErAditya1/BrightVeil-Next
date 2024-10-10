@@ -124,7 +124,7 @@ export default function ChatBubble(props: ChatBubbleProps) {
       >
         <div className={`m-1 relative`}>
 
-          <p className={` m`}>
+          <p className={`${isSent && ' text-white'} `}>
             {content}
 
           </p>
