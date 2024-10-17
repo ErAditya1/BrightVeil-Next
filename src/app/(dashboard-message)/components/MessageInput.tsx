@@ -1,16 +1,12 @@
 'use client'
 
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
 import Textarea from '@mui/joy/Textarea';
-import { IconButton, Sheet, Stack } from '@mui/joy';
+import { Stack } from '@mui/joy';
 
-import FormatBoldRoundedIcon from '@mui/icons-material/FormatBoldRounded';
-import FormatItalicRoundedIcon from '@mui/icons-material/FormatItalicRounded';
-import StrikethroughSRoundedIcon from '@mui/icons-material/StrikethroughSRounded';
-import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addChatLastMessage, addMessages, startTyping, stopTyping } from '@/store/chat/chatSlice';
@@ -20,10 +16,16 @@ import { useSession } from 'next-auth/react';
 
 import { Editor } from '@tinymce/tinymce-react';
 import { MdOutlineLinkedCamera } from 'react-icons/md';
-import { MultiImageUpload } from '@/components/EdgeStore/MultiImageUpload';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { toast } from '@/components/ui/use-toast';
 import Image from 'next/image';
+import EmojiPicker from 'emoji-picker-react';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { BsEmojiHeartEyesFill } from "react-icons/bs";
 
 
 export default function MessageInput() {
@@ -68,10 +70,10 @@ export default function MessageInput() {
           // console.log(res)
           dispatch(addMessages(res?.data?.data))
           dispatch(addChatLastMessage(res?.data?.data));
-          
+
         })
-        .catch((err) => {console.log(err) })
-        .finally(() => { 
+        .catch((err) => { console.log(err) })
+        .finally(() => {
           handleEndTyping()
           setAttachments([])
           // setImageUrls([])
@@ -79,7 +81,7 @@ export default function MessageInput() {
             URL.revokeObjectURL(url)
           ))
           setImageUrls(undefined)
-          setLoading(false) 
+          setLoading(false)
         });
 
 
@@ -149,6 +151,11 @@ export default function MessageInput() {
             }}
           >
             <div className='flex my-auto'>
+              
+              <Popover>
+                <PopoverTrigger><BsEmojiHeartEyesFill className='m-1' size={22}/></PopoverTrigger>
+                <PopoverContent className='w-fit p-0  bottom-20 absolute '><EmojiPicker className='dark:bg-background z-20 border-0 p-0' onEmojiClick={(e) => setTextAreaValue((prev) => prev + e.emoji)} /></PopoverContent>
+              </Popover>
               <input type="file" id='file-input' className='hidden' multiple accept="image/png, image/gif, image/jpeg " onChange={(event: any) => {
                 setAttachments(Array.from(event.target.files))
 
@@ -169,20 +176,9 @@ export default function MessageInput() {
 
               }} />
               <label htmlFor="file-input" className='my-auto'>
-                <MdOutlineLinkedCamera className='m-auto cursor-pointer' size={20} />
+                <MdOutlineLinkedCamera className='my-auto cursor-pointer m-1' size={24} />
               </label>
-              {/* <IconButton size="sm" variant="plain" color="neutral">
-                  <FormatBoldRoundedIcon />
-                </IconButton>
-                <IconButton size="sm" variant="plain" color="neutral">
-                  <FormatItalicRoundedIcon />
-                </IconButton>
-                <IconButton size="sm" variant="plain" color="neutral">
-                  <StrikethroughSRoundedIcon />
-                </IconButton>
-                <IconButton size="sm" variant="plain" color="neutral">
-                  <FormatListBulletedRoundedIcon />
-                </IconButton> */}
+              
             </div>
 
           </Stack>

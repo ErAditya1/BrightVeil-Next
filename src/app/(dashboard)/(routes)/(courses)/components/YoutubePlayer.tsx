@@ -195,14 +195,14 @@ export default function CustomVideoPlayer ({ videoId, thumbnailUrl , title}:Cust
 
   return (
     <div
-        className="h-full w-full relative select-none "
+        className="h-full w-full relative select-none  "
         
       >
         <section className="section h-full w-full  lex justify-center items-center relative">
           <div className="player-wrapper h-full w-full relative flex justify-center items-center">
             <ReactPlayer
               ref={playerRef}
-              className="react-player"
+              className="react-player rounded-lg"
               width="100%"
               height="100%"
               url={url}
@@ -248,7 +248,7 @@ export default function CustomVideoPlayer ({ videoId, thumbnailUrl , title}:Cust
           onClick={showControls}
         >
           <div
-            className={`  w-full h-full select-none  ${!controls && "hidden duration-1000"}`}
+            className={`w-full h-full select-none  ${!controls && "hidden duration-1000"}`}
           >
             <div className="w-full   h-full flex justify-center items-center  select-none">
               {/* previous */}

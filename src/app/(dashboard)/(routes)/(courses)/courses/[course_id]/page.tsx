@@ -142,7 +142,7 @@ const onPlaying = (items:{videoId: string, title: string,thumbnail: string, _id:
               </React.Fragment>
               <React.Fragment>
                 <div className='m-2 rounded border p-1'>
-                  <LikeButton className="rounded-full text-4xl" liked='true' likeCnt='3' type="v" _id="123" />
+                  <LikeButton className="rounded-full text-4xl" liked='false' likeCnt='3' type="v" _id="123" />
                 </div>
                 <div className='m-2 '>
                   <ShareButton className="rounded-full text-4xl" liked='true' likeCnt='3' type="v" _id="123" />

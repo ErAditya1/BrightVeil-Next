@@ -109,7 +109,7 @@ function Page() {
         setPlayingVideoData(res?.data?.data[0])
       })
     }
-  }, [video,v])
+  }, [video,v,user])
  
 
   
@@ -123,7 +123,7 @@ function Page() {
     <div className=''>
       <div className='md:my-2 w-full gap-4  flex flex-col lg:flex-row '>
 
-        <Card className='grow bg-card text-card-foreground rounded-lg'>
+        <Card className='grow bg-card p-0 text-card-foreground rounded-lg '>
           <div className=' aspect-video col-span-8 rounded-xl  max-h-screen max-w-screen'>
             {
                v && <CustomVideoPlayer videoId={v} thumbnailUrl={playingVideoData?.thumbnail?.secure_url} title={playingVideoData?.title} />
@@ -147,10 +147,10 @@ function Page() {
               </React.Fragment>
               <React.Fragment>
                 <div className='m-2 rounded border p-1'>
-                  <LikeButton className="rounded-full text-4xl" liked='true' likeCnt={playingVideoData?.likeCount} type="v" _id="123" />
+                  <LikeButton className="rounded-full text-4xl" liked={playingVideoData?.isLiked} likeCnt={playingVideoData?.likeCount} type="video" _id={video} />
                 </div>
                 <div className='m-2 '>
-                  <ShareButton className="rounded-full text-4xl" liked='true' likeCnt='3' type="v" _id="123" />
+                  <ShareButton className="rounded-full text-4xl"  />
                 </div>
               </React.Fragment>
 

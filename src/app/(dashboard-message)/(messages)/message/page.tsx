@@ -447,8 +447,8 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
             <div className="w-full h-full flex justify-center items-center bg-background">
               <Image src="/whatsapp.gif" 
               loading="lazy"
-              width={500}
-              height={500}
+              width={200}
+              height={200}
               className="h-20 w-20 rounded-full" alt="whatsapp loading button" />
             </div>
             : <MessagesPane />
