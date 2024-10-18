@@ -34,45 +34,45 @@ function EditCourse() {
         order: 0,
     });
     const [addChapter, setAddChapter] = useState(false)
-    const  user  = useSession()?.data?.user
+    const user = useSession()?.data?.user
     useEffect(() => {
-        if(user && user.accessToken){
-        api.get(`/v1/videos/video/get-chapter/${chapter_id}`, {
-            headers: {
-                'Authorization': `Bearer ${user?.accessToken}`
-            }
-        })
-            .then(res => {
-                console.log(res)
-                setChapterData(res.data.data)
+        if (user && user.accessToken) {
+            api.get(`/v1/videos/video/get-chapter/${chapter_id}`, {
+                headers: {
+                    'Authorization': `Bearer ${user?.accessToken}`
+                }
             })
-            .catch(err => console.log(err))
+                .then(res => {
+                    console.log(res)
+                    setChapterData(res.data.data)
+                })
+                .catch(err => console.log(err))
         }
     }, [chapter_id, user]);
 
-    
+
 
     const onPublish = async () => {
         // setIsSubmitting(true);
 
         try {
-            if(user && user.accessToken){
-            const response = await api.patch(`/v1/videos/video/update-videoPublish/${chapter_id}`, {},
-                {
-                    headers: {
-                        'Authorization': `Bearer ${user?.accessToken}`
+            if (user && user.accessToken) {
+                const response = await api.patch(`/v1/videos/video/update-videoPublish/${chapter_id}`, {},
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${user?.accessToken}`
+                        }
                     }
-                }
-            );
-            console.log(response);
-            setChapterData(response?.data?.data);
-            toast({
-                title: 'Success!',
-                description: response?.data?.message,
-                variant: 'success',
-            });
+                );
+                console.log(response);
+                setChapterData(response?.data?.data);
+                toast({
+                    title: 'Success!',
+                    description: response?.data?.message,
+                    variant: 'success',
+                });
 
-        }
+            }
             // setIsSubmitting(false);
 
         } catch (error) {
@@ -80,7 +80,7 @@ function EditCourse() {
 
             const axiosError = error as AxiosError<ApiResponse>;
 
-      let errorMessage = axiosError.response?.data.message;
+            let errorMessage = axiosError.response?.data.message;
 
             toast({
                 title: 'Publishing Failed',
@@ -95,24 +95,24 @@ function EditCourse() {
         // setIsSubmitting(true);
 
         try {
-            if(user && user.accessToken){
-            const response = await api.patch(`/v1/videos/video/update-videoUnPublish/${chapter_id}`, {},
-                {
-                    headers: {
-                        'Authorization': `Bearer ${user?.accessToken}`
+            if (user && user.accessToken) {
+                const response = await api.patch(`/v1/videos/video/update-videoUnPublish/${chapter_id}`, {},
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${user?.accessToken}`
+                        }
                     }
-                }
-            );
-            console.log(response);
-            setChapterData(response?.data?.data);
-            toast({
-                title: 'Success!',
-                description: response?.data?.message,
-                variant: 'success',
-            });
+                );
+                console.log(response);
+                setChapterData(response?.data?.data);
+                toast({
+                    title: 'Success!',
+                    description: response?.data?.message,
+                    variant: 'success',
+                });
 
-            // setIsSubmitting(false);
-        }
+                // setIsSubmitting(false);
+            }
 
         } catch (error) {
 
@@ -131,38 +131,38 @@ function EditCourse() {
     const deleteChapter = async () => {
         // setIsSubmitting(true);
         try {
-            if(user && user.accessToken){
-            const response = await api.delete(`/v1/videos/video/delete-chapter/${chapter_id}`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${user?.accessToken}`
+            if (user && user.accessToken) {
+                const response = await api.delete(`/v1/videos/video/delete-chapter/${chapter_id}`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${user?.accessToken}`
+                        }
                     }
-                }
-            );
-            console.log(response);
-            router.back();
-            toast({
-                title: 'Success!',
-                description: response?.data?.message,
-                variant: 'success',
-            });
+                );
+                console.log(response);
+                router.back();
+                toast({
+                    title: 'Success!',
+                    description: response?.data?.message,
+                    variant: 'success',
+                });
+            }
+
         }
-        
-    }
-    catch (error) {
-        const axiosError = error as AxiosError<ApiResponse>;
+        catch (error) {
+            const axiosError = error as AxiosError<ApiResponse>;
             console.log(axiosError)
             // Default error message
             let errorMessage = axiosError.response?.data.message;
-            
+
 
             toast({
                 title: 'Creation Failed',
                 description: errorMessage,
                 variant: 'destructive',
             });
+        }
     }
-}
 
 
 
@@ -178,26 +178,27 @@ function EditCourse() {
                             <div className="flex flex-col   gap-2  ">
                                 <div className="flex flex-row justify-between items-center">
                                     <span className='flex'><LayoutDashboard /><span className="text-md mx-2">Customise your course</span></span><div className="flex flex-row gap-4 m-2 justify-end ">
-                                        {
-                                            !chapterData?.isPublished ? <Button className='float-right' onClick={onPublish}>
-                                                <BiMoneyWithdraw className='h-5 w-5 mr-2' />
-                                                Publish Chapter
-                                            </Button>
-                                                : <Button className='float-right' onClick={onUnPublish}>
-                                                    <BookMarkedIcon className='h-5 w-5 mr-2' />
-                                                    Unpublish Chapter
-                                                </Button>
-                                        }
+
+                                        <Button className='float-right' onClick={deleteChapter}>Delete Chapter</Button>
                                     </div>
                                 </div>
                                 <ChapterVideoIdForm videoId={chapterData?.videoId} />
                                 <ChapterTitleForm title={chapterData?.title} />
                                 <ChapterDescriptionForm description={chapterData?.description} />
-                                <ChapterThumbnailForm thumbnail={chapterData?.thumbnail}/>
+                                <ChapterThumbnailForm thumbnail={chapterData?.thumbnail} />
                                 <ChapterVisibility />
                                 {/* <CategoryForm language={chapterData?.language} /> */}
 
-                                <Button className='float-right' onClick={deleteChapter}>Delete Chapter</Button>
+                                {
+                                    !chapterData?.isPublished ? <Button className='float-right' onClick={onPublish}>
+                                        <BiMoneyWithdraw className='h-5 w-5 mr-2' />
+                                        Publish Chapter
+                                    </Button>
+                                        : <Button className='float-right' onClick={onUnPublish}>
+                                            <BookMarkedIcon className='h-5 w-5 mr-2' />
+                                            Unpublish Chapter
+                                        </Button>
+                                }
 
 
                             </div>
