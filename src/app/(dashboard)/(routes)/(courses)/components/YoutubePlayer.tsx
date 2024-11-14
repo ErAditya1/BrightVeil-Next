@@ -9,10 +9,9 @@ import Duration from './Duration';
 import { MdForward10, MdOutlineReplay10 } from 'react-icons/md';
 
 
-// import { Slider } from '@headlessui/react';
 
 interface CustomVideoPlayerProps {
-  videoId: string;
+  videoId: string | string[];
   thumbnailUrl: string;
   title: string;
 }
@@ -186,8 +185,49 @@ export default function CustomVideoPlayer ({ videoId, thumbnailUrl , title}:Cust
 
   const handleFullscreen = () => handle.active ? handle.exit() : handle.enter();
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    console.log("handleKeyDown", event.key)
+    if (event.key === 'ArrowRight') {
+      handleSeekFarword();
+    }
+    if (event.key === 'ArrowLeft') {
+      handleSeekReverse();
+    }
+    if (event.key === 'Space') {
+      handlePlayPause();
+    }
+    if (event.key === 'f') {
+      handleFullscreen();
+    }
+    if (event.key === 'm') {
+      handleMuteUnmute();
+    }
+    if (event.key === 'ArrowUp') {
+      setVolume(Math.min(volume + 0.1, 1));
+    }
+    if (event.key === 'ArrowDown') {
+      setVolume(Math.max(volume - 0.1, 0));
+    }
+    if (event.key === 'p') {
+      handleTogglePIP();
+    }
+    if (event.key === 'r') {
+      handlePlay();
+    }
+    if (event.key === 'Escape') {
+      handleDisablePIP();
+    }
+  }
  
+  useEffect(() => {
+    // Add event listener for keydown
+    document.addEventListener("keydown", handleKeyDown);
 
+    // Clean up event listener on component unmount
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   
 
@@ -202,7 +242,7 @@ export default function CustomVideoPlayer ({ videoId, thumbnailUrl , title}:Cust
           <div className="player-wrapper h-full w-full relative flex justify-center items-center">
             <ReactPlayer
               ref={playerRef}
-              className="react-player rounded-lg"
+              className="react-player rounded-lg p-0"
               width="100%"
               height="100%"
               url={url}

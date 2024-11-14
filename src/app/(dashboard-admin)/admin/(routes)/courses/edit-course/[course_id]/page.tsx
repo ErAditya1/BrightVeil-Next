@@ -9,7 +9,7 @@ import axios, { AxiosError } from 'axios'
 import api from '@/api'
 import { toast } from '@/components/ui/use-toast'
 import { ApiResponse } from '@/types/ApiResponse'
-import { useSession } from 'next-auth/react'
+
 import TitleForm from '@/app/(dashboard)/(routes)/(courses)/components/TitleForm'
 import DescriptionForm from '@/app/(dashboard)/(routes)/(courses)/components/DescriptionForm'
 import ThumbnailForm from '@/app/(dashboard)/(routes)/(courses)/components/ThumbnailForm'
@@ -18,11 +18,14 @@ import { DatePickerWithRange } from '@/app/(dashboard)/(routes)/(courses)/compon
 import PriceForm from '@/app/(dashboard)/(routes)/(courses)/components/PriceForm'
 import ChapterForm from '@/app/(dashboard)/(routes)/(courses)/components/ChaptersForm'
 import ChapterList from '@/app/(dashboard)/(routes)/(courses)/components/ChapterList'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { addEditCourse } from '@/store/post/postSlice'
 
 function EditCourse() {
 
     const { course_id } = useParams();
     const router = useRouter();
+    const dispatch = useAppDispatch();
 
     const [courseData, setCourseData] = useState({
         title: '',
@@ -38,36 +41,29 @@ function EditCourse() {
         to: ''
     });
     const [addChapter, setAddChapter] = useState(false)
-    const  user  = useSession()?.data?.user
+    const user = useAppSelector(state=> state.auth.user);
     useEffect(() => {
-        if(user && user.accessToken){
-        api.get(`/v1/courses/course/get-edit-course-data/${course_id}`, {
-            headers: {
-                'Authorization': `Bearer ${user?.accessToken}`
-            }
-        })
+        
+        api.get(`/v1/courses/course/get-edit-course-data/${course_id}`)
             .then(res => {
                 setCourseData(res.data.data[0])
+                dispatch(addEditCourse(res.data.data[0]))
             })
             .catch(err => console.log(err))
-        }
-    }, [course_id, user]);
+        
+    }, [course_id ]);
 
     const publishCourse = async ()=>{
         try {
-            if(user && user.accessToken){
-            const response = await api.patch(`/v1/courses/course/publish/${course_id}`, {}, {
-                headers: {
-                    'Authorization': `Bearer ${user?.accessToken}`
-                }
-            });
+            
+            const response = await api.patch(`/v1/courses/course/publish/${course_id}`, {});
             console.log(response);
             toast({
                 title: 'Success!',
                 description: response?.data?.message,
                 variant:'success',
             });
-        }
+        
         } catch (error) {
             const axiosError = error as AxiosError<ApiResponse>;
             console.log(axiosError)
@@ -85,13 +81,9 @@ function EditCourse() {
     const onReorder = async (updateData: { _id: string, position: number }[]) => {
 
         try {
-            if(user && user.accessToken){
+            
             const response = await api.put(`/v1/courses/course/reorder-chapters/${course_id}`, {
                 updateData
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${user?.accessToken}`
-                }
             });
             console.log(response);
             toast({
@@ -100,7 +92,7 @@ function EditCourse() {
                 variant: 'success',
             });
             setCourseData((prevState) => ({ ...prevState, chapters: response?.data?.data }));
-        }
+        
         } catch (error) {
             console.error(error);
             toast({
@@ -115,13 +107,12 @@ function EditCourse() {
         router.push(`/${user?.role}/courses/edit-course/${course_id}/chapters/${_id}`)
     }
 
-    console.log(courseData)
 
     return (
 
         <div>
             {
-                courseData.title && (
+                courseData?.title && (
                     <div className='w-full'>
                         <div className="flex flex-row gap-4 m-2 justify-end ">
                             <Button className='float-right' onClick={publishCourse}>
@@ -152,7 +143,7 @@ function EditCourse() {
                                 </div>
                                 {
 
-                                    addChapter && <ChapterForm setCourseData= {setCourseData}/>
+                                    addChapter && <ChapterForm setCourseData= {setCourseData} setAddChapter={setAddChapter}/>
                                 }
                                 <div className=" m-2 border p-2 rounded">
                                     <span className="text-md mx-2 flex"> <FileAxis3DIcon />Course Attachments</span>

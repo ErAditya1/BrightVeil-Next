@@ -4,23 +4,18 @@ import { toast } from './ui/use-toast';
 import { Chip } from '@mui/joy';
 import { AiOutlineLike } from "react-icons/ai";
 import { BiSolidLike } from "react-icons/bi";
-import { useSession } from 'next-auth/react';
+
 
 function LikeButton({className , liked, likeCnt , type,_id}:any) {
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
-    const token = useSession()?.data?.user?.refreshToken
+    
     useEffect(()=>{
         setIsLiked(liked);
         setLikeCount(likeCnt);
     }, [liked, likeCnt])
     const likePostHandler = async() => {
-       await api.post(`/v1/like/${type}/${_id}`,{},{
-         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-         }
-       }).then((response) => {
+       await api.post(`/v1/like/${type}/${_id}`,{}).then((response) => {
         setIsLiked(!isLiked);
         if (response.data.message === 'Liked') {
           

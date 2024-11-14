@@ -4,7 +4,7 @@ import Sheet from '@mui/joy/Sheet';
 import ChatsPane from '../../components/ChatsPane';
 import MessagesPane from '../../components/MessagesPane';
 import { useSocket } from '@/context/SocketContext';
-import { useSession } from 'next-auth/react';
+
 import { toast } from '@/components/ui/use-toast';
 import { ChatListItemInterface, ChatMessageInterface } from '@/interfaces/chat';
 import api from '@/api';
@@ -33,7 +33,7 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
  function Page() {
 
   const { socket } = useSocket()
-  const { data } = useSession();
+  
   const dispatch = useAppDispatch();
   const params = useSearchParams();
   const u = params.get('u');
@@ -41,13 +41,9 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
 
   const { isConnected, isTyping, isOtherTyping, users, chats, selectedChat, createdChat } = useAppSelector((state) => state.chat);
 
-  const user = data?.user
-  const token = data?.user?.accessToken
+  const user = useAppSelector(state=> state.auth.user);
 
-  if (token && !localStorage.getItem('token')) {
-    localStorage.setItem('token', token);
-  }
-
+  
 
 
 
@@ -66,12 +62,8 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
  
 
   const getUsers = () => {
-    if (token && isConnected) {
-      api.get(`/v1/chat-app/chats/users`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      })
+    if (isConnected) {
+      api.get(`/v1/chat-app/chats/users`)
         .then((res) => {
           const users = res.data.data
 
@@ -87,12 +79,8 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
 
   const getChats = async () => {
 
-    if (token && isConnected) {
-      api.get(`/v1/chat-app/chats`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      })
+    if ( isConnected) {
+      api.get(`/v1/chat-app/chats`)
         .then((res) => {
           const chats = res.data.data
           console.log(chats)
@@ -147,11 +135,7 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
     console.log("Getting messages...");
 
     // Make an async request to fetch chat messages for the current chat
-    api.get(`/v1/chat-app/messages/${selectedChat?._id}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    })
+    api.get(`/v1/chat-app/messages/${selectedChat?._id}`)
       .then((res) => {
         console.log(res)
         const data = res.data.data
@@ -183,14 +167,10 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
 
   const createUserChat = () => {
 
-    if (token && createdChat?._id) {
+    if ( createdChat?._id) {
 
 
-      api.post(`/v1/chat-app/chats/c/${createdChat?._id}`, {}, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      })
+      api.post(`/v1/chat-app/chats/c/${createdChat?._id}`, {})
         .then((res) => {
           console.log(res)
           const chat = res.data.data
@@ -248,13 +228,9 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
     dispatch(removeDeletedMessage(message))
 
     const lastMessage =chats.find((c) => c._id === message.chat)?.lastMessage
-    if (lastMessage?._id === message._id && token) {
+    if (lastMessage?._id === message._id ) {
 
-      api.get(`/v1/chat-app/chats`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      }).then((res) => {
+      api.get(`/v1/chat-app/chats`,).then((res) => {
         const chats = res.data.data
         dispatch(addChats(chats))
       }).catch((err)=>{console.log(err)})
@@ -325,7 +301,7 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
     useEffect(() => {
       getUsers()
       getChats();
-    }, [token, isConnected])
+    }, [isConnected])
 
 
     useEffect(() => {
@@ -356,7 +332,7 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
         getMessages();
       }
       // An empty dependency array ensures this useEffect runs only once, similar to componentDidMount.
-    }, [token, selectedChat._id]);
+    }, [ selectedChat._id]);
 
 
     // This useEffect handles the setting up and tearing down of socket event listeners.

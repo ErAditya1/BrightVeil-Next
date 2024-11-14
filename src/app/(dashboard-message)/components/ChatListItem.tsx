@@ -12,7 +12,7 @@ import { ChatProps, MessageProps, UserProps } from '@/types/MessageProps';
 import { toggleMessagesPane } from '@/lib/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addUnreadCount, ChatInterface, LastMessageInterface, selectChat, SelectedChat, UserInterface } from '@/store/chat/chatSlice';
-import { useSession } from 'next-auth/react';
+
 import { getChatObjectMetadata } from '@/utils';
 import { timeAgo } from '@/utils/agoTime';
 import Link from 'next/link';
@@ -24,7 +24,7 @@ type ChatListItemProps = ChatInterface & {
 };
 
 export default function ChatListItem(props: ChatListItemProps) {
-  const user = useSession()?.data?.user;
+  const user = useAppSelector(state=> state.auth.user);
   const selectedChatId = useAppSelector((state) => state.chat.selectedChat._id);
   
   const [chat, setChat] = React.useState<SelectedChat>()
@@ -58,7 +58,7 @@ export default function ChatListItem(props: ChatListItemProps) {
             }}
           >
             <Stack direction="row" spacing={1.5}>
-              <AvatarWithStatus online={chat?.isOnline} src={chat?.avatar?.url || ''} name={chat?.name || ''} />
+              <AvatarWithStatus online={chat?.isOnline} src={chat?.avatar?.url || ''} name={chat?.name || ''} username={chat?.username || ""}/>
               <Box sx={{ flex: 1 }}>
                 <Typography level="title-sm">{chat?.name}</Typography>
                 {/* <Typography level="body-sm">{chat?.username}</Typography> */}

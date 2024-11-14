@@ -20,7 +20,7 @@ import { Edit } from 'lucide-react';
 import api from '@/api';
 import { ApiResponse } from '@/types/ApiResponse';
 import { AxiosError } from 'axios';
-import { useSession } from 'next-auth/react';
+
 
 import {
     Select,
@@ -33,7 +33,6 @@ import { ChapterVisibilitySchema } from '@/schemas/videoSchema';
 
 export default function ChapterVisibility({visibility}:any) {
     const router = useRouter();
-    const user = useSession()?.data?.user
     // const [isSubmitting, setIsSubmitting] = useState(false);
 
     const form = useForm<z.infer<typeof ChapterVisibilitySchema>>({
@@ -54,13 +53,8 @@ export default function ChapterVisibility({visibility}:any) {
         console.log(data);
 
         try {
-            if(user && user.accessToken){
                 const response = await api.patch<ApiResponse>(`/v1/videos/video/update-visibility/${chapter_id}`, data,
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${user.accessToken}`
-                        }
-                    }
+                    
                 );
                 console.log(response);
                 toast({
@@ -71,7 +65,7 @@ export default function ChapterVisibility({visibility}:any) {
             
             
             setEdit(false)
-            }
+            
             // setIsSubmitting(false);
 
         } catch (error) {

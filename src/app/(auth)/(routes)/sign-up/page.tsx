@@ -23,12 +23,9 @@ import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { signUpSchema } from '@/schemas/signUpSchema';
 import BottomGradient from '@/components/BottomGradient';
-import {
-  IconBrandGithub,
-  IconBrandGoogle,
-} from "@tabler/icons-react";
+
 import api from '@/api';
-import { signIn } from 'next-auth/react';
+import { BsGithub, BsGoogle } from 'react-icons/bs';
 
 export default function SignUpForm() {
   const [username, setUsername] = useState('');
@@ -119,21 +116,16 @@ export default function SignUpForm() {
       <div className="w-full max-w-md p-8 space-y-8 bg-card border-2 text-card-foreground rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold text-foreground  tracking-tight lg:text-5xl mb-6">
-            Join innovadi
+            Join BrightVeil
           </h1>
           <p className="mb-4 text-foreground">Sign up to start your anonymous adventure</p>
         </div>
         <div className="flex flex-row gap-2 ">
           <button
             className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-            onClick={() => {
-              signIn('github', {
-                callbackUrl: 'http://localhost:3000/',
-              });
-            }
-            }
+           
           >
-            <IconBrandGithub className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
+            <BsGithub className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
 
             <span className="text-neutral-700 dark:text-neutral-300 text-sm">
               GitHub
@@ -144,14 +136,9 @@ export default function SignUpForm() {
           </button>
           <button
             className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-            onClick={() => {
-              signIn('google', {
-                callbackUrl: 'http://localhost:3000/',
-              });
-            }
-            }
+           
           >
-            <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
+            <BsGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
 
             <span className="text-neutral-700 dark:text-neutral-300 text-sm">
               GitHub

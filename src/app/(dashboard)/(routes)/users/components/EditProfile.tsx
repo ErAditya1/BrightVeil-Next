@@ -5,25 +5,17 @@ import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
 import FormHelperText from '@mui/joy/FormHelperText';
-import IconButton from '@mui/joy/IconButton';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import Card from '@mui/joy/Card';
 import CardActions from '@mui/joy/CardActions';
 import CardOverflow from '@mui/joy/CardOverflow';
-import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
-import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRounded';
-import VideocamRoundedIcon from '@mui/icons-material/VideocamRounded';
-import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
-
 import DropZone from './DropZone';
 import EditorToolbar from './EditorToolbar';
 import { toast } from '@/components/ui/use-toast';
 import api from '@/api';
 import { AxiosError } from 'axios';
 import { ApiResponse } from '@/types/ApiResponse';
-import { useSession } from 'next-auth/react';
 import { Loader2, Save } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import {
@@ -42,18 +34,28 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Image from 'next/image';
+import { updateUser } from '@/store/user/userSlice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { FaCamera } from 'react-icons/fa6';
+import { MdOutlineCancel } from 'react-icons/md';
 
 
 export default function EditProfile() {
-  const user = useSession()?.data?.user
-  const [avatar, setAvatar] = useState("");
-  const [cover, setCover] = useState("");
+  const user = useAppSelector(state => state.auth.user);
+  const dispatch = useAppDispatch();
+  const [avatar, setAvatar] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState("");
+  const [cover, setCover] = useState(null);
+  const [coverUrl, setCoverUrl] = useState("");
   const [username, setUsername] = useState('');
   const [usernameMessage, setUsernameMessage] = useState('');
   const [suggestUsername, setSuggestUsername] = useState("");
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const debouncedUsername = useDebounce(username, 1000);
+
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  const [coverUploading, setCoverUploading] = useState(false);
 
   const form = useForm<z.infer<typeof updateProfileSchema>>({
     resolver: zodResolver(updateProfileSchema),
@@ -66,6 +68,11 @@ export default function EditProfile() {
     }
   })
 
+
+  useEffect(() => {
+    setAvatarUrl(user?.avatar?.url!);
+    setCoverUrl(user?.coverImage?.url!);
+  }, [user])
   useEffect(() => {
     const checkUsernameUnique = async () => {
       if (debouncedUsername) {
@@ -94,65 +101,73 @@ export default function EditProfile() {
     checkUsernameUnique();
   }, [debouncedUsername]);
 
-  const avatarChangeHandler = (event: any) => {
-    event.preventDefault();
-    setAvatar(event.target.files[0]);
-  };
-  const coverChangeHandler = (event: any) => {
-    event.preventDefault();
-    setCover(event.target.files[0]);
-  };
-  const updateAvatar = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+
+  const updateAvatar = async () => {
+    setAvatarUploading(true)
     const formData = new FormData();
-    console.log(avatar)
+
+    if (!avatar) return
+
     formData.append("avatar", avatar);
-    console.log(formData);
+
 
 
     try {
       const res = await api.patch("/v1/users/avatar", formData, {
         headers: {
-          "Authorization": `Bearer ${user?.accessToken}`
+          "Content-Type": "multipart/form-data",
         }
       });
       if (res) {
-        setAvatar("");
+        setAvatar(null);
+        console.log(res.data);
+        URL.revokeObjectURL(avatarUrl);
+        setAvatarUrl(res.data.data?.avatar?.url);
+        dispatch(updateUser(res.data.data));
         toast({
           title: 'Update Avatar image success',
           description: res.data.message,
           variant: 'success',
         });
-        return res.data.message;
+
       }
+      setAvatarUploading(false)
     } catch (error) {
+      setAvatarUploading(false)
       const axiosError = error as AxiosError<ApiResponse>;
+      console.log(error)
       let errorMessage = axiosError.response?.data.message;
       toast({
-        title: 'Update cover image failed',
+        title: 'Update avatar image failed',
         description: errorMessage,
         variant: 'destructive',
       });
     }
   };
-  const updateCover = async (event: any) => {
-    event.preventDefault();
+
+  const updateCover = async () => {
+    setCoverUploading(true)
+
     const formData = new FormData();
+    if (!cover) return
 
     formData.append("coverImage", cover);
+
 
     try {
       const res = await api.patch("/v1/users/cover-image", formData);
       if (res) {
-        setCover("");
+        setCover(null);
+        setCoverUrl(res.data.data.coverImage.url);
         toast({
           title: 'Update cover image success',
           description: res.data.message,
           variant: 'success',
         });
-        return res.data.message;
       }
+      setCoverUploading(false)
     } catch (error) {
+      setCoverUploading(false)
       const axiosError = error as AxiosError<ApiResponse>;
       let errorMessage = axiosError.response?.data.message;
       toast({
@@ -181,6 +196,8 @@ export default function EditProfile() {
           variant: 'success',
         });
         setIsSubmitting(false)
+        console.log(res.data.data)
+        dispatch(updateUser(res.data.data));
       }
     } catch (error) {
 
@@ -222,44 +239,136 @@ export default function EditProfile() {
             </Typography>
           </Box>
           <Divider />
+          <div className="relative h-48 select-none mb-4">
+
+
+            {
+              coverUrl ? (
+                <div className="w-full h-full relative">
+                  <Image
+                    src={coverUrl}
+                    alt="Profile"
+                    height={500}
+                    width={500}
+                    className="rounded-2 border-2 border-foreground w-full h-full"
+                  />
+                  {
+                    cover &&
+                    <div className="border bg-background cursor-pointer text-foreground rounded-full absolute top-2 right-2" onClick={() => {
+                      setCover(null)
+                      URL.revokeObjectURL(coverUrl)
+                      setCoverUrl(user?.coverImage?.url || '')
+                    }}>
+                      <MdOutlineCancel size={18} className="text-foreground" />
+                    </div>
+                  }
+                  <label htmlFor="cover" >
+
+                    <FaCamera size={20} className="text-foreground absolute bottom-2 right-2 cursor-pointer" />
+                  </label>
+                  <input type="file" accept="image/png, image/gif, image/jpeg ,image/jpg" id='cover' className='hidden' onChange={(e: any) => {
+                    setCover(e.target.files[0])
+                    const url = URL.createObjectURL(e.target.files[0])
+                    setCoverUrl(url)
+                  }} />
+                </div>
+              ) : (
+
+                <div className="border h-full w-w-full rounded-2 flex justify-center items-center">
+                  <label htmlFor="cover">
+                    <FaCamera size={32} className="text-foreground cursor-pointer" />
+                  </label>
+                  <input type="file" accept="image/png, image/gif, image/jpeg ,image/jpg" id='cover' className='hidden' onChange={(e: any) => {
+                    setCover(e.target.files[0])
+                    const url = URL.createObjectURL(e.target.files[0])
+                    setCoverUrl(url)
+                  }} />
+                </div>
+              )
+            }
+
+
+            {
+              cover && (
+                <div className="text-center my-2">
+                  <Button className="mt-4" onClick={updateCover} disabled={coverUploading}>
+                    {coverUploading ? 'Uploading...' : 'Update Cover'}
+                  </Button>
+                </div>
+              )
+            }
+            {/* Profile Photo */}
+            <div className="absolute -bottom-12 left-4">
+
+              {
+                avatarUrl ? (
+                  <div className="w-full h-full relative">
+                    <Image
+                      src={avatarUrl}
+                      alt="Profile"
+                      height={500}
+                      width={500}
+                      className="rounded-full border-4 border-foreground w-24 h-24"
+                    />
+                    {
+                      avatar &&
+                      <div className="  bg-background text-foreground rounded-full cursor-pointer absolute top-2 right-2" onClick={() => {
+                        setAvatar(null)
+                        URL.revokeObjectURL(avatarUrl)
+                        setAvatarUrl(user?.avatar?.url || '')
+                      }}>
+                        <MdOutlineCancel size={18} className="text-foreground" />
+                      </div>
+                    }
+                    <label htmlFor="avatar">
+
+                      <FaCamera size={20} className="text-foreground absolute bottom-0 right-0 cursor-pointer" />
+                    </label>
+                    <input type="file" accept="image/png, image/gif, image/jpeg ,image/jpg" id='avatar' className='hidden' onChange={(e: any) => {
+                      setAvatar(e.target.files[0])
+                      console.log(e.target.files[0])  // Preview the image in the input field for the user.)
+                      setAvatarUrl(URL.createObjectURL(e.target.files[0]))
+                    }} />
+                  </div>
+                ) : (
+
+                  <div className="border h-24 w-24 rounded-full flex justify-center items-center">
+                    <label htmlFor="avatar">
+                      <FaCamera size={32} className="text-foreground cursor-pointer" />
+                    </label>
+                    <input type="file" accept="image/png, image/gif, image/jpeg ,image/jpg" id='avatar' className='hidden' onChange={(e: any) => {
+                      setAvatar(e.target.files[0])
+                      const url = URL.createObjectURL(e.target.files[0])
+                      console.log(url)  // Preview the image in the input field for the user.)
+                      setAvatarUrl(url)
+                    }} />
+                  </div>
+                )
+              }
+
+            </div>
+            {
+              avatar && (
+                <div className="text-center my-2">
+                  <Button className="mt-4" onClick={updateAvatar} disabled={avatarUploading}>
+                    {avatarUploading ? 'Uploading...' : 'Update Avatar'}
+                  </Button>
+                </div>
+              )
+            }
+          </div>
           <Form {...form} >
             <form onSubmit={form.handleSubmit(submit)}>
               <Stack
                 direction="row"
                 spacing={3}
-                sx={{ display: { xs: 'none', md: 'flex' }, my: 1 }}
+                sx={{ display: { xs: 'none', md: 'flex' }, my: 4 }}
               >
 
                 <Stack direction="column" spacing={1}>
-                  <Typography className="text-center">
-                    {user?.name}
-                  </Typography>
 
-                  {
-                    user?.avatar?.url ? (
-                      <AspectRatio
-                        ratio="1"
-                        maxHeight={200}
-                        sx={{ flex: 1, minWidth: 120, borderRadius: '100%' }}
-                      >
-                        <Image
-                          src={user?.avatar?.url}
-                          loading="lazy"
-                          width={500}
-                          height={500}
-                          alt=""
-                        />
-                      </AspectRatio>
-                    ) : (<AspectRatio
-                      ratio="1"
-                      maxHeight={200}
-                      sx={{ flex: 1, minWidth: 120, borderRadius: '100%' }}
-                    >
-                      <Typography className=" text-4xl bg-card text-card-foreground">
-                        {user?.name?.slice(0, 1)}
-                      </Typography>
-                    </AspectRatio>)
-                  }
+
+
 
 
 
@@ -388,57 +497,7 @@ export default function EditProfile() {
 
 
         </Card>
-        <Card className="dark:bg-slate-900">
-          <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Bio</Typography>
-            <Typography level="body-sm">
-              Write a short introduction to be displayed on your profile
-            </Typography>
-          </Box>
-          <Divider />
-          <Stack spacing={2} sx={{ my: 1 }}>
-            <EditorToolbar />
-            <Textarea
-              defaultValue="I'm a software developer based in Bangkok, Thailand. My goal is to solve UI problems with neat CSS without using too much JavaScript."
-            />
-            <FormHelperText sx={{ mt: 0.75, fontSize: 'xs' }}>
-              275 characters left
-            </FormHelperText>
-          </Stack>
-          <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
-            <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
-                Cancel
-              </Button>
-              <Button size="sm" variant="solid">
-                Save
-              </Button>
-            </CardActions>
-          </CardOverflow>
-        </Card>
-        <Card className="dark:bg-slate-900">
-          <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Portfolio projects</Typography>
-            <Typography level="body-sm">
-              Share a few snippets of your work.
-            </Typography>
-          </Box>
-          <Divider />
-          <Stack spacing={2} sx={{ my: 1 }}>
-            <DropZone />
 
-          </Stack>
-          <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
-            <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
-                Cancel
-              </Button>
-              <Button size="sm" variant="solid">
-                Save
-              </Button>
-            </CardActions>
-          </CardOverflow>
-        </Card>
       </Stack>
     </Box>
   );

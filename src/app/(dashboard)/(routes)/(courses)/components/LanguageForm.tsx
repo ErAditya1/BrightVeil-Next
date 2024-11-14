@@ -20,7 +20,7 @@ import { Edit } from 'lucide-react';
 import api from '@/api';
 import { ApiResponse } from '@/types/ApiResponse';
 import { AxiosError } from 'axios';
-import { useSession } from 'next-auth/react';
+
 
 import {
     Select,
@@ -33,7 +33,6 @@ import { CourseLanguageSchema } from '@/schemas/courseSchema';
 
 export default function CategoryForm({language}:any) {
     const router = useRouter();
-    const user = useSession()?.data?.user
     // const [isSubmitting, setIsSubmitting] = useState(false);
 
     const form = useForm<z.infer<typeof CourseLanguageSchema>>({
@@ -58,13 +57,9 @@ export default function CategoryForm({language}:any) {
 
 
         try {
-            if(user && user.accessToken){
+            
                 const response = await api.patch<ApiResponse>(`/v1/courses/course/updateLanguage/${course_id}`, data,
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${user?.accessToken}`
-                        }
-                    }
+                    
                 );
                 console.log(response);
                 toast({
@@ -75,7 +70,7 @@ export default function CategoryForm({language}:any) {
             
             setEdit(false)
             // setIsSubmitting(false);
-            }
+            
 
         } catch (error) {
 

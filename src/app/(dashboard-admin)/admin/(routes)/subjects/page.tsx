@@ -8,7 +8,8 @@ import { HiMiniAdjustmentsHorizontal } from "react-icons/hi2";
 
 import Image from "next/image";
 import { SlidersHorizontal, SortDesc } from "lucide-react";
-import { useSession } from "next-auth/react";
+;
+import { useAppSelector } from "@/store/hooks";
 
 type Subject = {
   id: number;
@@ -36,8 +37,7 @@ const columns = [
 ];
 
 const SubjectListPage = () => {
-const data = useSession()
-const user = data?.data?.user;
+  const user = useAppSelector(state=> state.auth.user);
 
   const renderRow = (item: Subject) => (
     <tr

@@ -4,8 +4,9 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { role, studentsData } from "@/lib/data";
+import { useAppSelector } from "@/store/hooks";
 import { SlidersHorizontal, SortDesc, View } from "lucide-react";
-import { useSession } from "next-auth/react";
+;
 import Image from "next/image";
 import Link from "next/link";
 
@@ -53,8 +54,7 @@ const columns = [
 ];
 
 const StudentListPage = () => {
-  const data = useSession()
-const user = data?.data?.user;
+  const user = useAppSelector(state=> state.auth.user);
   const renderRow = (item: Student) => (
     <tr
       key={item.id}

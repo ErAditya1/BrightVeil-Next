@@ -18,12 +18,13 @@ import { useToast } from '@/components/ui/use-toast';
 import api from '@/api';
 import { ApiResponse } from '@/types/ApiResponse';
 import { AxiosError } from 'axios';
-import { useSession } from 'next-auth/react';
+
 import { createCourseSchema } from '@/schemas/courseSchema';
+import { useAppSelector } from '@/store/hooks';
 
 export default function AddCourseForm() {
     const router = useRouter();
-    const user = useSession()?.data?.user
+    const user = useAppSelector(state=> state.auth.user);
     // const [isSubmitting, setIsSubmitting] = useState(false);
 
     const form = useForm<z.infer<typeof createCourseSchema>>({
@@ -41,15 +42,9 @@ export default function AddCourseForm() {
         // setIsSubmitting(true);
 
         try {
-            if (user && user?.accessToken) {
+            
                 const response = await api.post<ApiResponse>('/v1/courses/course', data,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Accept": "application/json",
-                            "Authorization": `Bearer ${user?.accessToken}`
-                        }
-                    }
+                    
                 );
                 console.log(response);
                 toast({
@@ -58,7 +53,7 @@ export default function AddCourseForm() {
                     variant: 'success',
                 });
                 router.push(`/${user?.role}/courses/edit-course/${response?.data?.data?._id}`);
-            }
+            
             // setIsSubmitting(false);
 
         } catch (error) {
@@ -82,7 +77,7 @@ export default function AddCourseForm() {
 
     return (
         <div className="flex justify-center items-center ">
-            <div className="w-full max-w-md p-8 space-y-8 bg-card text-card-foreground  border-2 rounded-lg shadow-md">
+            <div className="w-full max-w-md p-8 space-y-8 bg-card text-card-foreground  rounded-lg shadow-md">
                 <div className="text-center">
                     <h1 className="text-4xl font-extrabold text-foreground tracking-tight lg:text-5xl mb-6">
                         Create Your course
@@ -107,14 +102,7 @@ export default function AddCourseForm() {
                             )}
                         />
                         <div className="flex items-center gap-x-4">
-                            <Link href="/">
-                                <Button
-                                    type='button'
-                                >
-                                    Cancel
-                                </Button>
-
-                            </Link>
+                            
                             <Button
                                 type='submit'
                                 disabled={!isValid || isSubmitting}

@@ -9,7 +9,7 @@ import MessagesPaneHeader from './MessagesPaneHeader';
 import { ChatProps, MessageProps } from '@/types/MessageProps';
 import { useAppSelector } from '@/store/hooks';
 import Typing from './Typing';
-import { useSession } from 'next-auth/react';
+
 import { useSocket } from '@/context/SocketContext';
 import { Stack } from '@mui/material';
 
@@ -19,7 +19,7 @@ type MessagesPaneProps = {
 
 export default function MessagesPane() {
 
-  const user = useSession()?.data?.user
+  const user = useAppSelector(state=> state.auth.user);
   const {selectedChat, messages} = useAppSelector((state)=> state.chat)
   
   const {_id, name, username, avatar, isOnline}  = selectedChat
@@ -72,6 +72,7 @@ export default function MessagesPane() {
                       online={message?.sender?.isOnline}
                       src={message?.sender?.avatar?.url}
                       name={message?.sender?.name}
+                      username={message?.sender?.username}
                       className='h-8 w-8'
                     />
                   )}

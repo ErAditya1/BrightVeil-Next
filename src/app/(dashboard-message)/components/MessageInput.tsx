@@ -12,9 +12,6 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addChatLastMessage, addMessages, startTyping, stopTyping } from '@/store/chat/chatSlice';
 import { useSocket } from '@/context/SocketContext';
 import api from '@/api';
-import { useSession } from 'next-auth/react';
-
-import { Editor } from '@tinymce/tinymce-react';
 import { MdOutlineLinkedCamera } from 'react-icons/md';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { toast } from '@/components/ui/use-toast';
@@ -29,7 +26,7 @@ import { BsEmojiHeartEyesFill } from "react-icons/bs";
 
 
 export default function MessageInput() {
-  const token = useSession()?.data?.user?.accessToken
+  const user = useAppSelector(state=> state.auth.user);
   const dispatch = useAppDispatch();
   const { socket } = useSocket()
   const [textAreaValue, setTextAreaValue] = useState('')
@@ -43,7 +40,7 @@ export default function MessageInput() {
 
   const handleSubmit = () => {
 
-    if ((textAreaValue?.trim() !== '' || attachments.length) && token && !loading) {
+    if ((textAreaValue?.trim() !== '' || attachments.length)  && !loading) {
       setLoading(true)
       const formData = new FormData();
       if (textAreaValue) {
@@ -59,12 +56,7 @@ export default function MessageInput() {
       attachments?.map((file) => {
         formData.append("attachments", file);
       });
-      api.post(`/v1/chat-app/messages/${selectedChat?._id}`, formData, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
-        }
-      })
+      api.post(`/v1/chat-app/messages/${selectedChat?._id}`, formData)
         .then((res) => {
           console.log("message sent")
           // console.log(res)
@@ -190,7 +182,7 @@ export default function MessageInput() {
             value={textAreaValue}
             maxRows={10}
             onKeyDown={(event) => {
-              if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
+              if (event.key === 'Enter' ) {
                 handleSubmit();
               }
             }}

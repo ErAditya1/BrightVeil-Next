@@ -51,7 +51,7 @@ export default function GroupListItem(props: ChatListItemProps) {
           }}
         >
           <Stack direction="row" spacing={1.5} >
-            <AvatarWithStatus online={isOnline} src={avatar?.url} name={name}/>
+            <AvatarWithStatus online={isOnline} src={avatar?.url} name={name} username={username}/>
             <Box sx={{ flex: 1 }}>
               <Typography level="title-sm">{name}</Typography>
               <Typography level="body-sm">{username}</Typography>

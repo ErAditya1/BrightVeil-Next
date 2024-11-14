@@ -15,52 +15,50 @@ import { Input } from '@/components/ui/input';
 import { useParams, useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { useState } from 'react';
-import { Edit} from 'lucide-react';
+import { Edit } from 'lucide-react';
 import api from '@/api';
 import { ApiResponse } from '@/types/ApiResponse';
 import { AxiosError } from 'axios';
-import { useSession } from 'next-auth/react';
-import { CourseDescriptionSchema } from '@/schemas/courseSchema';
 
-export default function DescriptionForm({description}:any) {
-    const user = useSession()?.data?.user
+import { CourseDescriptionSchema } from '@/schemas/courseSchema';
+import { Editor } from '@tinymce/tinymce-react';
+
+export default function DescriptionForm({ description }: any) {
+
     // const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const form = useForm<z.infer<typeof CourseDescriptionSchema>>({
-        resolver: zodResolver(CourseDescriptionSchema),
-        defaultValues: {
-            description: description,
-        },
-    });
+    
 
     const { toast } = useToast();
-    const { isSubmitting, isValid } = form.formState
 
     const [edit, setEdit] = useState(false);
-    const {course_id} = useParams();
+    const { course_id } = useParams();
+    const [messageText, setMessageText] = useState(description);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const onSubmit = async (data: z.infer<typeof CourseDescriptionSchema>) => {
-        // setIsSubmitting(true);
+    const onEditorChange = (newContent: any) => {
+        setMessageText(newContent)
+        console.log(newContent)
+    };
+    const onSubmit = async (e:any) => {
+        e.preventDefault();
+        setIsSubmitting(true);
 
         try {
-            if(user && user.accessToken){
-                const response = await api.patch<ApiResponse>(`/v1/courses/course/updateDescription/${course_id}`, data,
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${user.accessToken}`
-                        }
-                    }
-                );
-                console.log(response);
-                toast({
-                    title: 'Success!',
-                    description: response?.data?.message,
-                    variant: 'success',
-                });
+
+            const response = await api.patch<ApiResponse>(`/v1/courses/course/updateDescription/${course_id}`, {description: messageText })
+
             
+            console.log(response);
+            toast({
+                title: 'Success!',
+                description: response?.data?.message,
+                variant: 'success',
+            });
+
             setEdit(false)
-            // setIsSubmitting(false);
-            }
+            setIsSubmitting(false);
+
 
         } catch (error) {
 
@@ -69,7 +67,7 @@ export default function DescriptionForm({description}:any) {
             console.log(axiosError)
             // Default error message
             let errorMessage = axiosError.response?.data.message;
-            
+
 
             toast({
                 title: 'Creation Failed',
@@ -77,7 +75,7 @@ export default function DescriptionForm({description}:any) {
                 variant: 'destructive',
             });
 
-            // setIsSubmitting(false);
+            setIsSubmitting(false);
         }
     };
 
@@ -86,20 +84,56 @@ export default function DescriptionForm({description}:any) {
             <div className="w-full bg-card text-card-foreground  border rounded shadow-md p-2">
 
 
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                
+                    <form onSubmit={onSubmit} className="space-y-6">
+                        <div className='flex justify-between'><span>Add Description:</span>{!edit && (<span className='text-sm gap-1 flex flex-row' onClick={() => {
+                            setEdit(true)
+                            setMessageText(description)
+                        }}><Edit size={15} />Edit</span>)}</div>
+                        {
+                            edit && (
+                                <Editor
+                                    initialValue={description || ''}
+                                    apiKey='usz9bgh3l8dhmt1qo78mto3vej9zacwcwzm5yuyx5g6ocr3x'
+                                    init={{
+                                        height: 350,
+                                        menubar: true,
+                                        plugins: [
+                                            "image",
+                                            "advlist",
+                                            "autolink",
+                                            "lists",
+                                            "link",
+                                            "image",
+                                            "charmap",
+                                            "preview",
+                                            "anchor",
+                                            "searchreplace",
+                                            "visualblocks",
+                                            "code",
+                                            "fullscreen",
+                                            "insertdatetime",
+                                            "media",
+                                            "table",
+                                            "code",
+                                            "help",
+                                            "wordcount",
+                                            "anchor",
+                                        ],
+                                        toolbar:
+                                            "undo redo | blocks | image | bold italic forecolor | alignleft aligncenter bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |removeformat | help",
+                                    }}
+                                    onEditorChange={onEditorChange}
+                                />
 
-                        <FormField
-                            name="description"
-                            control={form.control}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className='flex justify-between'><span>Description:</span>{!edit && (<span className='text-sm gap-1 flex flex-row' onClick={()=>setEdit(true)}><Edit size={15}/>Edit</span>)}</FormLabel>
-                                    <Input type="text" {...field}  disabled={!edit}/>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                            )
+                        }
+
+
+                        {
+                            !edit && (<div className="mt-2" dangerouslySetInnerHTML={{ __html: messageText }} />)
+                        }
+
                         {
                             edit && (
                                 <div className="flex items-center gap-x-4">
@@ -114,7 +148,7 @@ export default function DescriptionForm({description}:any) {
 
                                     <Button
                                         type='submit'
-                                        disabled={!isValid || isSubmitting}
+                                        disabled={isSubmitting}
                                     >
                                         Continue
                                     </Button>
@@ -122,7 +156,7 @@ export default function DescriptionForm({description}:any) {
                             )
                         }
                     </form>
-                </Form>
+                
 
             </div>
         </div>

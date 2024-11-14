@@ -19,11 +19,10 @@ import { Edit} from 'lucide-react';
 import api from '@/api';
 import { ApiResponse } from '@/types/ApiResponse';
 import { AxiosError } from 'axios';
-import { useSession } from 'next-auth/react';
+
 import { useParams } from 'next/navigation';
 
 export default function ChapterTitleForm({title}:any) {
-    const user = useSession()?.data?.user
  
     // const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -45,13 +44,9 @@ export default function ChapterTitleForm({title}:any) {
 
         try {
             
-            if(user && user.accessToken){
+            
                 const response = await api.patch<ApiResponse>(`/v1/videos/video/update-title/${chapter_id}`, data,
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${user.accessToken}`
-                        }
-                    }
+                    
                 );
                 console.log(response);
                 toast({
@@ -59,7 +54,7 @@ export default function ChapterTitleForm({title}:any) {
                     description: response?.data?.message,
                     variant: 'success',
                 });
-            }
+            
             setEdit(false)
             // setIsSubmitting(false);
 

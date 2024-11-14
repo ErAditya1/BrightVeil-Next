@@ -19,7 +19,7 @@ import { useParams } from "next/navigation"
 import { toast } from "@/components/ui/use-toast"
 import { AxiosError } from "axios"
 import { ApiResponse } from "@/types/ApiResponse"
-import { useSession } from "next-auth/react"
+
 
 export function DatePickerWithRange({
     className,
@@ -33,14 +33,11 @@ export function DatePickerWithRange({
     const [edit, setEdit] = React.useState(false);
     const [isSubmitting, setIsSubmitting] = React.useState(false)
     const { course_id } = useParams();
-    const  user  = useSession()?.data?.user
 
     const handleDateChange = () => {
-        if(user && user.accessToken){
+        
         api.patch(`/v1/courses/course/updateDuration/${course_id}`,date,{
-            headers: {
-                'Authorization': `Bearer ${user?.accessToken}`
-            }
+           
         })
         .then((res) => {
             setEdit(false)
@@ -63,7 +60,7 @@ export function DatePickerWithRange({
                 variant: 'destructive',
             });
         });
-    }
+    
         
 
 

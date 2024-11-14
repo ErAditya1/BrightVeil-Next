@@ -19,38 +19,33 @@ import { Edit} from 'lucide-react';
 import api from '@/api';
 import { ApiResponse } from '@/types/ApiResponse';
 import { AxiosError } from 'axios';
-import { useSession } from 'next-auth/react';
-import { ChapterDescriptionSchema } from '@/schemas/videoSchema';
+
+import { Editor } from '@tinymce/tinymce-react';
 
 export default function ChapterDescriptionForm({description}:any) {
-    const user = useSession()?.data?.user
-    // const [isSubmitting, setIsSubmitting] = useState(false);
+    
 
-    const form = useForm<z.infer<typeof ChapterDescriptionSchema>>({
-        resolver: zodResolver(ChapterDescriptionSchema),
-        defaultValues: {
-            description: description,
-        },
-    });
+   
 
     const { toast } = useToast();
-    const { isSubmitting, isValid } = form.formState
 
     const [edit, setEdit] = useState(false);
     const {chapter_id} = useParams();
+    const [messageText, setMessageText] = useState(description);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const onSubmit = async (data: z.infer<typeof ChapterDescriptionSchema>) => {
-        // setIsSubmitting(true);
+    const onEditorChange = (newContent: any) => {
+        setMessageText(newContent)
+    };
+
+    const onSubmit = async (e:any) => {
+        e.preventDefault();
+        setIsSubmitting(true);
 
         try {
 
-            if(user && user.accessToken){
-                const response = await api.patch<ApiResponse>(`/v1/videos/video/update-description/${chapter_id}`, data,
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${user.accessToken}`
-                        }
-                    }
+                const response = await api.patch<ApiResponse>(`/v1/videos/video/update-description/${chapter_id}`, {description: messageText }
+                   
                 );
                 console.log(response);
                 toast({
@@ -59,7 +54,7 @@ export default function ChapterDescriptionForm({description}:any) {
                     variant: 'success',
                 });
 
-        }
+        
             setEdit(false)
             // setIsSubmitting(false);
 
@@ -86,48 +81,84 @@ export default function ChapterDescriptionForm({description}:any) {
 
     return (
         <div className="flex justify-center items-center ">
-            <div className="w-full bg-card text-card-foreground  border rounded shadow-md p-2">
+        <div className="w-full bg-card text-card-foreground  border rounded shadow-md p-2">
 
 
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            
+                <form onSubmit={onSubmit} className="space-y-6">
+                    <div className='flex justify-between'><span>Add Description:</span>{!edit && (<span className='text-sm gap-1 flex flex-row' onClick={() => {
+                        setEdit(true)
+                        setMessageText(description)
+                    }}><Edit size={15} />Edit</span>)}</div>
+                    {
+                        edit && (
+                            <Editor
+                                initialValue={description || ''}
+                                apiKey='usz9bgh3l8dhmt1qo78mto3vej9zacwcwzm5yuyx5g6ocr3x'
+                                init={{
+                                    height: 350,
+                                    menubar: true,
+                                    plugins: [
+                                        "image",
+                                        "advlist",
+                                        "autolink",
+                                        "lists",
+                                        "link",
+                                        "image",
+                                        "charmap",
+                                        "preview",
+                                        "anchor",
+                                        "searchreplace",
+                                        "visualblocks",
+                                        "code",
+                                        "fullscreen",
+                                        "insertdatetime",
+                                        "media",
+                                        "table",
+                                        "code",
+                                        "help",
+                                        "wordcount",
+                                        "anchor",
+                                    ],
+                                    toolbar:
+                                        "undo redo | blocks | image | bold italic forecolor | alignleft aligncenter bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |removeformat | help",
+                                }}
+                                onEditorChange={onEditorChange}
+                            />
 
-                        <FormField
-                            name="description"
-                            control={form.control}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className='flex justify-between'><span>Description:</span>{!edit && (<span className='text-sm gap-1 flex flex-row' onClick={()=>setEdit(true)}><Edit size={15}/>Edit</span>)}</FormLabel>
-                                    <Input type="text" {...field}  disabled={!edit}/>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        {
-                            edit && (
-                                <div className="flex items-center gap-x-4">
-
-                                    <Button
-                                        type='button'
-                                        onClick={() => setEdit(false)}
-                                    >
-                                        Cancel
-                                    </Button>
+                        )
+                    }
 
 
-                                    <Button
-                                        type='submit'
-                                        disabled={!isValid || isSubmitting}
-                                    >
-                                        Continue
-                                    </Button>
-                                </div>
-                            )
-                        }
-                    </form>
-                </Form>
+                    {
+                        !edit && (<div className="mt-2" dangerouslySetInnerHTML={{ __html: messageText }} />)
+                    }
 
-            </div>
+                    {
+                        edit && (
+                            <div className="flex items-center gap-x-4">
+
+                                <Button
+                                    type='button'
+                                    onClick={() => setEdit(false)}
+                                >
+                                    Cancel
+                                </Button>
+
+
+                                <Button
+                                    type='submit'
+                                    disabled={isSubmitting}
+                                >
+                                    Continue
+                                </Button>
+                            </div>
+                        )
+                    }
+                </form>
+            
+
         </div>
+    </div>
     );
 }

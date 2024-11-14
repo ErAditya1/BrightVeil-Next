@@ -19,7 +19,7 @@ import { Edit } from 'lucide-react';
 import api from '@/api';
 import { ApiResponse } from '@/types/ApiResponse';
 import { AxiosError } from 'axios';
-import { useSession } from 'next-auth/react';
+
 import { CoursePriceSchema } from '@/schemas/courseSchema';
 
 export default function PriceForm({discount , printPrice}:any) {
@@ -36,7 +36,6 @@ export default function PriceForm({discount , printPrice}:any) {
     const { toast } = useToast();
     const { isSubmitting, isValid } = form.formState
     const { course_id } = useParams();
-    const  user  = useSession()?.data?.user
 
     const [edit, setEdit] = useState(false);
 
@@ -44,15 +43,10 @@ export default function PriceForm({discount , printPrice}:any) {
         // setIsSubmitting(true);
 
         try {
-           if(user && user.accessToken){
+           
             
                 const response = await api.patch<ApiResponse>(`/v1/courses/course/updatePrice/${course_id}`, data,
-                    {
-                        headers: {
-                           
-                            "Authorization": `Bearer ${user?.accessToken}`
-                        }
-                    }
+                   
                 );
                 console.log(response);
                 toast({
@@ -61,7 +55,7 @@ export default function PriceForm({discount , printPrice}:any) {
                     variant: 'success',
                 });
                 setEdit(false)
-           }
+           
             // setIsSubmitting(false);
 
         } catch (error) {

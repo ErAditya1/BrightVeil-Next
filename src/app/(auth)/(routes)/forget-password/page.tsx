@@ -19,11 +19,9 @@ import { forgetSchema } from '@/schemas/signInSchema';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import BottomGradient from '@/components/BottomGradient';
-import { IconBrandGithub, IconBrandGoogle } from '@tabler/icons-react';
 import api from '@/api';
 import { ApiResponse } from '@/types/ApiResponse';
 import { AxiosError } from 'axios';
-import { signIn } from 'next-auth/react';
 
 export default function RequestPasswordForm() {
   const router = useRouter();

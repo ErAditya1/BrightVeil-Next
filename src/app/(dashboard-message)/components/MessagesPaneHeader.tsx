@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import AvatarLayout from '@/components/AvatarLayout';
 import { Dropdown, Menu, MenuButton, MenuItem } from '@mui/joy';
 import { MdDelete } from 'react-icons/md';
-import { useSession } from 'next-auth/react';
+
 import api from '@/api';
 import { toast } from '@/components/ui/use-toast';
 import { deleteChat } from '@/store/chat/chatSlice';
@@ -26,16 +26,12 @@ import { deleteChat } from '@/store/chat/chatSlice';
 
 export default function MessagesPaneHeader() {
   const selectedChat = useAppSelector((state) => state.chat.selectedChat)
-  const user = useSession()?.data?.user
+  const user = useAppSelector(state=> state.auth.user);
   const dispatch = useAppDispatch()
   const deleteChatHandler = () => {
     // TODO: Implement chat deletion
-    if (user) {
-      api.delete(`/v1/chat-app/chats/remove/${selectedChat._id}`, {
-        headers: {
-          'Authorization': `Bearer ${user?.accessToken}`,
-        },
-      })
+    
+      api.delete(`/v1/chat-app/chats/remove/${selectedChat._id}`)
         .then((res) => {
           console.log(res)
           // remove chat from store and close the messages pane
@@ -50,17 +46,13 @@ export default function MessagesPaneHeader() {
         .catch((error) => {
           console.log(error);
         });
-    }
+    
 
   }
   const deleteGroupHandler = () => {
     // TODO: Implement chat deletion
-    if (user) {
-      api.delete(`/v1/chat-app/chats/group/${selectedChat._id}`, {
-        headers: {
-          'Authorization': `Bearer ${user?.accessToken}`,
-        },
-      })
+    
+      api.delete(`/v1/chat-app/chats/group/${selectedChat._id}`)
         .then((res) => {
           console.log(res)
           // remove chat from store and close the messages pane
@@ -75,17 +67,13 @@ export default function MessagesPaneHeader() {
         .catch((error) => {
           console.log(error);
         });
-    }
+    
 
   }
   const leaveGroupHandler = () => {
     // TODO: Implement chat deletion
-    if (user) {
-      api.delete(`/v1/chat-app/chats/leave/group/${selectedChat._id}`, {
-        headers: {
-          'Authorization': `Bearer ${user?.accessToken}`,
-        },
-      })
+    
+      api.delete(`/v1/chat-app/chats/leave/group/${selectedChat._id}`)
         .then((res) => {
           console.log(res)
           // remove chat from store and close the messages pane
@@ -100,7 +88,7 @@ export default function MessagesPaneHeader() {
         .catch((error) => {
           console.log(error);
         });
-    }
+    
 
   }
 
@@ -128,7 +116,7 @@ export default function MessagesPaneHeader() {
         >
           <ArrowBackIosNewRoundedIcon />
         </IconButton>
-        <AvatarLayout src={selectedChat?.avatar?.url} name={selectedChat?.name} />
+        <AvatarLayout src={selectedChat?.avatar?.url} name={selectedChat?.name} username={selectedChat?.username}/>
         <div>
           <Typography
             fontWeight="lg"
@@ -156,7 +144,7 @@ export default function MessagesPaneHeader() {
           >
             {selectedChat?.name}
           </Typography>
-          <Typography level="body-sm">{selectedChat?.username}</Typography>
+          <Typography level="body-sm">@{selectedChat?.username}</Typography>
         </div>
       </Stack>
       <Stack spacing={1} direction="row" alignItems="center">
@@ -191,7 +179,7 @@ export default function MessagesPaneHeader() {
 
                 <>
                   {
-                    selectedChat?.admin === user._id ?
+                    selectedChat?.admin === user?._id ?
                       (
                         <MenuItem onClick={deleteGroupHandler}>Delete Group<MdDelete /></MenuItem>
 

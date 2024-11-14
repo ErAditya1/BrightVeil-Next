@@ -5,21 +5,15 @@ import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { title } from "process";
 import React, { useEffect, useState } from "react";
 import CourseCard from "./(courses)/components/CourseCard";
-import { useSession } from "next-auth/react";
+
 
 function Home() {
 
-  const data = useSession()
-  const user = data?.data?.user;
 
   const [courseData, setCourseData] = useState([{ _id: "" }])
   useEffect(() => {
-    if ( user){
-      api.patch("/v1/courses/course/getAllCourses", {}, {
-        headers: {
-          'Authorization': `Bearer ${user.accessToken}`,
-        },
-      })
+    
+      api.patch("/v1/courses/course/getAllCourses", {})
         .then((res) => {
           console.log(res)
           setCourseData(res.data.data)
@@ -27,8 +21,8 @@ function Home() {
         .catch((error) => {
           console.log(error)
         })
-      }
-  }, [user])
+      
+  }, [])
 
 const [type, setType] = useState("");
 // const tabs = [

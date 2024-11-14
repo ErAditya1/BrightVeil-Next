@@ -33,7 +33,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import { closeSidebar } from '@/lib/utils';
 import Link from 'next/link';
-import { signOut, useSession } from 'next-auth/react';
+
 import api from '@/api';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/components/ui/use-toast';
@@ -41,6 +41,7 @@ import ColorSchemeToggle from '@/components/ColorSchemeToggle';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import GoBackButton from '@/components/GoBack';
 import User from '@/components/User';
+import { useAppSelector } from '@/store/hooks';
 
 
 
@@ -78,44 +79,11 @@ function Toggler({
 
 export default function AdminSidebar() {
   const router = useRouter();
-  const data = useSession()
-  const user = data?.data?.user;
+  const user = useAppSelector(state=> state.auth.user);
   
 
 
 
-  const logoutHandler = async () => {
-
-    console.log(user)
-    if (user && user?.accessToken) {
-      api.patch("/v1/users/logout", {}, {
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          "Authorization": `Bearer ${user?.accessToken}`
-        }
-      })
-        .then(async (response) => {
-          await signOut();
-          toast({
-            title: 'Success',
-            description: response.data.message,
-            variant: 'success',
-          });
-
-        }).catch(({ response }) => {
-          console.log(response)
-          toast({
-
-            title: 'Signout failed',
-            description: response.data.message,
-            variant: 'destructive',
-          });
-        });
-    }
-
-    router.replace('/');
-  }
 
   const menuItem = [
 
@@ -229,7 +197,7 @@ export default function AdminSidebar() {
         <IconButton variant="soft" color="primary" size="sm">
           <BrightnessAutoRoundedIcon />
         </IconButton>
-        <Typography level="title-lg">innovadi</Typography>
+        <Typography level="title-lg">BrightVeil</Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
 
       </Box>
@@ -365,7 +333,7 @@ export default function AdminSidebar() {
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
 
 
-        {data.status === "authenticated" && 
+        {user && 
         <User user={user}/>
         }
       </Box>

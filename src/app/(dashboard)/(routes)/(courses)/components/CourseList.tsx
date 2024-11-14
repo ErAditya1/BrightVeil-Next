@@ -1,12 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import {
-    DragDropContext,
-    Droppable,
-    Draggable,
-    DropResult
-} from '@hello-pangea/dnd'
+
 import { Grid, Pencil } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';

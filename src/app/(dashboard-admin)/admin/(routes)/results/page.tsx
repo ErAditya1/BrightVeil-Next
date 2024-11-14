@@ -7,8 +7,9 @@ import {
   resultsData,
   role,
 } from "@/lib/data";
+import { useAppSelector } from "@/store/hooks";
 import { SlidersHorizontal, SortDesc } from "lucide-react";
-import { useSession } from "next-auth/react";
+;
 import Image from "next/image";
 
 type Result = {
@@ -58,8 +59,7 @@ const columns = [
 ];
 
 const ResultListPage = () => {
-  const data = useSession()
-const user = data?.data?.user;
+  const user = useAppSelector(state=> state.auth.user);
   const renderRow = (item: Result) => (
     <tr
       key={item.id}

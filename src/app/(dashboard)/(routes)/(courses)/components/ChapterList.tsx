@@ -9,7 +9,6 @@ import {
 } from '@hello-pangea/dnd'
 import { Grid, Pencil } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
 interface ChapterListProps {
@@ -17,8 +16,6 @@ interface ChapterListProps {
 
     onRender: (items: { _id: string; position: number }[]) => Promise<void>
     onEdit: (id: string) => void
-
-
 }
 
 function ChapterList({ items, onRender, onEdit }: ChapterListProps) {
@@ -94,13 +91,10 @@ function ChapterList({ items, onRender, onEdit }: ChapterListProps) {
                                             {/* <h3 className='line-clamp-1'>{chapter.title}</h3> */}
                                             {/* <button onClick={() => onEdit(chapter._id)}>Edit</button> */}
                                         </div>
-                                        <span className=''> {chapter?.title}</span>
+                                        <span className='line-clamp-2'> {chapter?.title}</span>
                                         <div className='ml-auto pr-2 flex items-center gap-x-2'>
-                                            {
-                                                !chapter?.isFree && (
-                                                    <Badge>Free</Badge>
-                                                )
-                                            }
+                                            
+                                            <Badge>{chapter?.isFree ? "Free" : "Paid"}</Badge>
                                             <Badge className={`bg-slate-500 ${chapter?.isPublished && 'bg-sky-700'}`}>
                                                 {chapter?.isPublished ? 'Published' : 'Draft'}
                                             </Badge>

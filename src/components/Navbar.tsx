@@ -3,13 +3,12 @@ import { Box, IconButton, Typography } from "@mui/joy"
 import Image from "next/image"
 import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
-import { useSession } from 'next-auth/react';
+
 import { MessageCircleMoreIcon } from "lucide-react"
 import { GrAnnounce } from "react-icons/gr";
 
 const Navbar = () => {
-  const data = useSession()
-  const user = data?.data?.user;
+  
 
   return (
     <>
@@ -41,7 +40,7 @@ const Navbar = () => {
             {data.status === "authenticated" && <>
 
               <Box sx={{ minWidth: 0, flex: 1 }}>
-                <p className="text-sm">{user.username}</p>
+                <p className="text-sm">@{user.username}</p>
                 <p className="text-xs aaa float-end">{user.role}</p>
               </Box>
               <Avatar>

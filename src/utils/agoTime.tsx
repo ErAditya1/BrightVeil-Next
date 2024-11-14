@@ -1,32 +1,30 @@
-import moment from 'moment';
+import { format, formatDistanceToNowStrict, parseISO } from 'date-fns';
 
-export function timeAgo(dateString:string): string {
-    const timestamp = moment(dateString).valueOf();
-    const currentTime = Date.now();
-    const differenceInMs = currentTime - timestamp;
-  
-    const seconds = Math.floor(differenceInMs / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    const weeks = Math.floor(days / 7);
-    const months = Math.floor(days / 30);  // Approximation
-    const years = Math.floor(days / 365);  // Approximation
-  
-    if (years > 0) {
-      return years === 1 ? '1 year ago' : `${years} years ago`;
-    } else if (months > 0) {
-      return months === 1 ? '1 month ago' : `${months} months ago`;
-    } else if (weeks > 0) {
-      return weeks === 1 ? '1 week ago' : `${weeks} weeks ago`;
-    } else if (days > 0) {
-      return days === 1 ? '1 day ago' : `${days} days ago`;
-    } else if (hours > 0) {
-      return hours === 1 ? '1 hour ago' : `${hours} hours ago`;
-    } else if (minutes > 0) {
-      return minutes === 1 ? '1 minute ago' : `${minutes} minutes ago`;
-    } else {
-      return seconds === 1 ? '1 second ago' : `${seconds} seconds ago`;
-    }
-  }
-  
+/**
+ * Calculates the time ago from a given date string.
+ * @param dateString - The ISO date string to calculate the time ago.
+ * @returns A formatted string representing the time ago (e.g., "3 hours ago").
+ */
+export function timeAgo(dateString: string): string {
+  // Check if the dateString is valid
+  if (!dateString) return '';
+
+  // Parse the date string to ISO format and calculate the distance to now
+  const date = parseISO(dateString);
+  return formatDistanceToNowStrict(date, { addSuffix: true });
+}
+
+/**
+ * Formats a given date string into a readable date and time format.
+ * @param dateString - The ISO date string to format.
+ * @returns A formatted string like "Nov 13, 2024 at 03:45 PM".
+ */
+export function formatUploadDateTime(dateString: string): string {
+  if (!dateString) return '';
+
+  // Parse the date string to ISO format
+  const date = parseISO(dateString);
+
+  // Format the date to "MMM dd, yyyy at hh:mm a"
+  return format(date, "MMM dd, yyyy 'at' hh:mm a");
+}

@@ -1,29 +1,28 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 const {
   default: flattenColorPalette,
 } = require("tailwindcss/lib/util/flattenColorPalette");
 
-
-function addVariablesForColors({ addBase, theme }: any) {
-  let allColors = flattenColorPalette(theme("colors"));
-  let newVars = Object.fromEntries(
-    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
+const addVariablesForColors = plugin(function ({ addBase, theme }) {
+  const allColors = flattenColorPalette(theme("colors"));
+  const newVars: Record<string, string> = Object.fromEntries(
+    Object.entries(allColors).map(([key, val]) => [`--${key}`, String(val)])
   );
- 
+
   addBase({
     ":root": newVars,
   });
-}
-
+});
 
 const config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -68,38 +67,50 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        boxShadow: {
-          input: `0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08)`,
-        },
+      },
+      boxShadow: {
+        input:
+          "0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08)",
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
-      
       keyframes: {
         spotlight: {
           "0%": {
-            opacity: '0',
+            opacity: "0",
             transform: "translate(-72%, -62%) scale(0.5)",
           },
           "100%": {
-            opacity: '1',
+            opacity: "1",
             transform: "translate(-50%,-40%) scale(1)",
           },
         },
         "caret-blink": {
-          "0%,70%,100%": { opacity: "1" },
-          "20%,50%": { opacity: "0" },
+          "0%,70%,100%": {
+            opacity: "1",
+          },
+          "20%,50%": {
+            opacity: "0",
+          },
         },
         "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          from: {
+            height: "0",
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)",
+          },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          from: {
+            height: "var(--radix-accordion-content-height)",
+          },
+          to: {
+            height: "0",
+          },
         },
       },
       animation: {
@@ -110,29 +121,16 @@ const config = {
       },
     },
     screens: {
-
-      'xs': '440px',
-      // => @media (min-width: 440px) { ... }
-      'sm': '640px',
-      // => @media (min-width: 640px) { ... }
-
-      'md': '768px',
-      // => @media (min-width: 768px) { ... }
-
-      'lg': '1024px',
-      // => @media (min-width: 1024px) { ... }
-
-      'xl': '1280px',
-      // => @media (min-width: 1280px) { ... }
-
-      '2xl': '1536px',
-      // => @media (min-width: 1536px) { ... }
-
-      'br': '900px'
-    }
+      xs: "440px",
+      sm: "640px",
+      md: "768px",
+      br: "900px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+    },
   },
-  plugins: [require("tailwindcss-animate"),addVariablesForColors],
- 
-} satisfies Config
+  plugins: [require("tailwindcss-animate"), addVariablesForColors],
+} satisfies Config;
 
-export default config
+export default config;

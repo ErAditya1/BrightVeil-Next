@@ -9,10 +9,11 @@ type AvatarWithStatusProps = AvatarProps & {
   online?: boolean;
   name:string
   src:string
+  username: string; // Optional prop for displaying username next to the avatar. This can be useful for displaying the user's name in a user profile.
 };
 
 export default function AvatarWithStatus(props: AvatarWithStatusProps) {
-  const { online = false, name, src ,className} = props;
+  const { online = false, name, src ,className, username} = props;
   return (
     <div>
       <Badge
@@ -22,7 +23,7 @@ export default function AvatarWithStatus(props: AvatarWithStatusProps) {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         badgeInset="4px 4px"
       >
-        <AvatarLayout name={name} src={src} className={className}/>
+        <AvatarLayout name={name} src={src} className={className} username={username}/>
       </Badge>
     </div>
   );

@@ -18,12 +18,11 @@ import { useToast } from '@/components/ui/use-toast';
 import api from '@/api';
 import { ApiResponse } from '@/types/ApiResponse';
 import { AxiosError } from 'axios';
-import { useSession } from 'next-auth/react';
+
 import { createCourseSchema } from '@/schemas/courseSchema';
 
 export default function AddCourseForm() {
     const router = useRouter();
-    const user = useSession()?.data?.user
     // const [isSubmitting, setIsSubmitting] = useState(false);
 
     const form = useForm<z.infer<typeof createCourseSchema>>({
@@ -41,15 +40,9 @@ export default function AddCourseForm() {
         // setIsSubmitting(true);
 
         try {
-            if (user && user?.accessToken) {
+            
                 const response = await api.post<ApiResponse>('/v1/courses/course', data,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Accept": "application/json",
-                            "Authorization": `Bearer ${user?.accessToken}`
-                        }
-                    }
+                    
                 );
                 console.log(response);
                 toast({
@@ -58,7 +51,7 @@ export default function AddCourseForm() {
                     variant: 'success',
                 });
                 router.push(`/admin/courses/edit-course/${response?.data?.data?._id}`);
-            }
+            
             // setIsSubmitting(false);
 
         } catch (error) {

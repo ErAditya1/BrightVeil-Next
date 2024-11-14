@@ -12,7 +12,7 @@ import ChatListItem from './ChatListItem';
 import { toggleMessagesPane } from '@/lib/utils';
 import { MdAddComment } from 'react-icons/md';
 import NewChatListItem from './NewChatListItem';
-import { useSession } from 'next-auth/react';
+
 import api from '@/api';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import Typing from './Typing';
@@ -33,7 +33,6 @@ export default function ChatsPane() {
 
 
   const dispatch = useAppDispatch()
-  const user = useSession()?.data?.user
   const { chats, users } = useAppSelector((state) => state.chat)
 
   const [filteredChats, setFilteredChat] = React.useState(chats);
@@ -90,7 +89,7 @@ export default function ChatsPane() {
         })
         return
       }
-      if (user?.accessToken) {
+      
         const formData = new FormData();
         if (groupAvatar) {
           formData.append("avatar", groupAvatar)
@@ -104,11 +103,7 @@ export default function ChatsPane() {
         // console.log(formData.get("avatar"));
 
 
-        api.post(`/v1/chat-app/chats/group`, formData, {
-          headers: {
-            'Authorization': `Bearer ${user?.accessToken}`
-          }
-        })
+        api.post(`/v1/chat-app/chats/group`, formData)
           .then((res) => {
             console.log(res.data.data)
             toast({
@@ -129,7 +124,7 @@ export default function ChatsPane() {
           .catch((error) => {
             console.error(error)
           })
-      }
+      
 
     } else {
       toast({

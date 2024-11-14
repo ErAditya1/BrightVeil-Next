@@ -16,7 +16,7 @@ import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
-import { toast, useToast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { resetSchema } from '@/schemas/signInSchema';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';

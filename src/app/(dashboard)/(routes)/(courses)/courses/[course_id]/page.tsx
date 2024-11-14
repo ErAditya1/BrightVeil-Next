@@ -1,153 +1,236 @@
 'use client'
 
-import { Card, CardContent, Chip, Divider, Typography } from '@mui/joy';
+import { Card, CardContent, Chip, CircularProgress, Typography } from '@mui/joy';
 import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import MiniVideoCard from '../../components/MiniVideoCard';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import FollowButton from '@/components/FollowButton';
 import LikeButton from '@/components/LikeButton';
 import ShareButton from '@/components/ShareButton';
-import FileCard from '../../components/FileCard';
-import TestCard from '../../components/TestCard';
 import { ChevronDownCircle } from 'lucide-react';
-import CustomVideoPlayer from '../../components/YoutubePlayer';
 import api from '@/api';
-import { useSession } from 'next-auth/react';
 import AvatarLayout from '@/components/AvatarLayout';
-import { UserInterface } from '@/interfaces/user';
-type playingTyps = {
+import Image from 'next/image';
+import { Skeleton } from '@/components/ui/skeleton';
+import { FaCommentDots } from 'react-icons/fa6';
+import { AiTwotoneEye } from 'react-icons/ai';
+import CommentCard from '@/components/CommentCard';
+import SaveButton from '@/components/SaveButton';
+import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
+import { Button } from '@/components/ui/button';
+import { HiMiniReceiptPercent } from 'react-icons/hi2';
+import { toast } from '@/components/ui/use-toast';
+import { AxiosError } from 'axios';
 
-  author: UserInterface
-  videoId: string,
-  title: string,
-  thumbnail: string,
-  _id: string
-}
 function ExploreCourse() {
   const [loading, setLoading] = useState(true)
-  const { course_id} = useParams()
-  const [courseData, setCourseData] = useState();
+  const { course_id } = useParams()
+  const [courseData, setCourseData] = useState(
+    {
+      _id: '',
+      title: '',
+      description: '',
+      thumbnail: {
+        secure_url: '',
+      },
+      commentCount: '',
+      comments: [],
+      author: {
+        _id: '',
+        name: '',
+        username: '',
+        avatar: {
+          url: '',
+        },
+      },
+      isEnrolled: false,
+      isFollowing: false,
+      followersCount: 0,
+      isAuthor: false,
+      isLiked: false,
+      likeCount: 0,
+      isFree: false,
+      isPublished: false,
+      channelName: '',
+      views: 0,
+      sellingPrice: 0,
+      printPrice: 0,
+      discount: 0,
+
+    }
+  );
   const [videos, setVideos] = useState([{
-    _id:'',
+    _id: '',
     title: '',
     videoId: '',
     thumbnail: {
-      secure_url:'',
+      secure_url: '',
     },
     isFree: false,
     isPublished: false,
     channelName: '',
-    uploadedDate:"",
-    views:0
+    uploadedDate: "",
+    views: 0
 
   }]);
-  const [playingVideo, setPlayingVideo] =useState({
-   
-    videoId: '',
-    title: '',
-    thumbnail:'',
-    _id: ''
-  })
-  const [playingVideoData, setPlayingVideoData] = useState<playingTyps>();
+
   const [mapVideos, setMapVideos] = useState(true);
-  
-  const  user  = useSession()?.data?.user
 
-  React.useEffect( () => {
-    if(user && user.accessToken){
-    api.get(`/v1/courses/course/get-course-data/${course_id}`,{
-    headers: {
-      'Authorization': `Bearer ${user?.accessToken}`,
-    },
-  })
-  .then((res) => {
-    setLoading(false)
-    setCourseData(res.data.data[0])
-    
-    setVideos(res.data.data[0]?.chapters)
-    
-  })
-  .catch((error) => {
-    console.log(error)
-  })
-}
-},[user])
-// console.log(videos)
 
-useEffect(() => {
-  setPlayingVideo({
-   
-    videoId: videos[0]?.videoId,
-    title: videos[0]?.title,
-    thumbnail: videos[0]?.thumbnail?.secure_url,
-    _id: videos[0]?._id
-  })
-},[videos])
+  React.useEffect(() => {
 
-useEffect(()=>{
-  if(user && user.accessToken){
-    api.get(`/v1/videos/video/get-video-data/${playingVideo._id}`,{ 
-      headers: {
-        "Content-Type": "multipart/form-data",
-        "Authorization": `Bearer ${user?.accessToken}`
-    }
-    }).then((res)=>{
-      console.log('video data fetched')
-      setPlayingVideoData(res?.data?.data[0])
+    api.get(`/v1/courses/course/get-course-data/${course_id}`, {
+
     })
+      .then((res) => {
+        setLoading(false)
+        setCourseData(res.data.data)
+        console.log("course data")
+        console.log(res.data.data)
+
+        setVideos(res.data.data?.chapters)
+
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
+  }, [])
+  // console.log(videos)
+
+
+const handleEnroll = async () => {
+  try {
+      const response = await api.post(`/v1/payment/enroll-course/${course_id}` );
+      console.log(response);
+      setCourseData({...courseData, isEnrolled: true });
+      toast({
+        title: 'Enrolled successfully',
+        description: response?.data?.message,
+        variant:'success',
+      });
+    
+  } catch (error) {
+    console.error(error);
+    const axiosError = error as AxiosError<AxiosError> 
+
+    toast({
+      title: 'Failed to enroll',
+      description: axiosError?.response?.data.message,
+      variant: 'destructive',
+    });
   }
-},[playingVideo])
-console.log(playingVideoData)
-
-
-
-
-const onPlaying = (items:{videoId: string, title: string,thumbnail: string, _id: string}) => {
-  
-  setPlayingVideo(items)
 }
 
 
-  const handleVideoClick = (video:any) => {
-    setPlayingVideo(video)
-    setMapVideos(false)
-  }
+
+
+
+
+
+
 
   return (
     <div className='sm:p-4'>
       <div className='md:my-2 w-full gap-4  flex flex-col lg:flex-row '>
 
-        <Card className='grow bg-card text-card-foreground rounded-lg'>
+        <Card className='grow dark:bg-background text-card-foreground rounded-lg'>
           <div className=' aspect-video col-span-8 rounded-xl border'>
-          {
-            playingVideo?.videoId && <CustomVideoPlayer   videoId = {playingVideo?.videoId} thumbnailUrl = {playingVideo?.thumbnail} title={playingVideo?.title}  />
-          }
+            {
+              loading ? <Skeleton className='w-full aspect-video' /> :
+                <Image
+                  height={500}
+                  width={500}
+                  src={courseData?.thumbnail?.secure_url}
+                  alt={courseData?.title}
+                  className='w-full aspect-video'
+                />
+            }
+
 
           </div>
 
           <div className='p-4 '>
-            <h1 className='text-lg font-semibold'>Course title Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt, maiores.</h1>
+            {
+              loading ? <Skeleton className='w-full h-5' /> : <h1 className='text-lg font-semibold'>{courseData?.title}</h1>
+            }
             <div className='flex flex-row flex-wrap items-center'>
               <React.Fragment>
-                
-                <AvatarLayout className="h-12 w-12 mr-1 text-xl" src={playingVideoData?.author?.avatar?.url} name={playingVideoData?.author.name}/>
-                <div className="card-content mx-2">
-                  <Typography level="title-md" className="line-clamp-1">Yosemite National Park</Typography>
-                  <Typography level="body-sm"> Username</Typography>
+                {
+
+                  loading ? <Skeleton className='w-12 h-12 rounded-full' /> : <AvatarLayout className="h-12 w-12 mr-1 text-xl" src={courseData?.author?.avatar?.url} name={courseData?.author.name} username={courseData?.author?.username} />
+                }
+                <div className="card-content mx-2 ">
+                  {
+                    loading ?
+                      <>
+                        <Skeleton className='h-4  my-1 gap-2 w-40' />
+                        <Skeleton className='h-4  my-1 gap-2 w-24' />
+                      </> :
+                      <>
+                        <Typography level="title-md" className="line-clamp-1">{courseData?.author.name}</Typography>
+                        <Typography level="body-sm">@{courseData?.author?.username}</Typography>
+                      </>
+
+                  }
                 </div>
-                <div className='flex  flex-row items-center fjustify-self-end  ml-4 '>
-                  <FollowButton className="rounded-full" />
-                </div>
+
               </React.Fragment>
-              <React.Fragment>
-                <div className='m-2 rounded border p-1'>
-                  <LikeButton className="rounded-full text-4xl" liked='false' likeCnt='3' type="v" _id="123" />
-                </div>
-                <div className='m-2 '>
-                  <ShareButton className="rounded-full text-4xl" liked='true' likeCnt='3' type="v" _id="123" />
-                </div>
-              </React.Fragment>
+              {
+                loading ? <React.Fragment>
+                  <div className='flex  flex-row items-center fjustify-self-end  ml-4 '>
+                    <Skeleton className="rounded-full w-28 h-10" />
+                  </div>
+                  <div className='m-2 rounded  p-1'>
+                    <Skeleton className="rounded-full text-4xl w-16  h-10" />
+                  </div>
+                  <div className='m-2 '>
+                    <Skeleton className="rounded-full text-4xl w-10  h-10" />
+                  </div>
+                  <div className='m-2 '>
+                    <Skeleton className="rounded-full text-4xl w-10  h-10" />
+                  </div>
+                  <div className='m-2 '>
+                    <Skeleton className="rounded-full text-4xl w-10  h-10" />
+                  </div>
+                </React.Fragment>
+                  :
+                  <React.Fragment>
+                    <div className='flex  flex-row items-center fjustify-self-end  ml-4 '>
+                      {
+                        !courseData?.isAuthor ?
+                          <div className='m-2 '>
+                            <FollowButton className="rounded-full" _id={courseData?.author?._id} isFollowing={courseData?.isFollowing} count={courseData?.followersCount} />
+                          </div>
+                          :
+                          <HoverBorderGradient
+                            as="button"
+                            className={`bg-muted text-muted-foreground flex items-center space-x-2`}
+                          >
+                            <Chip>{courseData?.followersCount}</Chip>
+                            <span>Followers</span>
+                          </HoverBorderGradient>
+                      }
+                    </div>
+                    <div className='m-2 rounded  p-1'>
+                      <LikeButton className="rounded-full text-4xl" liked={courseData?.isLiked} likeCnt={courseData?.likeCount} type="course" _id={course_id} />
+                    </div>
+                    <div className='m-2 flex'>
+                      <AiTwotoneEye className="rounded-full text-2xl" />
+                      <Chip>{courseData?.views}</Chip>
+                    </div>
+                    <div className='m-2 flex'>
+                      <FaCommentDots className="rounded-full text-2xl" />
+                      <Chip>{courseData?.commentCount}</Chip>
+                    </div>
+                    <div className='m-2 '>
+                      <ShareButton className="rounded-full text-2xl" />
+                    </div>
+                    <div className='m-2 '>
+                      <SaveButton className="rounded-full text-2xl" type="course" saved={false} _id={courseData?._id} />
+                    </div>
+                  </React.Fragment>
+              }
 
             </div>
           </div>
@@ -157,20 +240,20 @@ const onPlaying = (items:{videoId: string, title: string,thumbnail: string, _id:
         <div className='max-h-screen w-full flex flex-col lg:flex-none lg:max-h-screen  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
           <div className='flex flex-row justify-between p-2 bg-muted text-muted-foreground sticky top-0 z-10 rounded-t-xl '>
             <div className=''>
-              <h1 className='text-2xl font-bold'>Course Name</h1>
-              <p className='aaa'>Course Description</p>
+              <h1 className='text-2xl font-bold line-clamp-1'>Chapters:</h1>
+              {/* <p className='aaa'>Course Description</p> */}
             </div>
             <div className='flex items-center h-full right-2 lg:hidden '>
               <ChevronDownCircle size={30} className={`duration-500 ${mapVideos && 'rotate-180'}`} onClick={() => { setMapVideos(!mapVideos) }} />
             </div>
           </div>
           <div className=' w-full h-full gap-4 lg:absolute top-20'>
-            
+
             {
               mapVideos &&
               videos.map((video) => {
                 return (
-                  <MiniVideoCard   key={video._id} _id = {video._id} videoId={video.videoId} thumbnail={video?.thumbnail?.secure_url} title={video?.title} channelName={video?.channelName} uploadedDate={video.uploadedDate} views={video?.views}/>
+                  <MiniVideoCard key={video._id} _id={video._id} videoId={video.videoId} thumbnail={video?.thumbnail?.secure_url} title={video?.title} channelName={video?.channelName} uploadedDate={video?.uploadedDate} views={video?.views} isFree={video?.isFree} />
                 )
               })
             }
@@ -181,42 +264,114 @@ const onPlaying = (items:{videoId: string, title: string,thumbnail: string, _id:
       <div className='md:my-2 w-full gap-4  flex flex-col lg:flex-row '>
 
         {/* File Test and Description */}
-        <Card className='grow bg-card text-card-foreground '>
+        <Card className='grow dark:bg-background text-card-foreground '>
 
 
-
-          <div className='p-2 bg-muted text-muted-foreground sticky top-0 z-10 rounded-t-xl m-2'>
-            <h1 className='text-2xl font-bold'>File :</h1>
-          </div>
-          <div className='w-full flex flex-row flex-wrap  gap-4 m-2'>
-            <FileCard />
-          </div>
-          <div className='p-2 bg-muted text-muted-foreground sticky top-0 z-10 rounded-t-xl m-2'>
-            <h1 className='text-2xl font-bold'>Test :</h1>
-          </div>
-          <div className='w-full flex flex-row flex-wrap  gap-4 m-2'>
-            <TestCard />
-          </div>
 
           <CardContent className="">
             <div className='p-2 bg-muted text-muted-foreground sticky top-0 z-10 rounded-t-xl m-0 '>
               <h1 className='text-2xl font-bold'>Description :</h1>
             </div>
             <Typography level="title-md" className="line-clamp-2  text-card-foreground p-0 m-0 rounded">
-              Video Title Video Totle Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat, obcaecati!
+
+              <div className="mt-2" dangerouslySetInnerHTML={{ __html: courseData?.description }} />
             </Typography>
           </CardContent>
 
         </Card>
-        {/* Right side Relative videos */}
         <div className='max-h-screen w-full flex flex-col lg:flex-none lg:max-h-screen  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
-          <div className='p-2 bg-muted text-muted-foreground sticky top-0 z-10 rounded-t-xl '>
-            <h1 className='text-2xl font-bold'>Relative Videos:</h1>
-            <p className='aaa'>Course Description</p>
+          {
+            !courseData?.isEnrolled && <div className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:bg-clip-text hover:text-transparent duration-300  p-4 relative   border rounded">
+              {/* <div className="   absolute h-full w-full top-0 opacity-10"></div> */}
+              <div className="flex items-center py-2">
+                <h1 className="text-xl font-bold">Ready to start learning?</h1>
+              </div>
+              <div className="flex items-center justify-center">
+                <p className=''>
+                  Track your progress, watch with subtitles, change quality & speed, and more.
+                </p>
+              </div>
+              <div className="flex flex-col items-center justify-center py-4 gap-4">
+                {
+                  courseData?.sellingPrice === 0 ? (
+                    <>
+                      <div className="w-full flex flex-row justify-between">
+                        <div>
+                          <Button className="rounded-2 text-white bg-blue-500 hover:bg-blue-600 w-full" >
+                            Free
+                          </Button>
+                        </div>
+
+                      </div>
+                      <Button onClick={handleEnroll} className="rounded-2 text-white bg-blue-500 hover:bg-blue-600 w-full" >
+                        Enrolle For Free
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-full flex flex-row justify-between">
+                        <div className="flex flex-col">
+                          <div className=" flex items-center gap-1 bg-transparent">
+                            <span className="font-bold  text-blue-800 test-lg">
+                              ₹{courseData?.sellingPrice}
+                            </span>
+                            <div className=" ">
+                              <span
+                                style={{ fontSize: "14px" }}
+                                className="line-through font-semibold  text-gray-600"
+                              >
+                                {courseData?.printPrice}
+                              </span>
+                            </div>
+                          </div>
+                          <span
+                            style={{ fontSize: "13px" }}
+                            className=" font-semibold  text-gray-600 "
+                          >
+                            (For Full Batch)
+                          </span>
+                        </div>
+                        <div
+                          id="discount_applied_tag "
+                          className="discount-container flex items-center justify-center "
+                        >
+                          <div className="shape"></div>
+                          <div className="flex items-center flex-1 text-green-700 bg-green-200 p-1 pl-4 rounded">
+                            <HiMiniReceiptPercent className="text-md m-1" />
+                            <span
+                              style={{ fontSize: "14px" }}
+                              className="font-semibold "
+                            >
+                              Discount of {courseData?.discount}% applied
+                            </span>
+                          </div>
+                        </div>
+
+
+                      </div>
+                      <Button onClick={handleEnroll} className="rounded-2 text-white bg-blue-500 hover:bg-blue-600 w-full" >
+                        Enrolle For More
+                      </Button>
+                    </>
+                  )
+                }
+
+
+              </div>
+
+            </div>
+          }
+          <div className='p-2   sticky top-0 z-10 rounded-t-xl '>
+            <h1 className='text-2xl font-bold '>Comments {courseData?.commentCount}:</h1>
+            <CommentCard
+              _Id={courseData?._id}
+              comments={courseData?.comments}
+              type="course"
+            />
           </div>
           <div className=' w-full h-full gap-4'>
 
-           
+
 
             {/* {
               videos.map(() => {
@@ -234,4 +389,11 @@ const onPlaying = (items:{videoId: string, title: string,thumbnail: string, _id:
   )
 }
 
-export default ExploreCourse
+// export default ExploreCourse
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ExploreCourse />
+    </Suspense>
+  )
+}

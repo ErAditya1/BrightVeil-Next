@@ -4,8 +4,9 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { eventsData, role } from "@/lib/data";
+import { useAppSelector } from "@/store/hooks";
 import { SlidersHorizontal, SortDesc } from "lucide-react";
-import { useSession } from "next-auth/react";
+;
 import Image from "next/image";
 
 type Event = {
@@ -48,8 +49,7 @@ const columns = [
 ];
 
 const EventListPage = () => {
-  const data = useSession()
-const user = data?.data?.user;
+  const user = useAppSelector(state=> state.auth.user);
   const renderRow = (item: Event) => (
     <tr
       key={item.id}

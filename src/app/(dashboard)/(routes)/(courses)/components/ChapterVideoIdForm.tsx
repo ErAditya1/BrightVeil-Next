@@ -18,12 +18,13 @@ import { Edit } from 'lucide-react';
 import api from '@/api';
 import { ApiResponse } from '@/types/ApiResponse';
 import { AxiosError } from 'axios';
-import { useSession } from 'next-auth/react';
+
 import { useParams } from 'next/navigation';
 import { ChapterVideoIdSchema } from '@/schemas/videoSchema';
+import { useAppSelector } from '@/store/hooks';
 
 export default function ChapterVideoIdForm({ videoId }: any) {
-    const user = useSession()?.data?.user
+    const user = useAppSelector(state=> state.auth.user);
 
     // const [isSubmitting, setIsSubmitting] = useState(false);
 

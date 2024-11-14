@@ -14,7 +14,7 @@ import ChapterVideoIdForm from '@/app/(dashboard)/(routes)/(courses)/components/
 import ChapterVisibility from '@/app/(dashboard)/(routes)/(courses)/components/ChapterVisibilityForm'
 import { ApiResponse } from '@/types/ApiResponse'
 import ChapterThumbnailForm from '@/app/(dashboard)/(routes)/(courses)/components/ChapterThumbnailForm'
-import { useSession } from 'next-auth/react'
+
 
 function EditCourse() {
 
@@ -34,21 +34,17 @@ function EditCourse() {
         order: 0,
     });
     const [addChapter, setAddChapter] = useState(false)
-    const user = useSession()?.data?.user
+
     useEffect(() => {
-        if (user && user.accessToken) {
-            api.get(`/v1/videos/video/get-chapter/${chapter_id}`, {
-                headers: {
-                    'Authorization': `Bearer ${user?.accessToken}`
-                }
+
+        api.get(`/v1/videos/video/get-chapter/${chapter_id}`)
+            .then(res => {
+                console.log(res)
+                setChapterData(res.data.data)
             })
-                .then(res => {
-                    console.log(res)
-                    setChapterData(res.data.data)
-                })
-                .catch(err => console.log(err))
-        }
-    }, [chapter_id, user]);
+            .catch(err => console.log(err))
+
+    }, [chapter_id]);
 
 
 
@@ -56,23 +52,19 @@ function EditCourse() {
         // setIsSubmitting(true);
 
         try {
-            if (user && user.accessToken) {
-                const response = await api.patch(`/v1/videos/video/update-videoPublish/${chapter_id}`, {},
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${user?.accessToken}`
-                        }
-                    }
-                );
-                console.log(response);
-                setChapterData(response?.data?.data);
-                toast({
-                    title: 'Success!',
-                    description: response?.data?.message,
-                    variant: 'success',
-                });
 
-            }
+            const response = await api.patch(`/v1/videos/video/update-videoPublish/${chapter_id}`, {},
+
+            );
+            console.log(response);
+            setChapterData(response?.data?.data);
+            toast({
+                title: 'Success!',
+                description: response?.data?.message,
+                variant: 'success',
+            });
+
+
             // setIsSubmitting(false);
 
         } catch (error) {
@@ -95,24 +87,20 @@ function EditCourse() {
         // setIsSubmitting(true);
 
         try {
-            if (user && user.accessToken) {
-                const response = await api.patch(`/v1/videos/video/update-videoUnPublish/${chapter_id}`, {},
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${user?.accessToken}`
-                        }
-                    }
-                );
-                console.log(response);
-                setChapterData(response?.data?.data);
-                toast({
-                    title: 'Success!',
-                    description: response?.data?.message,
-                    variant: 'success',
-                });
 
-                // setIsSubmitting(false);
-            }
+            const response = await api.patch(`/v1/videos/video/update-videoUnPublish/${chapter_id}`, {},
+
+            );
+            console.log(response);
+            setChapterData(response?.data?.data);
+            toast({
+                title: 'Success!',
+                description: response?.data?.message,
+                variant: 'success',
+            });
+
+            // setIsSubmitting(false);
+
 
         } catch (error) {
 
@@ -131,22 +119,18 @@ function EditCourse() {
     const deleteChapter = async () => {
         // setIsSubmitting(true);
         try {
-            if (user && user.accessToken) {
-                const response = await api.delete(`/v1/videos/video/delete-chapter/${chapter_id}`,
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${user?.accessToken}`
-                        }
-                    }
-                );
-                console.log(response);
-                router.back();
-                toast({
-                    title: 'Success!',
-                    description: response?.data?.message,
-                    variant: 'success',
-                });
-            }
+
+            const response = await api.delete(`/v1/videos/video/delete-chapter/${chapter_id}`,
+
+            );
+            console.log(response);
+            router.back();
+            toast({
+                title: 'Success!',
+                description: response?.data?.message,
+                variant: 'success',
+            });
+
 
         }
         catch (error) {
@@ -173,9 +157,9 @@ function EditCourse() {
                 chapterData.title && (
                     <div className='w-full flex justify-center items-center'>
 
-                        <div className='w-full my-auto md:w-1/2 gap-4 p-4  '>
+                        <div className='w-full my-auto grid md:grid-cols-2 gap-4 p-4  '>
 
-                            <div className="flex flex-col   gap-2  ">
+                            <div className="flex flex-col  gap-2  ">
                                 <div className="flex flex-row justify-between items-center">
                                     <span className='flex'><LayoutDashboard /><span className="text-md mx-2">Customise your course</span></span><div className="flex flex-row gap-4 m-2 justify-end ">
 
@@ -201,6 +185,14 @@ function EditCourse() {
                                 }
 
 
+                            </div>
+                            <div className="my-4">
+                                <div className="flex flex-col  gap-2  ">
+                                    <div className="flex flex-row justify-between">
+                                        <span className="text-md mx-2 flex"><BookMarkedIcon />Chapter's Notes:</span ><span className="text-md mx-2 flex cursor-pointer " onClick={() => setAddChapter(!addChapter)}><PlusCircle /> Add Chapters</span>
+                                    </div>
+
+                                </div>
                             </div>
 
                         </div>

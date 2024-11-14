@@ -4,8 +4,9 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { parentsData, role } from "@/lib/data";
+import { useAppSelector } from "@/store/hooks";
 import { SlidersHorizontal, SortDesc } from "lucide-react";
-import { useSession } from "next-auth/react";
+;
 import Image from "next/image";
 
 type Parent = {
@@ -44,8 +45,7 @@ const columns = [
 ];
 
 const ParentListPage = () => {
-  const data = useSession()
-const user = data?.data?.user;
+  const user = useAppSelector(state=> state.auth.user);
   const renderRow = (item: Parent) => (
     <tr
       key={item.id}

@@ -19,13 +19,13 @@ import { Edit} from 'lucide-react';
 import api from '@/api';
 import { ApiResponse } from '@/types/ApiResponse';
 import { AxiosError } from 'axios';
-import { useSession } from 'next-auth/react';
+
 import { useParams } from 'next/navigation';
 
 export default function TitleForm({title}:any) {
-    const user = useSession()?.data?.user
  
-    // const [isSubmitting, setIsSubmitting] = useState(false);
+ 
+    
 
     const form = useForm<z.infer<typeof createCourseSchema>>({
         resolver: zodResolver(createCourseSchema),
@@ -44,13 +44,9 @@ export default function TitleForm({title}:any) {
         // setIsSubmitting(true);
 
         try {
-            if (user && user?.accessToken) {
-                const response = await api.patch<ApiResponse>(`/v1/courses/course/updateTitle/${course_id}`, data,
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${user?.accessToken}`
-                        }
-                    }
+                const response = await api.patch<ApiResponse>(`/v1/courses/course/updateTitle/${course_id}`, data
+
+                    
                 );
                 console.log(response);
                 toast({
@@ -58,7 +54,7 @@ export default function TitleForm({title}:any) {
                     description: response?.data?.message,
                     variant: 'success',
                 });
-            }
+            
             setEdit(false)
             // setIsSubmitting(false);
 

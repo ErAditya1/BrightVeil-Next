@@ -16,7 +16,7 @@ import { useSocket } from '@/context/SocketContext';
 import { addChats, ChatMessage, removeDeletedMessage } from '@/store/chat/chatSlice';
 import { MdDelete } from 'react-icons/md';
 import api from '@/api';
-import { useSession } from 'next-auth/react';
+
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import Image from 'next/image';
 
@@ -26,7 +26,7 @@ type ChatBubbleProps = ChatMessage & {
 };
 
 export default function ChatBubble(props: ChatBubbleProps) {
-  const user = useSession()?.data?.user
+  
   const chats = useAppSelector((state)=> state.chat.chats)
   const { _id, content, status, chat, variant, createdAt, attachments, sender,whoPrevious } = props;
   const { socket } = useSocket()
@@ -52,11 +52,7 @@ export default function ChatBubble(props: ChatBubbleProps) {
   };
   const handleDelete = () => {
     setIsHovered(false);
-    api.delete(`/v1/chat-app/messages/${chat}/${_id}`,{
-      headers: {
-        'Authorization': `Bearer ${user.accessToken}`,
-      },
-    })
+    api.delete(`/v1/chat-app/messages/${chat}/${_id}`)
     .then((response) => {
       console.log(response)
       console.log("nessage deleted")
@@ -64,11 +60,7 @@ export default function ChatBubble(props: ChatBubbleProps) {
       dispatch(removeDeletedMessage(message))
       const lastMessage = chats.find((c) => c._id === chat)?.lastMessage
       if(lastMessage?._id === message._id){
-        api.get(`/v1/chat-app/chats`,{
-          headers: {
-            'Authorization': `Bearer ${user?.accessToken}`,
-          },
-        }).then((res)=>{
+        api.get(`/v1/chat-app/chats`).then((res)=>{
           const chats = res.data.data
           dispatch(addChats(chats))
         })
@@ -88,7 +80,7 @@ export default function ChatBubble(props: ChatBubbleProps) {
     onMouseLeave={() => setIsHovered(false)}
     className={`relative max-w-[200px]  sm:max-w-84 md:max-w-96  break-words whitespace-pre-wrap  p-1 m-0 rounded-lg  ${isSent ? `bg-[#075e54] text-card-foreground ${!whoPrevious && 'rounded-tr-none ml-12'}` : `bg-card text-card-foreground  ml-4  ${!whoPrevious && 'rounded-tl-none '}` } ${!whoPrevious && "mt-4 "}`}
     >
-      {!whoPrevious  && <p className='text-xs '>{sender.username}</p>}
+      {!whoPrevious  && <p className='text-xs '>@{sender.username}</p>}
 
       {attachments?.length > 0 &&
         attachments?.map((attachment,index) =>(
