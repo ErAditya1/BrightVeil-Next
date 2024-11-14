@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_URL = process.env.NODE_ENV !== 'production' ? 'https://lms-backend-mh2d.onrender.com/api' : 'http://localhost:8000/api';
+export const API_URL = process.env.NODE_ENV === 'production' ? 'https://lms-backend-mh2d.onrender.com/api' : 'http://localhost:8000/api';
 console.log(API_URL);
 
 const api = axios.create({
