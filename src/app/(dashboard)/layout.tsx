@@ -16,7 +16,7 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
 
 
 
-    <Box sx={{ display: 'flex', minHeight: '100dvh' }} >
+    <Box sx={{ display: 'flex' }} >
       <Sidebar />
       <Header />
       

@@ -36,11 +36,8 @@ export default function RootLayout({
 
     <html lang="en" className="">
 
-
-
       <Providers>
         <body className={inter.className}>
-
 
           {/* <script src="https://youtube.com/iframe_embedded"></script> */}
 

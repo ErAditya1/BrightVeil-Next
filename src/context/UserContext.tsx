@@ -1,10 +1,8 @@
 'use client'
 
 import api from '@/api';
-import { ThemeProvider } from '@/components/theme-provider';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { loginUser, logoutUser } from '@/store/user/userSlice';
-import { CssBaseline, CssVarsProvider } from '@mui/joy';
+import { loginUser, logoutUser } from '@/store/user/userSlice'
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { FaSpinner } from 'react-icons/fa6';
@@ -91,8 +89,8 @@ function UserContext({
     loading ? (
       
 
-            <div className='bg-background h-screen w-screen flex justify-center items-center gap-4'>
-              <FaSpinner className='animate-spin text-foreground' size={50} />
+            <div className='bg-background text-foreground h-screen w-screen flex justify-center items-center m-0 p-0'>
+              <FaSpinner className='animate-spin mx-4' size={50} />
               Verifying...
             </div>
 

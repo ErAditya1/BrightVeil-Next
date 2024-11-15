@@ -78,14 +78,14 @@ function Toggler({
   );
 }
 
-export default function AdminSidebar() {
+export default function Sidebar() {
   const router = useRouter();
-  const user = useAppSelector(state=> state.auth.user);
-  
+  const user = useAppSelector(state => state.auth.user);
+
   const dispatch = useAppDispatch();
 
 
- 
+
   const menuItem = [
 
     {
@@ -130,184 +130,182 @@ export default function AdminSidebar() {
         },
       ]
     },
-    {
-      label: 'Saved',
-      href: '/saved',
-      icon: <SaveIcon />,
-    },
+
   ]
 
   return (
 
     <Sheet
-      
-    sx={{
-      position: { xs: 'fixed', md: 'sticky' },
-      transform: {
-        xs: 'translateX(calc(100% * (var(--SideNavigation-slideIn, 0) - 1)))',
-        md: 'none',
-      },
-      transition: 'transform 0.4s, width 0.4s',
-      zIndex: 10,
-      height: '100dvh',
-      width: 'var(--Sidebar-width)',
-      top: 0,
-      p: 2,
-      flexShrink: 0,
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 2,
-      borderRight: '1px solid',
-      borderColor: 'divider',
-    }}
-    className="Sidebar  dark:bg-card text-foreground "
-  >
 
-    <GlobalStyles
-      styles={(theme) => ({
-        ':root': {
-          '--Sidebar-width': '220px',
-          [theme.breakpoints.up('lg')]: {
-            '--Sidebar-width': '240px',
-          },
-        },
-      })}
-      
-    />
-    <Box
-      className="Sidebar-overlay"
       sx={{
-        position: 'fixed',
-        zIndex: 9998,
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        opacity: 'var(--SideNavigation-slideIn)',
-        transition: 'opacity 0.4s',
+        position: { xs: 'fixed', md: 'sticky' },
         transform: {
-          xs: 'translateX(calc(100% * (var(--SideNavigation-slideIn, 0) - 1) + var(--SideNavigation-slideIn, 0) * var(--Sidebar-width, 0px)))',
-          lg: 'translateX(-100%)',
+          xs: 'translateX(calc(100% * (var(--SideNavigation-slideIn, 0) - 1)))',
+          md: 'none',
         },
-      }}
-      onClick={() => closeSidebar()}
-    />
-    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-
-      <GoBackButton />
-      <IconButton variant="soft" color="primary" size="sm">
-        <BrightnessAutoRoundedIcon />
-      </IconButton>
-      <Typography level="title-lg">BrightVeil</Typography>
-      <ColorSchemeToggle sx={{ ml: 'auto' }} />
-
-    </Box>
-
-    <Box
-      sx={{
-        minHeight: 0,
-        overflow: 'hidden auto',
-        flexGrow: 1,
+        transition: 'transform 0.4s, width 0.4s',
+        zIndex: 10,
+        height: '100dvh',
+        width: 'var(--Sidebar-width)',
+        top: 0,
+        p: 2,
+        flexShrink: 0,
         display: 'flex',
         flexDirection: 'column',
-        [`& .${listItemButtonClasses.root}`]: {
-          gap: 1.5,
-        },
+        gap: 2,
+        borderRight: '1px solid',
+        borderColor: 'divider',
       }}
+      className="Sidebar  dark:bg-card text-foreground "
     >
-      <List
-        size="sm"
-        sx={{
-          gap: 1,
-          '--List-nestedInsetStart': '30px',
-          '--ListItem-radius': (theme) => theme.vars.radius.sm,
-        }}
-      >
-        {menuItem.map((item, index) => {
-          if (item.subMenu) {
-            return (
-              <ListItem nested key={index}>
-                <Toggler
-                  defaultExpanded
-                  renderToggle={({ open, setOpen }) => (
-                    <ListItemButton onClick={() => setOpen(!open)}>
-                      {item.icon}
-                      <ListItemContent>
-                        <Typography level="title-sm">{item.label}</Typography>
-                      </ListItemContent>
-                      <KeyboardArrowDownIcon
-                        sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
-                      />
-                    </ListItemButton>
-                  )}
-                >
-                  <List>
-                    {
-                      item.subMenu.map((subItem,index) => (
-                        <ListItem className=" " key={index}>
-                          <ListItemButton >
-                            {subItem.icon}
-                            <ListItemContent>
-                              <Link href={subItem.href}><Typography className="font-thin text-xs">{subItem.label}</Typography></Link>
-                            </ListItemContent>
-                          </ListItemButton>
-                        </ListItem>
 
-                      ))
-                    }
-                  </List>
-                </Toggler>
-              </ListItem>
-            )
-          }
-          else {
-            return (
-              <ListItem key={index}>
-                <ListItemButton>
-                  {item.icon}
-                  <ListItemContent>
-                    <Link href={item.href}><Typography level="title-sm">{item.label}</Typography></Link>
-                  </ListItemContent>
-                </ListItemButton>
-              </ListItem>
-            )
-          }
+      <GlobalStyles
+        styles={(theme) => ({
+          ':root': {
+            '--Sidebar-width': '220px',
+            [theme.breakpoints.up('lg')]: {
+              '--Sidebar-width': '240px',
+            },
+          },
         })}
 
+      />
 
-
-
-
-
-
-
-
-      </List>
-      <List
-        size="sm"
+      <Box
+        className="Sidebar-overlay"
         sx={{
-          mt: 'auto',
-          flexGrow: 0,
-          '--ListItem-radius': (theme) => theme.vars.radius.sm,
-          '--List-gap': '8px',
-          mb: 2,
+          position: 'fixed',
+          zIndex: 9998,
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          opacity: 'var(--SideNavigation-slideIn)',
+          transition: 'opacity 0.4s',
+          transform: {
+            xs: 'translateX(calc(100% * (var(--SideNavigation-slideIn, 0) - 1) + var(--SideNavigation-slideIn, 0) * var(--Sidebar-width, 0px)))',
+            lg: 'translateX(-100%)',
+          },
+        }}
+        onClick={() => closeSidebar()}
+      />
+      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }} className="mt-12  br:mt-0">
+
+        <GoBackButton />
+        <IconButton variant="soft" color="primary" size="sm">
+          <BrightnessAutoRoundedIcon />
+        </IconButton>
+        <Typography level="title-lg">BrightVeil</Typography>
+        <ColorSchemeToggle sx={{ ml: 'auto' }} />
+
+      </Box>
+
+      <Box
+        sx={{
+          minHeight: 0,
+          overflow: 'hidden auto',
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          [`& .${listItemButtonClasses.root}`]: {
+            gap: 1.5,
+          },
         }}
       >
-        <ListItem>
-          <ListItemButton>
-            <SupportRoundedIcon />
-            Support
-          </ListItemButton>
-        </ListItem>
-        <ListItem>
-          <ListItemButton>
-            <SettingsRoundedIcon />
-            Settings
-          </ListItemButton>
-        </ListItem>
-      </List>
-      {/* Pro Card */}
-      {/* <Card
+        <List
+          size="sm"
+          sx={{
+            gap: 1,
+            '--List-nestedInsetStart': '30px',
+            '--ListItem-radius': (theme) => theme.vars.radius.sm,
+          }}
+          className=""
+        >
+          {menuItem.map((item, index) => {
+            if (item.subMenu) {
+              return (
+                <ListItem nested key={index}>
+                  <Toggler
+                    defaultExpanded
+                    renderToggle={({ open, setOpen }) => (
+                      <ListItemButton onClick={() => setOpen(!open)}>
+                        {item.icon}
+                        <ListItemContent>
+                          <Typography level="title-sm">{item.label}</Typography>
+                        </ListItemContent>
+                        <KeyboardArrowDownIcon
+                          sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
+                        />
+                      </ListItemButton>
+                    )}
+                  >
+                    <List>
+                      {
+                        item.subMenu.map((subItem, index) => (
+                          <ListItem className=" " key={index}>
+                            <ListItemButton >
+                              {subItem.icon}
+                              <ListItemContent>
+                                <Link href={subItem.href}><Typography className=" text-xs">{subItem.label}</Typography></Link>
+                              </ListItemContent>
+                            </ListItemButton>
+                          </ListItem>
+
+                        ))
+                      }
+                    </List>
+                  </Toggler>
+                </ListItem>
+              )
+            }
+            else {
+              return (
+                <ListItem key={index}>
+                  <ListItemButton>
+                    {item.icon}
+                    <ListItemContent>
+                      <Link href={item.href}><Typography level="title-sm">{item.label}</Typography></Link>
+                    </ListItemContent>
+                  </ListItemButton>
+                </ListItem>
+              )
+            }
+          })}
+
+
+
+
+
+
+
+
+
+        </List>
+        <List
+          size="sm"
+          sx={{
+            mt: 'auto',
+            flexGrow: 0,
+            '--ListItem-radius': (theme) => theme.vars.radius.sm,
+            '--List-gap': '8px',
+            mb: 2,
+          }}
+        >
+          <ListItem>
+            <ListItemButton>
+              <SupportRoundedIcon />
+              Support
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton>
+              <SettingsRoundedIcon />
+              Settings
+            </ListItemButton>
+          </ListItem>
+        </List>
+        {/* Pro Card */}
+        {/* <Card
         invertedColors
         variant="soft"
         color="warning"
@@ -329,15 +327,16 @@ export default function AdminSidebar() {
           Upgrade plan
         </Button>
       </Card> */}
-    </Box>
-    <Divider />
-    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+      </Box>
+      <Divider />
+      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
 
 
-      {user&& 
-      <User user={user}/>
-      }
-    </Box>
-  </Sheet>
+        {user &&
+          <User user={user} />
+        }
+      </Box>
+
+    </Sheet>
   );
 }

@@ -16,7 +16,8 @@ export default function AvatarWithStatus(props: AvatarWithStatusProps) {
   const { online = false, name, src ,className, username} = props;
   return (
     <div>
-      <Badge
+      {
+        online ? <Badge
         color={online ? 'success' : 'neutral'}
         variant={online ? 'solid' : 'soft'}
         size="sm"
@@ -25,6 +26,8 @@ export default function AvatarWithStatus(props: AvatarWithStatusProps) {
       >
         <AvatarLayout name={name} src={src} className={className} username={username}/>
       </Badge>
+      :<AvatarLayout name={name} src={src} className={className} username={username}/>
+      }
     </div>
   );
 }

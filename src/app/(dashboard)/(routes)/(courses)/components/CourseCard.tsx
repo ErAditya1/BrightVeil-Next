@@ -91,7 +91,7 @@ export default function CourseCard({ _id }: Props) {
           </AspectRatio>
         </CardOverflow>
 
-        <CardContent className="flex flex-row items-center">
+        <CardContent className="flex flex-row items-center w-full">
           {isLoading ? (
             <div className="flex flex-row flex-nowrap justify-between p-0 w-full">
               <Skeleton className="h-12 w-12 rounded-full animate-pulse" />
@@ -102,7 +102,7 @@ export default function CourseCard({ _id }: Props) {
               </div>
             </div>
           ) : (
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-row gap-2 w-full">
               <AvatarLayout
                 src={courseData?.author?.avatar?.url || '/fallback-avatar.png'}
                 name={courseData?.author?.name}

@@ -86,7 +86,7 @@ function ExploreCourse() {
         setLoading(false)
         setCourseData(res.data.data)
         console.log("course data")
-        console.log(res.data.data)
+        console.log(res.data)
 
         setVideos(res.data.data?.chapters)
 
@@ -134,7 +134,7 @@ const handleEnroll = async () => {
     <div className='sm:p-4'>
       <div className='md:my-2 w-full gap-4  flex flex-col lg:flex-row '>
 
-        <Card className='grow dark:bg-background text-card-foreground rounded-lg'>
+        <Card className='grow dark:bg-background p-0 text-card-foreground rounded-lg'>
           <div className=' aspect-video col-span-8 rounded-xl border'>
             {
               loading ? <Skeleton className='w-full aspect-video' /> :
@@ -213,21 +213,21 @@ const handleEnroll = async () => {
                       }
                     </div>
                     <div className='m-2 rounded  p-1'>
-                      <LikeButton className="rounded-full text-4xl" liked={courseData?.isLiked} likeCnt={courseData?.likeCount} type="course" _id={course_id} />
+                      <LikeButton className="rounded-full text-xl" liked={courseData?.isLiked} likeCnt={courseData?.likeCount} type="course" _id={course_id} />
                     </div>
                     <div className='m-2 flex'>
-                      <AiTwotoneEye className="rounded-full text-2xl" />
+                      <AiTwotoneEye className="rounded-full text-xl" />
                       <Chip>{courseData?.views}</Chip>
                     </div>
                     <div className='m-2 flex'>
-                      <FaCommentDots className="rounded-full text-2xl" />
+                      <FaCommentDots className="rounded-full text-xl" />
                       <Chip>{courseData?.commentCount}</Chip>
                     </div>
                     <div className='m-2 '>
-                      <ShareButton className="rounded-full text-2xl" />
+                      <ShareButton className="rounded-full text-xl" />
                     </div>
                     <div className='m-2 '>
-                      <SaveButton className="rounded-full text-2xl" type="course" saved={false} _id={courseData?._id} />
+                      <SaveButton className="rounded-full text-xl" type="course" saved={false} _id={courseData?._id} />
                     </div>
                   </React.Fragment>
               }
@@ -251,7 +251,7 @@ const handleEnroll = async () => {
 
             {
               mapVideos &&
-              videos.map((video) => {
+              videos?.map((video) => {
                 return (
                   <MiniVideoCard key={video._id} _id={video._id} videoId={video.videoId} thumbnail={video?.thumbnail?.secure_url} title={video?.title} channelName={video?.channelName} uploadedDate={video?.uploadedDate} views={video?.views} isFree={video?.isFree} />
                 )
@@ -281,7 +281,7 @@ const handleEnroll = async () => {
         </Card>
         <div className='max-h-screen w-full flex flex-col lg:flex-none lg:max-h-screen  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
           {
-            !courseData?.isEnrolled && <div className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:bg-clip-text hover:text-transparent duration-300  p-4 relative   border rounded">
+           !loading&& !courseData?.isEnrolled && <div className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:bg-clip-text hover:text-transparent duration-300  p-4 relative   border rounded">
               {/* <div className="   absolute h-full w-full top-0 opacity-10"></div> */}
               <div className="flex items-center py-2">
                 <h1 className="text-xl font-bold">Ready to start learning?</h1>
@@ -361,6 +361,7 @@ const handleEnroll = async () => {
 
             </div>
           }
+
           <div className='p-2   sticky top-0 z-10 rounded-t-xl '>
             <h1 className='text-2xl font-bold '>Comments {courseData?.commentCount}:</h1>
             <CommentCard
@@ -374,7 +375,7 @@ const handleEnroll = async () => {
 
 
             {/* {
-              videos.map(() => {
+              videos?.map(() => {
                 return (
                   <MiniVideoCard />
 

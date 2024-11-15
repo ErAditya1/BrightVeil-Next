@@ -186,6 +186,7 @@ export default function MessageInput() {
                 handleSubmit();
               }
             }}
+            inputMode="text"
             sx={{
               '& textarea:first-of-type': {
                 minHeight: 40,
