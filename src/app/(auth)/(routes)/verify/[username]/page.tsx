@@ -69,7 +69,7 @@ export default function VerifyAccount() {
  
 
   return (
-    <div className="flex justify-center items-center min-h-screen ">
+    <div className="flex justify-center items-center min-h-dvh ">
       <div className="w-full max-w-md p-8 space-y-8 flex items-center flex-col bg-card border-2 text-card-foreground rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold text-card-foreground  tracking-tight lg:text-5xl mb-6">

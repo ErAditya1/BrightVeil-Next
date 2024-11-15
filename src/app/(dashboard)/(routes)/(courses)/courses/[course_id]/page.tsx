@@ -237,7 +237,7 @@ const handleEnroll = async () => {
 
         </Card>
 
-        <div className='max-h-screen w-full flex flex-col lg:flex-none lg:max-h-screen  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
+        <div className='max-h-dvh w-full flex flex-col lg:flex-none lg:max-h-dvh  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
           <div className='flex flex-row justify-between p-2 bg-muted text-muted-foreground sticky top-0 z-10 rounded-t-xl '>
             <div className=''>
               <h1 className='text-2xl font-bold line-clamp-1'>Chapters:</h1>
@@ -279,7 +279,7 @@ const handleEnroll = async () => {
           </CardContent>
 
         </Card>
-        <div className='max-h-screen w-full flex flex-col lg:flex-none lg:max-h-screen  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
+        <div className='max-h-dvh w-full flex flex-col lg:flex-none lg:max-h-dvh  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
           {
            !loading&& !courseData?.isEnrolled && <div className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:bg-clip-text hover:text-transparent duration-300  p-4 relative   border rounded">
               {/* <div className="   absolute h-full w-full top-0 opacity-10"></div> */}

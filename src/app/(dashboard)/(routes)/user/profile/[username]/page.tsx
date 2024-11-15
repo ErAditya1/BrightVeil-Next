@@ -199,7 +199,7 @@ const UserProfile = () => {
 
           <TabsContent value="posts">
 
-            <Card className='max-h-screen overflow-auto my-2 w-full'>
+            <Card className='max-h-dvh overflow-auto my-2 w-full'>
               <CardHeader>
                 <CardTitle>Post:</CardTitle>
 
@@ -223,7 +223,7 @@ const UserProfile = () => {
           </TabsContent>
           <TabsContent value="courses">
 
-            <Card className='max-h-screen overflow-auto my-2 w-full'>
+            <Card className='max-h-dvh overflow-auto my-2 w-full'>
               <CardHeader>
                 <CardTitle>Courses:</CardTitle>
 
@@ -245,7 +245,7 @@ const UserProfile = () => {
           </TabsContent>
           <TabsContent value="videos">
 
-            <Card className='max-h-screen overflow-auto my-2 w-full'>
+            <Card className='max-h-dvh overflow-auto my-2 w-full'>
               <CardHeader>
                 <CardTitle>Videos:</CardTitle>
 

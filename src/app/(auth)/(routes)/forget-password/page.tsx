@@ -74,7 +74,7 @@ export default function RequestPasswordForm() {
 
   return (
     
-    <div className="flex justify-center items-center min-h-screen ">
+    <div className="flex justify-center items-center min-h-dvh ">
       <div className="w-full max-w-md p-8 space-y-8 bg-card text-card-foreground  border-2 rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold text-foreground tracking-tight lg:text-5xl mb-6">

@@ -175,7 +175,7 @@ const UserProfile = () => {
             </div>
           </TabsList>
           <TabsContent value="history">
-            <Card className='max-h-screen overflow-auto my-2 w-full'>
+            <Card className='max-h-dvh overflow-auto my-2 w-full'>
               <CardHeader>
                 <CardTitle>Videos:</CardTitle>
 
@@ -195,7 +195,7 @@ const UserProfile = () => {
               </CardContent>
 
             </Card>
-            <Card className='max-h-screen overflow-auto my-2 w-full'>
+            <Card className='max-h-dvh overflow-auto my-2 w-full'>
               <CardHeader>
                 <CardTitle>Post:</CardTitle>
 
@@ -215,7 +215,7 @@ const UserProfile = () => {
               </CardContent>
 
             </Card>
-            <Card className='max-h-screen overflow-auto my-2 w-full'>
+            <Card className='max-h-dvh overflow-auto my-2 w-full'>
               <CardHeader>
                 <CardTitle>Courses:</CardTitle>
 
@@ -237,7 +237,7 @@ const UserProfile = () => {
             </Card>
           </TabsContent>
           <TabsContent value="liked" className='gap-4'>
-            <Card className='max-h-screen overflow-auto my-2 w-full'>
+            <Card className='max-h-dvh overflow-auto my-2 w-full'>
               <CardHeader>
                 <CardTitle>Videos:</CardTitle>
 
@@ -257,7 +257,7 @@ const UserProfile = () => {
               </CardContent>
 
             </Card>
-            <Card className='max-h-screen overflow-auto my-2 w-full'>
+            <Card className='max-h-dvh overflow-auto my-2 w-full'>
               <CardHeader>
                 <CardTitle>Post:</CardTitle>
 
@@ -277,7 +277,7 @@ const UserProfile = () => {
               </CardContent>
 
             </Card>
-            <Card className='max-h-screen overflow-auto my-2 w-full'>
+            <Card className='max-h-dvh overflow-auto my-2 w-full'>
               <CardHeader>
                 <CardTitle>Courses:</CardTitle>
 
@@ -300,7 +300,7 @@ const UserProfile = () => {
 
           </TabsContent>
           <TabsContent value="saved">
-            <Card className='max-h-screen overflow-auto my-2 w-full'>
+            <Card className='max-h-dvh overflow-auto my-2 w-full'>
               <CardHeader>
                 <CardTitle>Videos:</CardTitle>
 
@@ -320,7 +320,7 @@ const UserProfile = () => {
               </CardContent>
 
             </Card>
-            <Card className='max-h-screen overflow-auto my-2 w-full'>
+            <Card className='max-h-dvh overflow-auto my-2 w-full'>
               <CardHeader>
                 <CardTitle>Post:</CardTitle>
 
@@ -340,7 +340,7 @@ const UserProfile = () => {
               </CardContent>
 
             </Card>
-            <Card className='max-h-screen overflow-auto my-2 w-full'>
+            <Card className='max-h-dvh overflow-auto my-2 w-full'>
               <CardHeader>
                 <CardTitle>Courses:</CardTitle>
 

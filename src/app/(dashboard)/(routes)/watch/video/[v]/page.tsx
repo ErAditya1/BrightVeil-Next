@@ -122,7 +122,7 @@ function Page() {
       <div className='md:my-2 w-full gap-4  flex flex-col lg:flex-row '>
 
         <Card className='grow dark:bg-background p-0 text-card-foreground rounded-lg ' style={{ padding: 0 }}>
-          <div className=' aspect-video col-span-8 rounded-xl  max-h-screen max-w-screen'>
+          <div className=' aspect-video col-span-8 rounded-xl  max-h-dvh max-w-screen'>
             {
               v && !loadingVideo ? <CustomVideoPlayer videoId={v} thumbnailUrl={playingVideoData?.thumbnail?.secure_url} title={playingVideoData?.title} />:
               <Skeleton className='h-full w-full'/>
@@ -234,7 +234,7 @@ function Page() {
 
         {
           videos &&
-          <div className='max-h-screen w-full flex flex-col lg:flex-none lg:max-h-screen  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
+          <div className='max-h-dvh w-full flex flex-col lg:flex-none lg:max-h-dvh  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
             <div className='flex flex-row justify-between p-2 bg-muted text-muted-foreground sticky top-0 z-10 rounded-t-xl '>
               <div className=''>
                 <h1 className='text-2xl font-bold'>Chapters:</h1>
@@ -322,7 +322,7 @@ function Page() {
 
         </Card>
         {/* Right side Relative videos */}
-        <div className='max-h-screen w-full flex flex-col lg:flex-none lg:max-h-screen  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
+        <div className='max-h-dvh w-full flex flex-col lg:flex-none lg:max-h-dvh  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
           <div className='p-2   sticky top-0 z-10 rounded-t-xl '>
             <h1 className='text-2xl font-bold '>Comments {playingVideoData?.commentCount}:</h1>
             <CommentCard

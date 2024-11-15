@@ -32,7 +32,8 @@ function UserContext({
     pathname.startsWith("/forget-password")
 
 
-    const isClient: boolean = typeof window !== 'undefined' && typeof document !== 'undefined';
+
+  const isClient: boolean = typeof window !== 'undefined' && typeof document !== 'undefined';
   useEffect(() => {
     if (isClient) {
 
@@ -89,7 +90,7 @@ function UserContext({
     loading ? (
       
 
-            <div className='bg-background text-foreground h-screen w-screen flex justify-center items-center m-0 p-0'>
+            <div className='bg-background text-foreground h-dvh w-screen flex justify-center items-center m-0 p-0'>
               <FaSpinner className='animate-spin mx-4' size={50} />
               Verifying...
             </div>

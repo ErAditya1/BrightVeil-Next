@@ -362,16 +362,11 @@ export default function EditProfile() {
               <Stack
                 direction="row"
                 spacing={3}
-                sx={{ display: { xs: 'none', md: 'flex' }, my: 4 }}
+                sx={{ display: {  md: 'flex' }, my: 4 }}
+                className="flex-col"
               >
 
                 <Stack direction="column" spacing={1}>
-
-
-
-
-
-
 
 
                 </Stack>
@@ -391,7 +386,7 @@ export default function EditProfile() {
                       )}
                     />
                   </Stack>
-                  <Stack direction="row" spacing={2}>
+                  <Stack  spacing={2} className="flex flex-row w-full">
                     <Stack spacing={1}>
                       <FormField
                         name="username"

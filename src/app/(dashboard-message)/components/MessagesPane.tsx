@@ -35,7 +35,7 @@ export default function MessagesPane() {
         flexDirection: 'column',
         backgroundColor: 'background.level1',
       }}
-      className="h-screen"
+      className="h-dvh"
     >
       <MessagesPaneHeader   />
       <Box

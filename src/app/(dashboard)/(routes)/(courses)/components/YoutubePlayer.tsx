@@ -250,7 +250,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
           </div>
         </section>
         <div className={`${!ready && 'hidden'} absolute top-0 w-full h-full select-none`} onMouseMove={showControls} onClick={showControls}>
-          <div className={`w-full h-full ${!controls && 'hidde duration-1000'}`}>
+          <div className={`w-full h-full ${!controls && 'hidden duration-1000'}`}>
             <div className="w-full h-full flex justify-evenly  items-center">
               <button className="text-2xl mx-2 cursor-pointer" onClick={handleSeekReverse}>
                 <MdOutlineReplay10 size={40} />
@@ -263,7 +263,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
               </button>
             </div>
             <div className="w-full h-17 absolute bg-card" style={{ bottom: 0 }}>
-              <div className='px-2 '>
+            <div className='px-2 '>
                 <input
                   type="range"
                   min={0}
@@ -284,7 +284,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
                 />
                
               </div>
-              <div className="w-full h-8 flex items-center justify-between p-2  relative">
+              <div className="w-full h-8 flex items-center justify-between px-2  relative">
                 <div className='flex flex-row items-center'>
                   <span className="mr-2 text-xs">
                     <Duration seconds={duration * played} /> / <Duration seconds={duration} />
@@ -298,7 +298,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
                 </div>
                 <div className="right-4 flex  gap-3 justify-center items-center">
                   {isSetting &&
-                    <div className="w-48 border bg-background absolute bottom-16 right-0 p-2 mr-4 rounded-lg" ref={dropdownRef}>
+                    <div className="w-48 border bg-background absolute bottom-12 right-0 p-2 mr-4 rounded-lg" ref={dropdownRef}>
                       <div className="flex justify-between items-center w-full relative py-2 ">
                         <p>Settings</p>
                         <button onClick={() => setIsSetting(false)} className="text-2xl right-2 absolute ">
@@ -317,7 +317,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
                                     onClick={() => handleSetPlaybackRate(item)}
                                     className={`text-md w-full ${playbackRate == item ? 'font-semibold border rounded' : ''}`}
                                   >
-                                    {item}x
+                                    {item ===1 ? 'Normal' : `${item}x`}
                                   </button>
                                 </div>
                               ))
@@ -386,6 +386,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
 
 
               </div>
+             
             </div>
           </div>
         </div>

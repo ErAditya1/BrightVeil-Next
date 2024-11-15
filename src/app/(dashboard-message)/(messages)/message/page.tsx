@@ -400,7 +400,7 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
             sm: 'minmax(min-content, min(30%, 400px)) 1fr',
           },
         }}
-        className="h-screen  top-0"
+        className="h-dvh  top-0"
       >
         <Sheet
           sx={{

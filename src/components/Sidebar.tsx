@@ -59,6 +59,7 @@ function Toggler({
   }) => React.ReactNode;
 }) {
   const [open, setOpen] = React.useState(defaultExpanded);
+  React.useEffect(() =>setOpen(false),[]);
   return (
     <React.Fragment>
       {renderToggle({ open, setOpen })}
@@ -110,24 +111,20 @@ export default function Sidebar() {
     },
 
     {
-      label: 'Users',
+      label: 'User',
       icon: <GroupRoundedIcon />,
       subMenu: [
         {
           label: 'Profile',
-          href: '/users/profile',
+          href: '/user/profile',
           icon: <FaceIcon />,
         },
         {
           label: 'Edit Profile',
-          href: '/users/edit-profile',
+          href: '/user/edit-profile',
           icon: <PersonAddIcon />,
         },
-        {
-          label: 'Role & Permissions',
-          href: '/product/3',
-          icon: <ScoreIcon />,
-        },
+        
       ]
     },
 

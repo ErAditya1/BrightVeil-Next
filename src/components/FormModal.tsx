@@ -95,7 +95,7 @@ const FormModal = ({
         {/* <Image src={`/${type}.png`} alt="" width={16} height={16} /> */}
       </button>
       {open && (
-        <div className="w-screen h-screen absolute left-0 top-0  bg-opacity-60 z-50 flex items-center justify-center">
+        <div className="w-screen h-dvh absolute left-0 top-0  bg-opacity-60 z-50 flex items-center justify-center">
           <div className="bg-card text-card-foreground p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%]">
             <Form />
             <div

@@ -171,7 +171,7 @@ export default function ChatsPane() {
         borderColor: 'divider',
         overflowY: 'auto',
       }}
-      className="dark:bg-card h-full xs:h-screen "
+      className="dark:bg-card h-full xs:h-dvh "
     >
       {
         chats?.length || users?.length ?
