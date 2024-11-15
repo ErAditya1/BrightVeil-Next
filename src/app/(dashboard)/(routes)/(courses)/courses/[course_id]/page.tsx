@@ -238,7 +238,7 @@ const handleEnroll = async () => {
         </Card>
 
         <div className='max-h-dvh w-full flex flex-col lg:flex-none lg:max-h-dvh  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
-          <div className='flex flex-row justify-between p-2 bg-muted text-muted-foreground sticky top-0 z-10 rounded-t-xl '>
+          <div className='flex flex-row justify-between p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl '>
             <div className=''>
               <h1 className='text-2xl font-bold line-clamp-1'>Chapters:</h1>
               {/* <p className='aaa'>Course Description</p> */}
@@ -269,7 +269,7 @@ const handleEnroll = async () => {
 
 
           <CardContent className="">
-            <div className='p-2 bg-muted text-muted-foreground sticky top-0 z-10 rounded-t-xl m-0 '>
+            <div className='p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl m-0 '>
               <h1 className='text-2xl font-bold'>Description :</h1>
             </div>
             <Typography level="title-md" className="line-clamp-2  text-card-foreground p-0 m-0 rounded">
@@ -362,7 +362,7 @@ const handleEnroll = async () => {
             </div>
           }
 
-          <div className='p-2   sticky top-0 z-10 rounded-t-xl '>
+          <div className='p-2   sticky top-0  rounded-t-xl '>
             <h1 className='text-2xl font-bold '>Comments {courseData?.commentCount}:</h1>
             <CommentCard
               _Id={courseData?._id}
