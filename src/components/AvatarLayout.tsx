@@ -8,7 +8,7 @@ function AvatarLayout({ className, src, name, username }: any) {
 
     if (username) {
         return(
-            <Link href={`/users/profile/${username}`}>
+            <Link href={`/user/profile/${username}`}>
             <Avatar className={`${className} border shadow-lg`} >
                 <AvatarImage src={src} alt={name} />
                 {

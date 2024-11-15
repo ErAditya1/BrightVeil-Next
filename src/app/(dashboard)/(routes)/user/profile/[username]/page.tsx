@@ -129,7 +129,7 @@ const UserProfile = () => {
                 <div>
                   <h1 className="text-2xl font-bold">{profile?.name}</h1>
                   <p className="text-gray-600">@{profile?.username}</p>
-                  <Link href={`/users/profile/${profile?.username}`} className='text-blue-600 underline flex gap-2'>View Account <ChevronRight /></Link>
+                  <Link href={`/user/profile/${profile?.username}`} className='text-blue-600 underline flex gap-2'>View Account <ChevronRight /></Link>
                 </div>
             }
 

@@ -115,7 +115,7 @@ export default function AdminSidebar() {
       subMenu: [
         {
           label: 'Profile',
-          href: '/users/profile',
+          href: '/user/profile',
           icon: <FaceIcon />,
         },
         {
