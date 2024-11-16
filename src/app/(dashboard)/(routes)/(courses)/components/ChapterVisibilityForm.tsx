@@ -108,8 +108,8 @@ export default function ChapterVisibility({visibility}:any) {
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent >
-                                            <SelectItem value="free">Free</SelectItem>
-                                            <SelectItem value="unfree">Un Free</SelectItem>
+                                            <SelectItem value= 'true'>Free</SelectItem>
+                                            <SelectItem value="false">Paid</SelectItem>
                                         </SelectContent>
                                     </Select>
                                     <FormMessage />

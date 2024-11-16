@@ -19,5 +19,5 @@ export const ChapterThumbnailSchema = z.object({
 })
 
 export const ChapterVisibilitySchema = z.object({
-    isFree: z.enum(['free', 'unfree']),
+    isFree: z.enum(['true', 'false']),
 })
