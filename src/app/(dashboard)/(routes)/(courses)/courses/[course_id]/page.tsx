@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, Chip, CircularProgress, Typography } from '@mui/joy';
+import { Card, CardContent, Chip } from '@mui/joy';
 import { useParams } from 'next/navigation';
 import React, { Suspense, useState } from 'react'
 import MiniVideoCard from '../../components/MiniVideoCard';
@@ -131,11 +131,11 @@ const handleEnroll = async () => {
 
 
   return (
-    <div className='sm:p-4'>
+    <div className='sm:p-2 w-full'>
       <div className='md:my-2 w-full gap-4  flex flex-col lg:flex-row '>
 
-        <Card className='grow dark:bg-background p-0 text-card-foreground rounded-lg'>
-          <div className=' aspect-video col-span-8 rounded-xl border'>
+        <Card className='dark:bg-background w-full dark:bg-backgroun  text-card-foreground rounded-lg p-0 m-0 ' >
+          <div className=' aspect-video col-span-8 rounded-xl border p-0'>
             {
               loading ? <Skeleton className='w-full aspect-video' /> :
                 <Image
@@ -143,22 +143,22 @@ const handleEnroll = async () => {
                   width={500}
                   src={courseData?.thumbnail?.secure_url}
                   alt={courseData?.title}
-                  className='w-full aspect-video'
+                  className='w-full aspect-video p-0'
                 />
             }
 
 
           </div>
 
-          <div className='p-4 '>
+          <div className='sm:p-4 '>
             {
-              loading ? <Skeleton className='w-full h-5' /> : <h1 className='text-lg font-semibold'>{courseData?.title}</h1>
+              loading ? <Skeleton className='w-full h-5' /> : <h1 className='text-sm font-semibold line-clamp-2 sm:text-lg'>{courseData?.title}</h1>
             }
-            <div className='flex flex-row flex-wrap items-center'>
+            <div className='flex flex-row flex-wrap items-center py-2'>
               <React.Fragment>
                 {
 
-                  loading ? <Skeleton className='w-12 h-12 rounded-full' /> : <AvatarLayout className="h-12 w-12 mr-1 text-xl" src={courseData?.author?.avatar?.url} name={courseData?.author.name} username={courseData?.author?.username} />
+                  loading ? <Skeleton className='w-12 h-12 rounded-full' /> : <AvatarLayout className=" mr-1 text-xl" src={courseData?.author?.avatar?.url} name={courseData?.author.name} username={courseData?.author?.username} />
                 }
                 <div className="card-content mx-2 ">
                   {
@@ -168,8 +168,8 @@ const handleEnroll = async () => {
                         <Skeleton className='h-4  my-1 gap-2 w-24' />
                       </> :
                       <>
-                        <Typography level="title-md" className="line-clamp-1">{courseData?.author.name}</Typography>
-                        <Typography level="body-sm">@{courseData?.author?.username}</Typography>
+                        <p  className="line-clamp-1 text-sm sm:text-md">{courseData?.author.name}</p>
+                        <p className="line-clamp-1 text-xs sm:text-sm" >@{courseData?.author?.username}</p>
                       </>
 
                   }
@@ -200,14 +200,14 @@ const handleEnroll = async () => {
                       {
                         !courseData?.isAuthor ?
                           <div className='m-2 '>
-                            <FollowButton className="rounded-full" _id={courseData?.author?._id} isFollowing={courseData?.isFollowing} count={courseData?.followersCount} />
+                            <FollowButton className="rounded-full " _id={courseData?.author?._id} isFollowing={courseData?.isFollowing} count={courseData?.followersCount} />
                           </div>
                           :
                           <HoverBorderGradient
                             as="button"
-                            className={`bg-muted text-muted-foreground flex items-center space-x-2`}
+                            className={`bg-muted text-muted-foreground flex items-center space-x-2 h-8 w-28 p-1 sm:p-2 sm:h-auto sm:w-auto`}
                           >
-                            <Chip>{courseData?.followersCount}</Chip>
+                            <Chip className="m-0">{courseData?.followersCount}</Chip>
                             <span>Followers</span>
                           </HoverBorderGradient>
                       }
@@ -238,7 +238,7 @@ const handleEnroll = async () => {
         </Card>
 
         <div className='max-h-dvh w-full flex flex-col lg:flex-none lg:max-h-dvh  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
-          <div className='flex flex-row justify-between p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl '>
+          <div className='flex flex-row justify-between p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl z-10'>
             <div className=''>
               <h1 className='text-2xl font-bold line-clamp-1'>Chapters:</h1>
               {/* <p className='aaa'>Course Description</p> */}
@@ -272,10 +272,10 @@ const handleEnroll = async () => {
             <div className='p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl m-0 '>
               <h1 className='text-2xl font-bold'>Description :</h1>
             </div>
-            <Typography level="title-md" className="line-clamp-2  text-card-foreground p-0 m-0 rounded">
+            <p  className="line-clamp-2  text-card-foreground p-0 m-0 rounded">
 
               <div className="mt-2" dangerouslySetInnerHTML={{ __html: courseData?.description }} />
-            </Typography>
+            </p>
           </CardContent>
 
         </Card>

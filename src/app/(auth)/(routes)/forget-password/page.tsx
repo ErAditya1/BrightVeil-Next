@@ -119,6 +119,11 @@ export default function RequestPasswordForm() {
               Sign up
             </Link>
           </p>
+          <p>
+            <Link href="/sign-in" className="text-blue-600 hover:text-blue-800">
+              Sign In
+            </Link>
+          </p>
         </div>
       </div>
     </div>

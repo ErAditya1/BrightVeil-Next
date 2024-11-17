@@ -64,8 +64,11 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
 
 
   const showControls = useCallback(() => {
+
     setControls(true);
     resetHideTimeout();
+    
+
   }, []);
 
   const hideControls = useCallback(() => {
@@ -210,7 +213,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
   }, []);
 
   return (
-    <FullScreen handle={handle} className="h-full w-full relative select-none" >
+    <FullScreen handle={handle} className={`h-full w-full relative select-none ${fullscreen && "-rotate-90"} sm:rotate-0`}>
       <div onMouseMove={showControls} onClick={showControls} className='h-full w-full'>
         <section className="section h-full w-full flex justify-center items-center relative">
           <div className="player-wrapper h-full w-full relative flex justify-center items-center">

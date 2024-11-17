@@ -44,7 +44,7 @@ function FollowButton({ className, count, isFollowing, _id }: any) {
     return (
         <HoverBorderGradient
             as="button"
-            className={`bg-muted text-muted-foreground flex items-center space-x-2 ${className}`}
+            className={`z-10 bg-muted text-muted-foreground flex items-center space-x-2 h-8 w-28 p-1 sm:p-2 sm:h-auto sm:w-auto ${className}`}
             onClick={handleFallow}
         >
 

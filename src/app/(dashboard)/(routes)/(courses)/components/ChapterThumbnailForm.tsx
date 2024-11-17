@@ -33,8 +33,9 @@ export default function ChapterThumbnailForm({ thumbnail }: any) {
 
     const uploadImage = async () => {
         const formData = new FormData();
-
+        
         if (file) {
+            setIsSubmitting(true);
 
 
 
@@ -60,12 +61,12 @@ export default function ChapterThumbnailForm({ thumbnail }: any) {
                     setEdit(false);
 
                 }
-                // you can run some server action or api here
-                // to add the necessary data to your database
+                setIsSubmitting(false)
 
             } catch (error) {
                 const axiosError = error as AxiosError<ApiResponse>;
                 console.log(axiosError)
+                setIsSubmitting(false)
                 // Default error message
                 let errorMessage = axiosError.response?.data.message;
 
@@ -75,6 +76,7 @@ export default function ChapterThumbnailForm({ thumbnail }: any) {
                     variant: 'destructive',
                 });
             }
+            
         }
     }
 
@@ -170,7 +172,6 @@ export default function ChapterThumbnailForm({ thumbnail }: any) {
                                         type='button'
                                         disabled={!file || isSubmitting}
                                         onClick={uploadImage}
-
                                     >
                                         Upload
                                     </Button>

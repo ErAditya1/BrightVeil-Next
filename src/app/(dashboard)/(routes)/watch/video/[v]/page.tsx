@@ -134,7 +134,7 @@ function Page() {
             {
               loading ? <Skeleton className='w-3/4 h-5' />
                 :
-                <h1 className='text-lg font-semibold'>{playingVideoData?.title}</h1>
+                <h1 className='text-sm  font-semibold line-clamp-1 lg:text-md'>{playingVideoData?.title}</h1>
             }
             <div className='flex flex-row flex-wrap items-center'>
               <React.Fragment>
@@ -151,8 +151,8 @@ function Page() {
                   </div>
                     :
                     <div className="card-content mx-2">
-                      <Typography level="title-md" className="line-clamp-1">{playingVideoData?.author?.name}</Typography>
-                      <Typography level="body-sm">@{playingVideoData?.author?.username}</Typography>
+                      <p  className="line-clamp-1 text-sm lg:text-md">{playingVideoData?.author?.name}</p>
+                      <p className='line-clamp-1 text-xs lg:text-md'>@{playingVideoData?.author?.username}</p>
                     </div>
                 }
                 {
@@ -235,8 +235,8 @@ function Page() {
         {
           videos &&
           <div className='max-h-dvh w-full flex flex-col lg:flex-none lg:max-h-dvh  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
-            <div className='flex flex-row justify-between p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl '>
-              <div className=''>
+            <div className='flex flex-row justify-between p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl z-10'>
+              <div className='z-20'>
                 <h1 className='text-2xl font-bold'>Chapters:</h1>
               </div>
               <div className='flex items-center h-full right-2 lg:hidden '>

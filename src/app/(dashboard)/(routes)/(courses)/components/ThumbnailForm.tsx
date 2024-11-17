@@ -1,15 +1,5 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import {
-    Form,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
@@ -45,8 +35,8 @@ export default function ThumbnailForm({ thumbnail }: any) {
 
     const uploadImage = async () => {
         const formData = new FormData();
-
         if (file) {
+            setIsSubmitting(false)
 
             formData.append('thumbnail', file);
 
@@ -74,7 +64,9 @@ export default function ThumbnailForm({ thumbnail }: any) {
                     // to add the necessary data to your database
                     console.log(res);
                 }
+                setIsSubmitting(false)
             } catch (error) {
+                setIsSubmitting(false)
                 const axiosError = error as AxiosError<ApiResponse>;
                 console.log(axiosError)
                 // Default error message

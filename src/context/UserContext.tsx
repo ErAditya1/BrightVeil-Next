@@ -1,105 +1,121 @@
-'use client'
+'use client';
 
 import api from '@/api';
+import { toast } from '@/components/ui/use-toast';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { loginUser, logoutUser } from '@/store/user/userSlice'
+import { loginUser, logoutUser } from '@/store/user/userSlice';
+import { AxiosError } from 'axios';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react';
 import { FaSpinner } from 'react-icons/fa6';
+import { MdOutlineCloudOff } from 'react-icons/md';
 
-function UserContext({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const router = useRouter()
-  const [user, setUser] = useState(null);
-  const pathname = usePathname()
+function UserContext({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const dispatch = useAppDispatch();
 
-  const dispatch = useAppDispatch()
-  const us = useAppSelector((state) => state.auth.user)
-  const [loading, setLoading] = useState(true)
-  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn)
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const [loading, setLoading] = useState(true);
 
+  // Check for online status only on the client
+  const [isOnline, setIsOnline] = useState(false);
 
+  const isPublicPath = useMemo(
+    () =>
+      ["/sign-in", "/sign-up", "/verify", "/reset-password", "/forget-password"].some((path) =>
+        pathname.startsWith(path)
+      ),
+    [pathname]
+  );
 
-
-  const isPublicPath =
-    pathname.startsWith("/sign-in") ||
-    pathname.startsWith("/sign-up") ||
-    pathname.startsWith("/verify") ||
-    pathname.startsWith("/reset-password") ||
-    pathname.startsWith("/forget-password")
-
-
-
-  const isClient: boolean = typeof window !== 'undefined' && typeof document !== 'undefined';
+  // Monitor changes to online status
   useEffect(() => {
-    if (isClient) {
+    if (typeof window !== 'undefined') {
+      // Only run this code on the client-side
+      const handleOnline = () => setIsOnline(true);
+      const handleOffline = () => setIsOnline(false);
 
-      api.get('/v1/users/current-user')
-        .then(response => {
+      // Set initial state based on current network status
+      setIsOnline(navigator.onLine);
 
-          const user = response.data.data
-          console.log(response)
-          if (!isPublicPath) {
-            router.push(pathname)
-          } else {
-            router.push('/')
+      // Add event listeners for online/offline status
+      window.addEventListener('online', handleOnline);
+      window.addEventListener('offline', handleOffline);
+
+      // Cleanup listeners on component unmount
+      return () => {
+        window.removeEventListener('online', handleOnline);
+        window.removeEventListener('offline', handleOffline);
+      };
+    }
+  }, []); // Empty dependency array means this effect runs only once, on mount
+
+  useEffect(() => {
+    console.log("isOnline checking", isOnline);
+
+    if (isOnline) {
+      api
+        .get('/v1/users/current-user')
+        .then((response) => {
+          console.log('user fetched successfully');
+          const user = response.data.data;
+          dispatch(loginUser(user));
+          if (isPublicPath) {
+            router.push('/');
           }
-          setUser(user)
-          dispatch(loginUser(user))
         })
-        .catch(error => {
-          console.log(error)
-          setUser(null)
-          dispatch(logoutUser())
-          router.push('/sign-in')
+        .catch((error) => {
+          console.error('Error fetching user:', error);
+          const axiosError = error as AxiosError<AxiosError>;
+          if (!isPublicPath) {
+            toast({
+              title: 'Authentication Failed',
+              description: axiosError.response?.data.message,
+              variant: 'destructive',
+            });
+            console.log('User not found');
+            router.push('/sign-in');
+          }
+
+          dispatch(logoutUser());
         })
         .finally(() => {
-          setLoading(false)
-        })
-
-
+          setLoading(false);
+        });
+    } else {
+      toast({
+        title: 'No internet connection',
+        description: 'Please check your internet connection and try again',
+        variant: 'warning',
+      });
+      setLoading(false); // Make sure loading stops even when offline
     }
-  }, [isClient])
-
-  
-
-
-
+  }, [dispatch, isOnline, isPublicPath, router]);
 
   useEffect(() => {
     if (isLoggedIn && isPublicPath) {
-      if (isPublicPath) {
-        router.push('/')
-
-      }
-      else {
-        router.push(pathname)
-      }
+      router.push('/');
     }
+  }, [isLoggedIn, isPublicPath, router]);
 
-  }, [pathname, isLoggedIn])
-
-
-
-
-
-  return (
-    loading ? (
-      
-
-            <div className='bg-background text-foreground h-dvh w-screen flex justify-center items-center m-0 p-0'>
-              <FaSpinner className='animate-spin mx-4' size={50} />
-              Verifying...
-            </div>
-
-        
-    ) : (
-      <div>{children}</div>
+  if (loading) {
+    return (
+      <div className="bg-background text-foreground h-dvh w-screen flex justify-center items-center m-0 p-0">
+        <FaSpinner className="animate-spin mx-4" size={50} />
+        Verifying...
+      </div>
+    );
+  } else if (!isOnline) {
+    return(
+      <div className="bg-background text-foreground h-dvh w-screen flex justify-center items-center m-0 p-0 text-sm sm:text-md">
+      <MdOutlineCloudOff className=" mx-4" size={50} />
+      No Network Connetion ...
+    </div>
     )
-  )
+  }
+
+  return <>{children}</>;
 }
 
-export default UserContext
+export default UserContext;

@@ -88,7 +88,7 @@ export default function VideoCard({ _id, key }: any) {
               isLoading ? (
                 <Skeleton className=" w-full rounded" />
               ) : (
-                <div className='aspect-video'>
+                <div className='aspect-video bg-red-800 p-0'>
                   {
                     isHovered ? (<>
                       <ReactPlayer
@@ -120,7 +120,7 @@ export default function VideoCard({ _id, key }: any) {
                         }
 
                       />
-                      <div className='w-full h-full absolute top-0 left-0'>
+                      <div className='w-full h-full absolute top-0 left-0 p-0 m-0'>
                         <div
                           onClick={toggleMute}
                           className='text-md w-6 h-6 bg-background text-foreground p-1 float-right top-2 right-2 rounded m-2'
@@ -156,11 +156,11 @@ export default function VideoCard({ _id, key }: any) {
               </div>
             ) :
               (
-                <div className='flex flex-row gap-2'>
+                <div className='flex flex-row gap-2 h-14 items-center'>
                   <AvatarLayout src={videoData?.author?.avatar?.url} name={videoData?.author?.name} username={videoData?.author?.username} />
-                  <div className="card-content h-16 ">
-                    <Typography level="title-md" className="line-clamp-2 break-words break-all">{videoData?.title}</Typography>
-                    <Typography level="body-sm" className="line-clamp-1">@{videoData?.author?.username}</Typography>
+                  <div className="card-content h-16 flex justify-center flex-col">
+                    <p  className="line-clamp-2 break-words break-all text-xs sm:text-md lg:text-lg">{videoData?.title}</p>
+                    <p  className="line-clamp-1 text-xs sm:text-md">@{videoData?.author?.username}</p>
                   </div>
                 </div>
               )

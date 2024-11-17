@@ -36,7 +36,7 @@ export default function MiniVideoCard({ videoId, thumbnail, title, _id, views, u
     return (
 
         <Link href={`/watch/video/${videoId}`}>
-            <div className="relative w-full h-24  p-2">
+            <div className="relative w-full h-24  p-2 z-0">
                 <div className="p-0 flex flex-row w-full h-full bg-card text-card-foreground rounded"
 
                 >
@@ -60,10 +60,10 @@ export default function MiniVideoCard({ videoId, thumbnail, title, _id, views, u
                             </p>
 
                             <div className='flex flex-row  gap-8'>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-xs text-muted-foreground line-clamp-1">
                                     {timeAgo(uploadedDate)}
                                 </p>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-xs text-muted-foreground line-clamp-1">
                                     {views} views
                                 </p>
                                 <p>

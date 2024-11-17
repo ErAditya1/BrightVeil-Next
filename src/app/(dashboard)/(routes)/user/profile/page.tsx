@@ -82,18 +82,19 @@ const UserProfile = () => {
 
 
   return (
-    <div className="w-full p-4">
+    <div className="w-full sm:p-4">
       <div className=" mx-auto mt-10 p-4  w-full  dark:bg-gray-900 dark:text-white">
         {/* Banner Image */}
-        <div className="relative h-48 ">
+        <div className="relative ">
           {
-            loading ? <Skeleton className='w-full h-full' /> :
+            loading  ? <Skeleton className='w-full h-full' /> :
+            
               <Image
                 src={profile?.coverImage?.url}
                 alt="Banner"
                 height={5000}
                 width={5000}
-                className="object-cover w-full h-full"
+                className="object-cover w-full h-full rounded"
               />
           }
           {/* Profile Photo */}

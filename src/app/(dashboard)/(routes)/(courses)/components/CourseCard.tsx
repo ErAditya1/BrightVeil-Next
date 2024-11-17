@@ -11,6 +11,7 @@ import api from '@/api';
 import Image from 'next/image';
 import AvatarLayout from '@/components/AvatarLayout';
 import { BiMoney } from 'react-icons/bi';
+import { toast } from '@/components/ui/use-toast';
 
 type CourseData = {
   thumbnail: {
@@ -50,8 +51,9 @@ export default function CourseCard({ _id }: Props) {
         const res = await api.get(`/v1/courses/course/getPublishedCourses/${_id}`);
         setCourseData(res.data.data[0]);
       } catch (error) {
+
         console.error("Failed to fetch course data", error);
-        setError('Failed to load course details');
+        
       } finally {
         setIsLoading(false);
       }
@@ -60,21 +62,11 @@ export default function CourseCard({ _id }: Props) {
     if (_id) fetchData();
   }, [_id]);
 
-  if (error) {
-    return (
-      <Card className="bg-card text-card-foreground">
-        <CardContent className="text-center">
-          <Typography level="body-sm" className="text-red-500">
-            {error}
-          </Typography>
-        </CardContent>
-      </Card>
-    );
-  }
+  
 
   return (
     <Link href={`/courses/${_id}`} key={_id}>
-      <Card className="bg-card text-card-foreground">
+      <Card className="bg-card text-card-foreground p-0">
         <CardOverflow>
           <AspectRatio ratio="2">
             {isLoading ? (
@@ -102,19 +94,19 @@ export default function CourseCard({ _id }: Props) {
               </div>
             </div>
           ) : (
-            <div className="flex flex-row gap-2 w-full">
+            <div className="flex flex-row gap-2 w-full h-14 items-center">
               <AvatarLayout
                 src={courseData?.author?.avatar?.url || '/fallback-avatar.png'}
                 name={courseData?.author?.name}
                 username={courseData?.author?.username}
               />
-              <div className="card-content h-16">
-                <Typography level="title-md" className="line-clamp-2 break-words">
+              <div className="card-content flex justify-center flex-col">
+                <p  className="line-clamp-2 break-words text-sm sm:text-md ">
                   {courseData.title}
-                </Typography>
-                <Typography level="body-sm" className="line-clamp-1">
+                </p>
+                <p className="line-clamp-1 text-xs sm:text-md">
                   @{courseData.author.username}
-                </Typography>
+                </p>
               </div>
             </div>
           )}

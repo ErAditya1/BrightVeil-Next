@@ -141,7 +141,7 @@ export default function Sidebar() {
           md: 'none',
         },
         transition: 'transform 0.4s, width 0.4s',
-        zIndex: 10,
+        
         height: '100dvh',
         width: 'var(--Sidebar-width)',
         top: 0,
@@ -153,7 +153,7 @@ export default function Sidebar() {
         borderRight: '1px solid',
         borderColor: 'divider',
       }}
-      className="Sidebar  dark:bg-card text-foreground "
+      className="Sidebar  dark:bg-card text-foreground z-[500]"
     >
 
       <GlobalStyles
