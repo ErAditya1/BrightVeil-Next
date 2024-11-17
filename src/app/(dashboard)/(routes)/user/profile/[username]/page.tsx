@@ -97,7 +97,7 @@ const UserProfile = () => {
 
         <div className=" mx-auto mt-10 p-4  w-full  dark:bg-gray-900 dark:text-white">
           {/* Banner Image */}
-          <div className="relative max-h-56 ">
+          <div className="relative max-h-48 ">
             {
               loading ? <Skeleton className='w-full h-full' /> :
                 <Image
