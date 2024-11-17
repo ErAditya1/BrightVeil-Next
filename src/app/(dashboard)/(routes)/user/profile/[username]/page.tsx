@@ -83,11 +83,11 @@ const UserProfile = () => {
 
   return (
     <>
-    <div className="w-full p-4">
+    <div className="w-full sm:p-4">
 
       <div className=" mx-auto mt-10 p-4  w-full  dark:bg-gray-900 dark:text-white">
         {/* Banner Image */}
-        <div className="relative h-48 ">
+        <div className="relative max-h-56 ">
           {
             loading ? <Skeleton className='w-full h-full' /> :
               <Image
@@ -127,8 +127,9 @@ const UserProfile = () => {
                 </div>
                 :
                 <div>
-                  <h1 className="text-2xl font-bold">{profile?.name}</h1>
-                  <p className="text-gray-600">@{profile?.username}</p>
+                  <h1 className="text-lg sm:text-2xl font-bold">{profile?.name}</h1>
+                  <p className="text-gray-400">@{profile?.username}</p>
+                  <p className="text-sm text-gray-600 sm:text-lg">{profile?.about}</p>
                   <Link href={`/user/profile/${profile?.username}`} className='text-blue-600 underline flex gap-2'>View Account <ChevronRight /></Link>
                 </div>
             }
@@ -199,7 +200,8 @@ const UserProfile = () => {
 
           <TabsContent value="posts">
 
-            <Card className='max-h-dvh overflow-auto my-2 w-full'>
+            {
+              profile?.posts?.length && <Card className='max-h-dvh overflow-auto my-2 w-full'>
               <CardHeader>
                 <CardTitle>Post:</CardTitle>
 
@@ -219,11 +221,13 @@ const UserProfile = () => {
               </CardContent>
 
             </Card>
+            }
 
           </TabsContent>
           <TabsContent value="courses">
 
-            <Card className='max-h-dvh overflow-auto my-2 w-full'>
+            {
+              profile?.courses?.length && <Card className='max-h-dvh overflow-auto my-2 w-full'>
               <CardHeader>
                 <CardTitle>Courses:</CardTitle>
 
@@ -241,30 +245,33 @@ const UserProfile = () => {
               </CardContent>
 
             </Card>
+            }
 
           </TabsContent>
           <TabsContent value="videos">
 
-            <Card className='max-h-dvh overflow-auto my-2 w-full'>
-              <CardHeader>
-                <CardTitle>Videos:</CardTitle>
+           {
+             profile?.videos?.length &&  <Card className='max-h-dvh overflow-auto my-2 w-full'>
+             <CardHeader>
+               <CardTitle>Videos:</CardTitle>
 
-              </CardHeader>
-              <CardContent className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {
-                  profile?.videos?.map((video: any) => {
+             </CardHeader>
+             <CardContent className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+               {
+                 profile?.videos?.map((video: any) => {
 
-                    return (
-                      <div key={video?._id}>
-                        <VideoCard _id={video?._id} />
-                      </div>
-                    )
+                   return (
+                     <div key={video?._id}>
+                       <VideoCard _id={video?._id} />
+                     </div>
+                   )
 
-                  })
-                }
-              </CardContent>
+                 })
+               }
+             </CardContent>
 
-            </Card>
+           </Card>
+           }
 
           </TabsContent>
         </Tabs>

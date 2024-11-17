@@ -227,11 +227,11 @@ export default function EditProfile() {
           display: 'flex',
           maxWidth: '800px',
           mx: 'auto',
-          px: { xs: 2, md: 6 },
+          px: { xs: 0, md: 6 },
           py: { xs: 2, md: 3 },
         }}
       >
-        <Card className="dark:bg-slate-900">
+        <Card className="dark:bg-slate-900 p-0" >
           <Box sx={{ mb: 1 }}>
             <Typography level="title-md">Personal info</Typography>
             <Typography level="body-sm">
