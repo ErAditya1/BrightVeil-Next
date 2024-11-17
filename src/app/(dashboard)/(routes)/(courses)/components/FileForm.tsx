@@ -19,51 +19,44 @@ import api from '@/api';
 import { ApiResponse } from '@/types/ApiResponse';
 import { AxiosError } from 'axios';
 
-import { createVideoSchema } from '@/schemas/videoSchema';
+import { VideoFileSchema } from '@/schemas/videoSchema';
 
 export default function ChapterForm({ setCourseData, setAddChapter }: any) {
     const router = useRouter();
     // const [isSubmitting, setIsSubmitting] = useState(false);
-    const { course_id } = useParams()
+    const { chapter_id } = useParams()
 
-    const form = useForm<z.infer<typeof createVideoSchema>>({
-        resolver: zodResolver(createVideoSchema),
-        defaultValues: {
-            videoId: '',
-            title: '',
-            description: '',
+    const form = useForm<z.infer<typeof VideoFileSchema>>({
+        resolver: zodResolver(VideoFileSchema),
 
-
-
-        },
     });
 
     const { toast } = useToast();
     const { isSubmitting, isValid } = form.formState
 
-    
 
-    const onSubmit = async (data: z.infer<typeof createVideoSchema>) => {
+
+    const onSubmit = async (data: z.infer<typeof VideoFileSchema>) => {
         // setIsSubmitting(true);
 
 
         try {
-           
-                const response = await api.post(`/v1/courses/course/addChapter/${course_id}`, data,
-                   
-                );
-                toast({
-                    title: 'Success!',
-                    description: response?.data?.message,
-                    variant: 'success',
-                });
-                setAddChapter(false)
-                const chapter = response.data.data
-                console.log(chapter);
-                setCourseData((prev:any)=>{
-                    return {...prev, chapters:[...prev.chapters, chapter]}
-                } )
-        
+
+            const response = await api.post(`/v1/courses/course/addFile/${chapter_id}`, data,
+
+            );
+            toast({
+                title: 'Success!',
+                description: response?.data?.message,
+                variant: 'success',
+            });
+            setAddChapter(false)
+            const chapter = response.data.data
+            console.log(chapter);
+            setCourseData((prev: any) => {
+                return { ...prev, chapters: [...prev.chapters, chapter] }
+            })
+
             // setIsSubmitting(false);
 
         } catch (error) {
@@ -95,7 +88,7 @@ export default function ChapterForm({ setCourseData, setAddChapter }: any) {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 
                         <FormField
-                            name="videoId"
+                            name="title"
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
@@ -105,24 +98,19 @@ export default function ChapterForm({ setCourseData, setAddChapter }: any) {
                                 </FormItem>
                             )}
                         />
+
                         <FormField
-                            name="title"
-                            control={form.control}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className='flex justify-between'><span>Title:</span></FormLabel>
-                                    <Input type="text" {...field} />
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            name="description"
+                            name="file"
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className='flex justify-between'><span>Description:</span></FormLabel>
-                                    <Input type="text" {...field} />
+                                    <Input type="file"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0] || null;
+                                            field.onChange(file); // Update field value manually
+                                        }}
+                                        value={undefined} />
                                     <FormMessage />
                                 </FormItem>
                             )}

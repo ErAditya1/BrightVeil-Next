@@ -13,7 +13,7 @@ import AvatarLayout from '@/components/AvatarLayout';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { FaCommentDots } from 'react-icons/fa6';
-import { AiTwotoneEye } from 'react-icons/ai';
+import { AiOutlineMessage, AiTwotoneEye } from 'react-icons/ai';
 import CommentCard from '@/components/CommentCard';
 import SaveButton from '@/components/SaveButton';
 import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { HiMiniReceiptPercent } from 'react-icons/hi2';
 import { toast } from '@/components/ui/use-toast';
 import { AxiosError } from 'axios';
+import Link from 'next/link';
 
 function ExploreCourse() {
   const [loading, setLoading] = useState(true)
@@ -56,6 +57,9 @@ function ExploreCourse() {
       sellingPrice: 0,
       printPrice: 0,
       discount: 0,
+      chat: {
+        _id:'',
+      }
 
     }
   );
@@ -70,7 +74,7 @@ function ExploreCourse() {
     isPublished: false,
     channelName: '',
     uploadedDate: "",
-    views: 0
+    views: 0,
 
   }]);
 
@@ -99,28 +103,28 @@ function ExploreCourse() {
   // console.log(videos)
 
 
-const handleEnroll = async () => {
-  try {
-      const response = await api.post(`/v1/payment/enroll-course/${course_id}` );
+  const handleEnroll = async () => {
+    try {
+      const response = await api.post(`/v1/payment/enroll-course/${course_id}`);
       console.log(response);
-      setCourseData({...courseData, isEnrolled: true });
+      setCourseData({ ...courseData, isEnrolled: true });
       toast({
         title: 'Enrolled successfully',
         description: response?.data?.message,
-        variant:'success',
+        variant: 'success',
       });
-    
-  } catch (error) {
-    console.error(error);
-    const axiosError = error as AxiosError<AxiosError> 
 
-    toast({
-      title: 'Failed to enroll',
-      description: axiosError?.response?.data.message,
-      variant: 'destructive',
-    });
+    } catch (error) {
+      console.error(error);
+      const axiosError = error as AxiosError<AxiosError>
+
+      toast({
+        title: 'Failed to enroll',
+        description: axiosError?.response?.data.message,
+        variant: 'destructive',
+      });
+    }
   }
-}
 
 
 
@@ -168,7 +172,7 @@ const handleEnroll = async () => {
                         <Skeleton className='h-4  my-1 gap-2 w-24' />
                       </> :
                       <>
-                        <p  className="line-clamp-1 text-sm sm:text-md">{courseData?.author.name}</p>
+                        <p className="line-clamp-1 text-sm sm:text-md">{courseData?.author.name}</p>
                         <p className="line-clamp-1 text-xs sm:text-sm" >@{courseData?.author?.username}</p>
                       </>
 
@@ -193,6 +197,9 @@ const handleEnroll = async () => {
                   <div className='m-2 '>
                     <Skeleton className="rounded-full text-4xl w-10  h-10" />
                   </div>
+                  <div className='m-2 '>
+                    <Skeleton className="rounded-full text-4xl w-28  h-12" />
+                  </div>
                 </React.Fragment>
                   :
                   <React.Fragment>
@@ -205,7 +212,7 @@ const handleEnroll = async () => {
                           :
                           <HoverBorderGradient
                             as="button"
-                            className={`bg-muted text-muted-foreground flex items-center space-x-2 h-8 w-28 p-1 sm:p-2 sm:h-auto sm:w-auto`}
+                            className={`bg-muted text-muted-foreground flex items-center space-x-1  p-1 sm:p-2 sm:h-auto sm:w-auto`}
                           >
                             <Chip className="m-0">{courseData?.followersCount}</Chip>
                             <span>Followers</span>
@@ -229,6 +236,16 @@ const handleEnroll = async () => {
                     <div className='m-2 '>
                       <SaveButton className="rounded-full text-xl" type="course" saved={false} _id={courseData?._id} />
                     </div>
+                    {
+                      courseData?.isEnrolled && <div className='m-2 '>
+                      <Link href={`/message?g=${courseData?.chat?._id}`}>
+                      <Button className="bg-background text-foreground  rounded-full h-8 w-20 border hover:text-background text-xs">
+                        
+                        <span>Message</span>
+                      </Button>
+                      </Link>
+                    </div>
+                    }
                   </React.Fragment>
               }
 
@@ -272,7 +289,7 @@ const handleEnroll = async () => {
             <div className='p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl m-0 '>
               <h1 className='text-2xl font-bold'>Description :</h1>
             </div>
-            <p  className="line-clamp-2  text-card-foreground p-0 m-0 rounded">
+            <p className="line-clamp-2  text-card-foreground p-0 m-0 rounded">
 
               <div className="mt-2" dangerouslySetInnerHTML={{ __html: courseData?.description }} />
             </p>
@@ -281,7 +298,7 @@ const handleEnroll = async () => {
         </Card>
         <div className='max-h-dvh w-full flex flex-col lg:flex-none lg:max-h-dvh  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
           {
-           !loading&& !courseData?.isEnrolled && <div className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:bg-clip-text hover:text-transparent duration-300  p-4 relative   border rounded">
+            !loading && !courseData?.isEnrolled && <div className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:bg-clip-text hover:text-transparent duration-300  p-4 relative   border rounded">
               {/* <div className="   absolute h-full w-full top-0 opacity-10"></div> */}
               <div className="flex items-center py-2">
                 <h1 className="text-xl font-bold">Ready to start learning?</h1>

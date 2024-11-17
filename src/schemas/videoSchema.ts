@@ -5,6 +5,11 @@ export const createVideoSchema = z.object({
   description: z.string(),
   videoId: z.string(),
 });
+export const VideoFileSchema = z.object({
+    title: z.string(),
+    file: z.instanceof(File)
+    .refine((file) => file.size > 0, { message: "File is required" }),
+  });
 
 export const ChapterVideoIdSchema = z.object({
     videoId: z.string(),

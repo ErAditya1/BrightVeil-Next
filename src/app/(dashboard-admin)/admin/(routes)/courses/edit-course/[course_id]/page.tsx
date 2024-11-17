@@ -38,7 +38,8 @@ function EditCourse() {
         sellingPrice: 0,
         attachments: [],
         from: '',
-        to: ''
+        to: '',
+        isPublished: false
     });
     const [addChapter, setAddChapter] = useState(false)
     const user = useAppSelector(state=> state.auth.user);
@@ -57,6 +58,7 @@ function EditCourse() {
         try {
             
             const response = await api.patch(`/v1/courses/course/publish/${course_id}`, {});
+            setCourseData({...courseData, isPublished:courseData.isPublished ?false:true});
             console.log(response);
             toast({
                 title: 'Success!',
@@ -117,7 +119,7 @@ function EditCourse() {
                         <div className="flex flex-row gap-4 m-2 justify-end ">
                             <Button className='float-right' onClick={publishCourse}>
                                 <BiMoneyWithdraw className='h-5 w-5 mr-2' />
-                                Publish Course
+                               {courseData?.isPublished ? "Unpublish Course": "Publish Course"} 
                             </Button>
                         </div>
                         <div className='grid md:grid-cols-2 gap-4 p-4 w-full '>

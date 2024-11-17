@@ -24,9 +24,9 @@ type ChatListItemProps = ChatInterface & {
 };
 
 export default function ChatListItem(props: ChatListItemProps) {
-  const user = useAppSelector(state=> state.auth.user);
+  const user = useAppSelector(state => state.auth.user);
   const selectedChatId = useAppSelector((state) => state.chat.selectedChat._id);
-  
+
   const [chat, setChat] = React.useState<SelectedChat>()
   const chatUser = props?.participants?.filter(p => p._id !== user?._id)[0];
   React.useEffect(() => {
@@ -42,58 +42,56 @@ export default function ChatListItem(props: ChatListItemProps) {
   const dispatch = useAppDispatch()
   return (
     <React.Fragment>
-      
-        <ListItem>
-          <ListItemButton
-            onClick={() => {
-              toggleMessagesPane();
-              dispatch(selectChat(chat))
-            }}
-            selected={selected}
-            color="neutral"
-            sx={{
-              flexDirection: 'column',
-              alignItems: 'initial',
-              gap: 1,
-            }}
-          >
-            <Stack direction="row" spacing={1.5}>
-              <AvatarWithStatus online={chat?.isOnline} src={chat?.avatar?.url || ''} name={chat?.name || ''} username={chat?.username || ""}/>
-              <Box sx={{ flex: 1 }}>
-                <Typography level="title-sm">{chat?.name}</Typography>
-                {/* <Typography level="body-sm">{chat?.username}</Typography> */}
-                <Typography
-                  level="body-sm"
-                  className="break-all flex flex-row  items-center gap-2 line-clamp-1"
-                >
-                  {user?._id === props?.lastMessage?.sender?._id && <MessageStatus messageStatus={props?.lastMessage?.status} />} {props?.lastMessage?.content}
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  lineHeight: 1.5,
-                  textAlign: 'right',
-                }}
 
+      <ListItem>
+        <ListItemButton
+          onClick={() => {
+            toggleMessagesPane();
+          }}
+          selected={selected}
+          color="neutral"
+          sx={{
+            flexDirection: 'column',
+            alignItems: 'initial',
+            gap: 1,
+          }}
+        >
+          <Stack direction="row" spacing={1.5}>
+            <AvatarWithStatus online={chat?.isOnline} src={chat?.avatar?.url || ''} name={chat?.name || ''} username={chat?.username || ""} />
+            <Link href={`/message?${chat?.isGroupChat? `g=${chat?._id}` :`u=${chat?.username}`}`} className='w-full'>
+              <Box sx={{ flex: 1 }} className="">
+                <p className='line-clamp-1 text-sm sm:text-md'>{chat?.name}</p>
+                <p className='line-clamp-1 text-xs sm:text-sm'>@{chat?.username}</p>
+                {/* <p className='line-clamp-1 text-xs sm:text-sm'>{user?._id === props?.lastMessage?.sender?._id && <MessageStatus messageStatus={props?.lastMessage?.status} />} {props?.lastMessage?.content}
+                </p> */}
+              </Box>
+            </Link>
+            
+            <Box
+              sx={{
+                lineHeight: 1.5,
+                textAlign: 'right',
+              }}
+
+            >
+
+              <p
+                className={`text-xs break-keep ${props.unreadCount !== 0 && "text-green-600"}`}
               >
+                {props?.lastMessage?.createdAt && timeAgo(props?.lastMessage?.createdAt)}
+              </p>
 
-                <Typography
-                  className={`text-[10px] ${props.unreadCount!==0 && "text-green-600"}`}
-                >
-                  {props?.lastMessage?.createdAt && timeAgo(props?.lastMessage?.createdAt)}
-                </Typography>
+              {props.unreadCount !== 0 && (
+                <Chip className="my-auto text-sm px-2 h-[8px] bg-green-700">{props?.unreadCount}</Chip>
+              )}
 
-                {props.unreadCount!==0 && (
-                  <Chip className="my-auto text-sm px-2 h-[8px] bg-green-700">{props?.unreadCount}</Chip>
-                )}
-
-              </Box>
-            </Stack>
+            </Box>
+          </Stack>
 
 
-          </ListItemButton>
-        </ListItem>
-      
+        </ListItemButton>
+      </ListItem>
+
       <ListDivider sx={{ margin: 0 }} />
     </React.Fragment>
   );

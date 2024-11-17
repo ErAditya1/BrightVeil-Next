@@ -12,6 +12,7 @@ import Image from 'next/image';
 import AvatarLayout from '@/components/AvatarLayout';
 import { BiMoney } from 'react-icons/bi';
 import { toast } from '@/components/ui/use-toast';
+import { MdEventAvailable } from 'react-icons/md';
 
 type CourseData = {
   thumbnail: {
@@ -27,6 +28,8 @@ type CourseData = {
   };
   chapterCount: number;
   isFree: boolean;
+  isEnrolled: boolean;
+  sellingPrice: number;
 };
 
 type Props = {
@@ -40,10 +43,11 @@ export default function CourseCard({ _id }: Props) {
     author: { name: '', avatar: { url: '' }, username: '' },
     chapterCount: 0,
     isFree: false,
+    isEnrolled: false,
+    sellingPrice: 0,
   });
 
   const [isLoading, setIsLoading] = React.useState(true);
-  const [error, setError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -66,7 +70,7 @@ export default function CourseCard({ _id }: Props) {
 
   return (
     <Link href={`/courses/${_id}`} key={_id}>
-      <Card className="bg-card text-card-foreground p-0">
+      <Card className={`dark:bg-card text-card-foreground p-0 shadow-lg  ${courseData?.isEnrolled && 'border border-green-700  shadow-green-700'}`}>
         <CardOverflow>
           <AspectRatio ratio="2">
             {isLoading ? (
@@ -130,12 +134,37 @@ export default function CourseCard({ _id }: Props) {
                 <BookOpen className="mx-2" size={15} />
                 <span>{courseData.chapterCount} Chapters</span>
               </div>
-              {courseData.isFree && (
+
+              {courseData?.isEnrolled ? (
                 <div className="flex flex-row items-center bg-background text-foreground p-1 rounded-lg text-xs">
-                  <BiMoney className="mx-2" size={15} />
-                  <span>Free</span>
+                  <MdEventAvailable className="mx-2" size={15} />
+                  <span>Enrolled</span>
                 </div>
-              )}
+              )
+              :
+              <>
+                {
+                  courseData.sellingPrice > 0? (
+                    <div className="flex flex-row items-center bg-background text-foreground p-1 rounded-lg text-xs">
+                      <BiMoney className="mx-2" size={15} />
+                      <span>
+                        ${courseData.sellingPrice.toFixed(2)}
+                        {courseData.isFree? '(Free)' : ''}
+                      </span>
+                    </div>
+                  )
+                  : (
+                    <div className="flex flex-row items-center bg-background text-foreground p-1 rounded-lg text-xs line-clamp-1">
+                      <BiMoney className="mx-2" size={15} />
+                      <span>
+                        {courseData.isFree? 'Free' : 'Price not available'}
+                      </span>
+                    </div>
+                  )
+                }
+              </>
+            
+            }
             </CardContent>
           )}
         </CardOverflow>

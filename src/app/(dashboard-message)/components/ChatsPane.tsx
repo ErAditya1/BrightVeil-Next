@@ -112,7 +112,6 @@ export default function ChatsPane() {
               variant: 'success'
             })
             dispatch(addNewChat(res.data.data));
-            dispatch(selectChat(res.data.data));
             setGroupName('')
             setIsGroupCreating(false)
             setIsAddNew(false)

@@ -20,6 +20,8 @@ import { MdDelete } from 'react-icons/md';
 import api from '@/api';
 import { toast } from '@/components/ui/use-toast';
 import { deleteChat } from '@/store/chat/chatSlice';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 
 
@@ -28,6 +30,7 @@ export default function MessagesPaneHeader() {
   const selectedChat = useAppSelector((state) => state.chat.selectedChat)
   const user = useAppSelector(state=> state.auth.user);
   const dispatch = useAppDispatch()
+  const router = useRouter();
   const deleteChatHandler = () => {
     // TODO: Implement chat deletion
     
@@ -40,13 +43,14 @@ export default function MessagesPaneHeader() {
             description: res.data.message,
             variant: 'success'
           })
+          router.push("/message")
+          
           dispatch(deleteChat(selectedChat))
           // redirect to chats page
         })
         .catch((error) => {
           console.log(error);
         });
-    
 
   }
   const deleteGroupHandler = () => {
@@ -144,7 +148,7 @@ export default function MessagesPaneHeader() {
           >
             {selectedChat?.name}
           </Typography>
-          <Typography level="body-sm">@{selectedChat?.username}</Typography>
+          {!selectedChat?.isGroupChat && <Typography level="body-sm">@{selectedChat?.username}</Typography>}
         </div>
       </Stack>
       <Stack spacing={1} direction="row" alignItems="center">
@@ -164,10 +168,10 @@ export default function MessagesPaneHeader() {
           variant="outlined"
           size="sm"
           sx={{
-            display: { xs: 'none', md: 'inline-flex' },
+            display: 'inline-flex' ,
           }}
         >
-          {selectedChat?.isGroupChat ? <span>View Group</span> : <span>View Profile</span>}
+          {selectedChat?.isGroupChat ? <span>View Group</span> : <Link href={`/user/profile/${selectedChat?.username}`}>View Profile</Link>}
         </Button>
 
         <Dropdown>
