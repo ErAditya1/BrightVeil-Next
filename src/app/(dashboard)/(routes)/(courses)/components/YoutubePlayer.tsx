@@ -92,6 +92,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
       if (hideTimeout.current) clearTimeout(hideTimeout.current);
     };
   }, [resetHideTimeout]);
+  
   const handleClickOutside = (event: any) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsSetting(false)

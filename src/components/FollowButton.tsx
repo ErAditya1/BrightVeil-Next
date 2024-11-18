@@ -55,7 +55,7 @@ function FollowButton({ className, count, isFollowing, _id }: any) {
             <Chip>{followersCount}</Chip>
             {
                 following ? (
-                    <span>Following</span>
+                    <span>Unfollow</span>
                 ) : (
                     <span>Follow</span>
                 )

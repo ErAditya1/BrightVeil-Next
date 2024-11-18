@@ -152,7 +152,7 @@ export default function Sidebar() {
         borderRight: '1px solid',
         borderColor: 'divider',
       }}
-      className="Sidebar  dark:bg-card text-foreground z-[500]"
+      className="Sidebar  dark:bg-card text-foreground z-20"
     >
 
       <GlobalStyles

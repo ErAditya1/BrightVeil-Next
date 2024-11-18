@@ -30,6 +30,15 @@ import { useAppDispatch } from '@/store/hooks';
 import { GrUser } from 'react-icons/gr';
 import AvatarLayout from '@/components/AvatarLayout';
 import { FaUserCircle } from 'react-icons/fa';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 
 const UserProfile = () => {
   const { username } = useParams();
@@ -37,7 +46,19 @@ const UserProfile = () => {
   const dispatch = useAppDispatch()
   const router = useRouter()
 
+  const User = {
+    author: {
+      _id: '',
+      name: '',
+      username: '',
+      avatar: {
+        url: '',
+      }
 
+    },
+    isFollowingToMe: false,
+    isIamFollowing:true
+  }
   const [profile, setProfile] = useState({
     _id: '',
     name: '',
@@ -50,8 +71,8 @@ const UserProfile = () => {
     avatar: {
       url: '',
     },
-    followers: [],
-    followings: [],
+    followers: [User],
+    followings: [User],
     followersCount: 0,
     followingsCount: 0,
     postsCount: 0,
@@ -89,7 +110,7 @@ const UserProfile = () => {
 
   const handleMessage = () => {
     // TODO: Implement sending a message to the user
-    
+
     router.push(`/message?u=${profile?.username}`)
   }
 
@@ -103,22 +124,22 @@ const UserProfile = () => {
           <div className="relative  ">
             {
               loading ? <Skeleton className='w-full h-full' /> :
-              <>
-            
-            
-              {
-                profile?.coverImage?.url?
-                  <Image
-                    src={profile?.coverImage?.url}
-                    alt="Cover Image"
-                    height={500}
-                    width={1920}
-                    className="object-cover w-full h-full"
-                  />
-                  :
-                  <div className="bg-gradient-to-r from-blue-500 to-purple-500 w-full h-full" />
-              }
-              </>
+                <>
+
+
+                  {
+                    profile?.coverImage?.url ?
+                      <Image
+                        src={profile?.coverImage?.url}
+                        alt="Cover Image"
+                        height={500}
+                        width={1920}
+                        className="object-cover w-full h-full"
+                      />
+                      :
+                      <div className="bg-gradient-to-r from-blue-500 to-purple-500 w-full h-full" />
+                  }
+                </>
             }
             {/* Profile Photo */}
             <div className="absolute -bottom-12 left-4 ">
@@ -136,8 +157,8 @@ const UserProfile = () => {
                           width={500}
                         />
                         :
-                        <FaUserCircle className='w-20 h-20 sm:h-24 sm:w-24 bg-background rounded-full'/>
-                        
+                        <FaUserCircle className='w-20 h-20 sm:h-24 sm:w-24 bg-background rounded-full' />
+
                     }
                   </>
               }
@@ -164,7 +185,9 @@ const UserProfile = () => {
                   </div>
               }
 
+
               {/* Follow / Unfollow Button */}
+             
 
               {
                 loading ? <Skeleton className='w-32 h-12' /> : <>
@@ -179,37 +202,99 @@ const UserProfile = () => {
 
             {/* Followers and Following */}
             {
-              loading ?
-                <div className="flex space-x-6 mt-4">
-                  <Skeleton className='h-12 w-24' />
-                  <Skeleton className='h-12 w-24' />
-                  <Skeleton className='h-12 w-36' />
+                loading ?
+                  <div className="flex space-x-6 mt-4">
+                    <Skeleton className='h-12 w-24' />
+                    <Skeleton className='h-12 w-24' />
+                    <Skeleton className='h-12 w-36' />
 
-
-                </div>
-                : <div className="flex space-x-6 mt-4 items-center ">
-                  <div>
-                    <span className="font-bold">{profile?.followersCount}</span>
-                    <p className="text-gray-600">Followers</p>
-                  </div>
-                  <div>
-                    <span className="font-bold">{profile?.followingsCount}</span>
-                    <p className="text-gray-600">Following</p>
-                  </div>
-
-                  {/* Send Message Button */}
-                  <div>
-                    {
-                      !profile.isAuthor && <div>
-                        <button className="bg-gray-800 text-white px-4 py-2 rounded-lg" onClick={handleMessage}>
-                          Message
-                        </button>
-                      </div>
-                    }
 
                   </div>
-                </div>
-            }
+                  : <div className="flex space-x-6 mt-4">
+
+
+                    <DropdownMenu >
+                      <DropdownMenuTrigger className='border-none  focus-within:border-none '>
+                        <div className='cursor-pointer'>
+                          <span className="font-bold">{profile?.followersCount}</span>
+                          <p className="text-gray-600">Followers</p>
+                        </div>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className='p-2 '>
+                        <DropdownMenuLabel>Followers</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                       
+
+                          <div className="flex flex-col gap-2 w-dvw xs:w-72 p-2">
+                            {
+                              profile?.followers.map(user => (
+                                <div className='flex flex-row items-center justify-evenly w-full '>
+                                  <div className='flex flex-row items-center w-full'>
+                                    <AvatarLayout className="h-10 w-10 mr-1 text-xl" src={user?.author?.avatar?.url} name={user?.author?.name} username={user?.author?.username} />
+                                    <div className="card-content mx-2">
+                                      <p className="line-clamp-1 text-sm lg:text-md">{user?.author?.name}</p>
+                                      <p className='line-clamp-1 text-xs lg:text-md'>@{user?.author?.username}</p>
+                                    </div>
+                                  </div>
+                                  <Button className="">
+                                    {user?.isIamFollowing ? 'Unfallow' : <>{
+                                      user?.isFollowingToMe ? 'Fallow Back' : "Fallow"
+                                    }</>}
+                                  </Button>
+
+
+                                </div>
+                              )
+                              )
+                            }
+                          </div>
+                        
+
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger>
+                        <div className='cursor-pointer'>
+                          <span className="font-bold">{profile?.followingsCount}</span>
+                          <p className="text-gray-600">Following</p>
+                        </div>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuLabel>Fallowings</DropdownMenuLabel>
+                        {
+                          !loading &&
+
+                          <div className="flex flex-col gap-2 w-dvw xs:w-72 p-2">
+                            {
+                              profile?.followings.map(user => (
+                                <div className='flex flex-row items-center justify-evenly w-full '>
+                                  <div className='flex flex-row items-center w-full'>
+                                    <AvatarLayout className="h-10 w-10 mr-1 text-xl" src={user?.author?.avatar?.url} name={user?.author?.name} username={user?.author?.username} />
+                                    <div className="card-content mx-2">
+                                      <p className="line-clamp-1 text-sm lg:text-md">{user?.author?.name}</p>
+                                      <p className='line-clamp-1 text-xs lg:text-md'>@{user?.author?.username}</p>
+                                    </div>
+                                  </div>
+                                  <Button className="">
+                                    {user?.isIamFollowing ? 'Unfallow' : <>{
+                                      user?.isFollowingToMe ? 'Fallow Back' : "Fallow"
+                                    }</>}
+                                  </Button>
+
+
+                                </div>
+                              )
+                              )
+                            }
+                          </div>
+                        }
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+
+
+
+                  </div>
+              }
           </div>
 
 

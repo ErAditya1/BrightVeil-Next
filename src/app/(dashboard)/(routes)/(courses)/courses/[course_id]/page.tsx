@@ -58,7 +58,7 @@ function ExploreCourse() {
       printPrice: 0,
       discount: 0,
       chat: {
-        _id:'',
+        _id: '',
       }
 
     }
@@ -238,13 +238,13 @@ function ExploreCourse() {
                     </div>
                     {
                       courseData?.isEnrolled && <div className='m-2 '>
-                      <Link href={`/message?g=${courseData?.chat?._id}`}>
-                      <Button className="bg-background text-foreground  rounded-full h-8 w-20 border hover:text-background text-xs">
-                        
-                        <span>Message</span>
-                      </Button>
-                      </Link>
-                    </div>
+                        <Link href={`/message?g=${courseData?.chat?._id}`}>
+                          <Button className="bg-background text-foreground  rounded-full h-8 w-20 border hover:text-background text-xs">
+
+                            <span>Message</span>
+                          </Button>
+                        </Link>
+                      </div>
                     }
                   </React.Fragment>
               }
@@ -366,9 +366,12 @@ function ExploreCourse() {
 
 
                       </div>
-                      <Button onClick={handleEnroll} className="rounded-2 text-white bg-blue-500 hover:bg-blue-600 w-full" >
-                        Enrolle For More
-                      </Button>
+                      <Link href={`/payment?course=${courseData?._id}`}>
+
+                        <Button className="rounded-2 text-white bg-blue-500 hover:bg-blue-600 w-full" >
+                          Enrolle For More
+                        </Button>
+                      </Link>
                     </>
                   )
                 }
