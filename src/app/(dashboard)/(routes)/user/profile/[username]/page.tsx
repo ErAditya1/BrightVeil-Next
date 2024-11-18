@@ -38,6 +38,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import UserFollowCard from '@/components/UserFollowCard';
 
 
 const UserProfile = () => {
@@ -56,8 +57,6 @@ const UserProfile = () => {
       }
 
     },
-    isFollowingToMe: false,
-    isIamFollowing:true
   }
   const [profile, setProfile] = useState({
     _id: '',
@@ -71,8 +70,8 @@ const UserProfile = () => {
     avatar: {
       url: '',
     },
-    followers: [User],
-    followings: [User],
+    followers: [],
+    followings: [],
     followersCount: 0,
     followingsCount: 0,
     postsCount: 0,
@@ -134,7 +133,7 @@ const UserProfile = () => {
                         alt="Cover Image"
                         height={500}
                         width={1920}
-                        className="object-cover w-full h-full"
+                        className="object-cover bg-cover  max-h-48 md:max-h-64 xl:max-h-72 h-full w-full"
                       />
                       :
                       <div className="bg-gradient-to-r from-blue-500 to-purple-500 w-full h-full" />
@@ -225,29 +224,7 @@ const UserProfile = () => {
                         <DropdownMenuSeparator />
                        
 
-                          <div className="flex flex-col gap-2 w-dvw xs:w-72 p-2">
-                            {
-                              profile?.followers.map(user => (
-                                <div className='flex flex-row items-center justify-evenly w-full '>
-                                  <div className='flex flex-row items-center w-full'>
-                                    <AvatarLayout className="h-10 w-10 mr-1 text-xl" src={user?.author?.avatar?.url} name={user?.author?.name} username={user?.author?.username} />
-                                    <div className="card-content mx-2">
-                                      <p className="line-clamp-1 text-sm lg:text-md">{user?.author?.name}</p>
-                                      <p className='line-clamp-1 text-xs lg:text-md'>@{user?.author?.username}</p>
-                                    </div>
-                                  </div>
-                                  <Button className="">
-                                    {user?.isIamFollowing ? 'Unfallow' : <>{
-                                      user?.isFollowingToMe ? 'Fallow Back' : "Fallow"
-                                    }</>}
-                                  </Button>
-
-
-                                </div>
-                              )
-                              )
-                            }
-                          </div>
+                        <UserFollowCard users={profile?.followers}/>
                         
 
                       </DropdownMenuContent>
@@ -264,29 +241,7 @@ const UserProfile = () => {
                         {
                           !loading &&
 
-                          <div className="flex flex-col gap-2 w-dvw xs:w-72 p-2">
-                            {
-                              profile?.followings.map(user => (
-                                <div className='flex flex-row items-center justify-evenly w-full '>
-                                  <div className='flex flex-row items-center w-full'>
-                                    <AvatarLayout className="h-10 w-10 mr-1 text-xl" src={user?.author?.avatar?.url} name={user?.author?.name} username={user?.author?.username} />
-                                    <div className="card-content mx-2">
-                                      <p className="line-clamp-1 text-sm lg:text-md">{user?.author?.name}</p>
-                                      <p className='line-clamp-1 text-xs lg:text-md'>@{user?.author?.username}</p>
-                                    </div>
-                                  </div>
-                                  <Button className="">
-                                    {user?.isIamFollowing ? 'Unfallow' : <>{
-                                      user?.isFollowingToMe ? 'Fallow Back' : "Fallow"
-                                    }</>}
-                                  </Button>
-
-
-                                </div>
-                              )
-                              )
-                            }
-                          </div>
+                          <UserFollowCard users={profile?.followings}/>
                         }
                       </DropdownMenuContent>
                     </DropdownMenu>
