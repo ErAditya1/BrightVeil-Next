@@ -95,14 +95,14 @@ function Page() {
           setVideos(res.data.data.relatedVideo)
           setLoading(false)
           setLoadingVideo(false)
-        } else {
+        }else{
           router.push('/not-found')
         }
       }).catch((err) => {
-
-        if (err.response.data.statusCode === 403) {
+        
+        if(err.response.data.statusCode === 403){
           router.push('/not-found')
-        } else {
+        }else{
           setLoadingVideo(false)
         }
       })
@@ -124,8 +124,8 @@ function Page() {
         <Card className='grow dark:bg-background p-0 text-card-foreground rounded-lg ' style={{ padding: 0 }}>
           <div className=' aspect-video col-span-8 rounded-xl  max-h-dvh max-w-screen'>
             {
-              v && !loadingVideo ? <CustomVideoPlayer videoId={v} thumbnailUrl={playingVideoData?.thumbnail?.secure_url} title={playingVideoData?.title} /> :
-                <Skeleton className='h-full w-full' />
+              v && !loadingVideo ? <CustomVideoPlayer videoId={v} thumbnailUrl={playingVideoData?.thumbnail?.secure_url} title={playingVideoData?.title} />:
+              <Skeleton className='h-full w-full'/>
             }
 
           </div>
@@ -151,7 +151,7 @@ function Page() {
                   </div>
                     :
                     <div className="card-content mx-2">
-                      <p className="line-clamp-1 text-sm lg:text-md">{playingVideoData?.author?.name}</p>
+                      <p  className="line-clamp-1 text-sm lg:text-md">{playingVideoData?.author?.name}</p>
                       <p className='line-clamp-1 text-xs lg:text-md'>@{playingVideoData?.author?.username}</p>
                     </div>
                 }

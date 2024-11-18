@@ -62,7 +62,6 @@ export default function MessageInput() {
           // console.log(res)
           dispatch(addMessages(res?.data?.data))
           dispatch(addChatLastMessage(res?.data?.data));
-
         })
         .catch((err) => { console.log(err) })
         .finally(() => {
