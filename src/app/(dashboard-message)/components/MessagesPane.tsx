@@ -13,11 +13,9 @@ import Typing from './Typing';
 import { useSocket } from '@/context/SocketContext';
 import { Stack } from '@mui/material';
 
-type MessagesPaneProps = {
-  chat: ChatProps;
-};
 
-export default function MessagesPane() {
+
+export default function MessagesPane({handleSlide}:any) {
 
   const user = useAppSelector(state=> state.auth.user);
   const {selectedChat, messages} = useAppSelector((state)=> state.chat)
@@ -37,7 +35,7 @@ export default function MessagesPane() {
       }}
       className="h-dvh"
     >
-      <MessagesPaneHeader   />
+      <MessagesPaneHeader  handleSlide={handleSlide} />
       <Box
         sx={{
           display: 'flex',

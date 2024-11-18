@@ -19,7 +19,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { AxiosError } from 'axios';
-import { Loader2 } from 'lucide-react';
+import { EyeIcon, EyeOff, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { signUpSchema } from '@/schemas/signUpSchema';
 import BottomGradient from '@/components/BottomGradient';
@@ -34,6 +34,7 @@ export default function SignUpForm() {
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const debouncedUsername = useDebounce(username, 1000);
+  const [showPassword, setShowPassword] = useState(false)
 
   const router = useRouter();
   const { toast } = useToast();
@@ -219,9 +220,13 @@ export default function SignUpForm() {
               name="password"
               control={form.control}
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel className='text-foreground'>Password</FormLabel>
-                  <Input type="password" {...field} name="password" />
+                <FormItem className='relative'>
+                  <FormLabel>Password</FormLabel>
+                  <Input type={showPassword ? "text": 'password'} {...field} />
+                    <span className="text-gray-400 hover:text-gray-600 cursor-pointer absolute right-2 bottom-2" onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword? <EyeOff/> : <EyeIcon/>}
+                    </span>
+                  
                   <FormMessage />
                 </FormItem>
               )}

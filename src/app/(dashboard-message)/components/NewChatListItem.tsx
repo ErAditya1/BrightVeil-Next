@@ -22,6 +22,7 @@ type ChatListItemProps = ListItemButtonProps & {
   isOnline: boolean;
   unread?: boolean;
   setIsAddNew: (args: boolean) => void;
+  handleSlide: ()=> void
 };
 
 export default function NewChatListItem(props: ChatListItemProps) {
@@ -50,8 +51,8 @@ export default function NewChatListItem(props: ChatListItemProps) {
         >
           <Stack direction="row" spacing={1.5}>
             <AvatarWithStatus online={isOnline} src={avatar?.url} name={name} username={username} />
-            <Link href={`/message?u=${username}`} className='w-full'>
-              <Box sx={{ flex: 1 }} className="">
+            <Link href={`/message?u=${username}`} className='w-full' >
+              <Box sx={{ flex: 1 }} className=""onClick={props?.handleSlide} >
                 <p className='line-clamp-1 text-sm sm:text-md'>{name}</p>
                 <p className='line-clamp-1 text-xs sm:text-sm'>@{username}</p>
               </Box>

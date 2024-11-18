@@ -21,7 +21,7 @@ import { AxiosError } from 'axios';
 
 import { VideoFileSchema } from '@/schemas/videoSchema';
 
-export default function ChapterForm({ setCourseData, setAddChapter }: any) {
+export default function FileForm({ setChapterData, setAddFile }: any) {
     const router = useRouter();
     // const [isSubmitting, setIsSubmitting] = useState(false);
     const { chapter_id } = useParams()
@@ -37,12 +37,17 @@ export default function ChapterForm({ setCourseData, setAddChapter }: any) {
 
 
     const onSubmit = async (data: z.infer<typeof VideoFileSchema>) => {
-        // setIsSubmitting(true);
+        
 
 
         try {
+            const formData = new FormData();
+            formData.append('file', data.file);
+            formData.append('title', data.title);
+           
 
-            const response = await api.post(`/v1/courses/course/addFile/${chapter_id}`, data,
+
+            const response = await api.post(`/v1/videos/video/file/${chapter_id}`, formData
 
             );
             toast({
@@ -50,11 +55,11 @@ export default function ChapterForm({ setCourseData, setAddChapter }: any) {
                 description: response?.data?.message,
                 variant: 'success',
             });
-            setAddChapter(false)
-            const chapter = response.data.data
-            console.log(chapter);
-            setCourseData((prev: any) => {
-                return { ...prev, chapters: [...prev.chapters, chapter] }
+            setAddFile(false)
+            const file = response.data.data
+            console.log(file);
+            setChapterData((prev: any) => {
+                return { ...prev, files: [...prev?.files, file] }
             })
 
             // setIsSubmitting(false);
@@ -92,7 +97,7 @@ export default function ChapterForm({ setCourseData, setAddChapter }: any) {
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className='flex justify-between'><span>Video Id:</span></FormLabel>
+                                    <FormLabel className='flex justify-between'><span>File Title:</span></FormLabel>
                                     <Input type="text" {...field} />
                                     <FormMessage />
                                 </FormItem>

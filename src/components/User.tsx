@@ -49,8 +49,8 @@ function User({ user }: any) {
     <>
       <AvatarLayout username={user?.username} src={user?.avatar?.url} name={user?.name}/>
       <Box sx={{ minWidth: 0, flex: 1 }}>
-        <Typography level="title-sm">{user.name}</Typography>
-        <Typography level="body-xs">{user.email}</Typography>
+        <p className='text-xs line-clamp-1'>{user.name}</p>
+        <p className='text-xs line-clamp-1'>{user.email}</p>
       </Box>
       <IconButton size="sm" variant="plain" color="neutral">
         <LogoutRoundedIcon onClick={logoutHandler} />

@@ -31,7 +31,7 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
 
 
 function Page() {
-
+  const [isSlideIn, setIsSlideIn] = useState(true);
   const { socket } = useSocket()
 
   const dispatch = useAppDispatch();
@@ -105,7 +105,7 @@ function Page() {
 
                 }
                 else {
-                  if ( chat._id === g) {
+                  if (chat._id === g) {
                     dispatch(selectChat(chat))
                     return chat
                   }
@@ -113,16 +113,6 @@ function Page() {
 
               })
 
-            } else {
-              const chat = chats[0]
-              if (!chat?.isGroupChat) {
-                const chatUser = chat?.participants?.filter((p: any) => p._id !== user?._id)[0];
-                dispatch(selectChat({ _id: chat?._id, admin: chat?.admin, username: chatUser?.username, name: chatUser?.name, email: chatUser?.email, avatar: chatUser?.avatar, isOnline: chatUser?.isOnline, isGroupChat: chat?.isGroupChat, participants: chat?.participants, createdAt: chat?.createdAt, updatedAt: chat?.updatedAt }))
-
-              } else {
-                dispatch(selectChat(chat))
-
-              }
             }
 
 
@@ -139,7 +129,7 @@ function Page() {
   const getMessages = async () => {
     // Check if a chat is selected, if not, show an alert
     if (!selectedChat?._id) return alert("No chat is selected");
-
+    setIsSlideIn(false)
     // Check if socket is available, if not, show an alert
     if (!socket) return;
 
@@ -347,7 +337,7 @@ function Page() {
 
     if (selectedChat?._id && socket) {
 
-
+      
 
 
       // If the socket connection exists, emit an event to join the specific chat using its ID.
@@ -362,6 +352,8 @@ function Page() {
     }
     // An empty dependency array ensures this useEffect runs only once, similar to componentDidMount.
   }, [selectedChat._id]);
+
+ 
 
 
   // This useEffect handles the setting up and tearing down of socket event listeners.
@@ -406,14 +398,11 @@ function Page() {
       socket.off(MESSAGE_DELETE_EVENT, onMessageDelete);
     };
 
-    // Note:
-    // The `chats` array is used in the `onMessageReceived` function.
-    // We need the latest state value of `chats`. If we don't pass `chats` in the dependency array,
-    // the `onMessageReceived` will consider the initial value of the `chats` array, which is empty.
-    // This will not cause infinite renders because the functions in the socket are getting mounted and not executed.
-    // So, even if some socket callbacks are updating the `chats` state, it's not
-    // updating on each `useEffect` call but on each socket call.
+    
   }, [socket, chats]);
+
+  const handleSlide = ()=> {setIsSlideIn(!isSlideIn)}
+
 
   return (
     <Sheet
@@ -435,7 +424,6 @@ function Page() {
         sx={{
           position: { xs: 'fixed', sm: 'sticky' },
           transform: {
-            xs: 'translateX(calc(100%  * (var(--MessagesPane-slideIn, 0) - 1)))',
             sm: 'none',
           },
           transition: 'transform 0.4s, width 0.4s',
@@ -443,9 +431,11 @@ function Page() {
           width: '100%',
 
         }}
-        className="h-full overflow-auto"
+        className={`h-full overflow-auto transform transition-transform duration-300 ${isSlideIn ? "translate-x-0" : "-translate-x-full"
+          }`}
+
       >
-        <ChatsPane />
+        <ChatsPane handleSlide={handleSlide}/>
       </Sheet>
       {
         !selectedChat?._id ?
@@ -456,7 +446,7 @@ function Page() {
               height={200}
               className="h-20 w-20 rounded-full" alt="whatsapp loading button" />
           </div>
-          : <MessagesPane />
+          : <MessagesPane handleSlide={handleSlide} />
 
 
       }

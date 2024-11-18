@@ -111,7 +111,7 @@ return (
     </div> */}
     <div className="grid xs:grid-cols-2 md:grid-cols-3 m-4  lg:grid-cols-3 xl:grid-cols-4  gap-4">
       {
-        courseData.map((course) => (
+        courseData?.map((course) => (
           <CourseCard key={course?._id} _id={course?._id} />
         ))
       }

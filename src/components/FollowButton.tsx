@@ -8,6 +8,7 @@ import { toast } from './ui/use-toast'
 function FollowButton({ className, count, isFollowing, _id }: any) {
     const [following, setFollowing] = React.useState(isFollowing)
     const [followersCount, setFollowersCount] = React.useState(count)
+    const [isLoading, setIsLoading] = React.useState(false)
     useEffect(() => {
         setFollowing(isFollowing)
         setFollowersCount(count)
@@ -15,8 +16,8 @@ function FollowButton({ className, count, isFollowing, _id }: any) {
 
 
     const handleFallow = () => {
-
-
+        if(isLoading)   return
+        setIsLoading(true)
         api.post(`/v1/users/user-follow-handler/${_id}`)
             .then((res) => {
                 setFollowing(!following)
@@ -30,8 +31,10 @@ function FollowButton({ className, count, isFollowing, _id }: any) {
                     description: res.data.message,
                     variant: 'success'
                 })
+                setIsLoading(false)
             })
             .catch((error) => {
+                setIsLoading(false)
                 const axiosError = error as AxiosError<AxiosError>
                 toast({
                     title: 'Follow Failed!',
@@ -46,6 +49,7 @@ function FollowButton({ className, count, isFollowing, _id }: any) {
             as="button"
             className={`z-10 bg-muted text-muted-foreground flex items-center space-x-2 h-8 w-28 p-1 sm:p-2 sm:h-auto sm:w-auto ${className}`}
             onClick={handleFallow}
+            
         >
 
             <Chip>{followersCount}</Chip>

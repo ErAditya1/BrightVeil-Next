@@ -64,6 +64,7 @@ export default function EditProfile() {
       mobileNumber: user?.mobileNumber,
       username: user?.username,
       about: user?.about,
+      email: user?.email
 
     }
   })
@@ -443,7 +444,21 @@ export default function EditProfile() {
                         )}
                       />
                     </Stack>
+                    
                   </Stack>
+                  <Stack spacing={1}>
+                      <FormField
+                        name="email"
+                        control={form.control}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className='text-foreground'>Email:</FormLabel>
+                            <Input {...field} name="email" />
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </Stack>
                   <Stack spacing={2} sx={{ my: 1 }}>
                     <FormField
                       name="about"

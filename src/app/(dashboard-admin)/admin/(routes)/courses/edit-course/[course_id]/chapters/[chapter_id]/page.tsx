@@ -1,5 +1,5 @@
 'use client'
-import { BadgeDollarSignIcon, BookMarkedIcon, FileAxis3DIcon, LayoutDashboard, PlusCircle } from 'lucide-react'
+import { BadgeDollarSignIcon, BookMarkedIcon, DeleteIcon, FileAxis3DIcon, LayoutDashboard, PlusCircle } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { BiMoneyWithdraw } from 'react-icons/bi'
 import { Button } from '@/components/ui/button'
@@ -14,12 +14,15 @@ import ChapterVideoIdForm from '@/app/(dashboard)/(routes)/(courses)/components/
 import ChapterVisibility from '@/app/(dashboard)/(routes)/(courses)/components/ChapterVisibilityForm'
 import { ApiResponse } from '@/types/ApiResponse'
 import ChapterThumbnailForm from '@/app/(dashboard)/(routes)/(courses)/components/ChapterThumbnailForm'
+import FileForm from '@/app/(dashboard)/(routes)/(courses)/components/FileForm'
+import FileCard from '@/app/(dashboard)/(routes)/(courses)/components/FileCard'
 
 
 function EditCourse() {
 
     const { chapter_id } = useParams();
     const router = useRouter();
+    const [addFile, setAddFile] = useState(false)
 
 
     const [chapterData, setChapterData] = useState({
@@ -29,15 +32,19 @@ function EditCourse() {
         videoId: '',
         isPublished: '',
         visibility: '',
-        files: [],
+        files: [{
+            _id:'',
+            title: '',
+            file:{}
+
+        }],
         tests: [],
         order: 0,
     });
-    const [addChapter, setAddChapter] = useState(false)
 
     useEffect(() => {
 
-        api.get(`/v1/videos/video/get-chapter/${chapter_id}`)
+        api.get(`/v1/videos/video/get-video/${chapter_id}`)
             .then(res => {
                 console.log(res)
                 setChapterData(res.data.data)
@@ -46,7 +53,17 @@ function EditCourse() {
 
     }, [chapter_id]);
 
-
+    const deleteFile = async (file_id:string) => {
+        try {
+           const res = await api.delete(`/v1/videos/video/file/${file_id}`)
+            console.log(res)
+            setChapterData(prevState => ({...prevState, files: prevState.files.filter(file => file._id!== file_id) }));
+            
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const onPublish = async () => {
         // setIsSubmitting(true);
@@ -87,7 +104,7 @@ function EditCourse() {
         // setIsSubmitting(true);
 
         try {
-            
+
             const response = await api.patch(`/v1/videos/video/update-videoUnPublish/${chapter_id}`, {},
 
             );
@@ -189,9 +206,36 @@ function EditCourse() {
                             <div className="my-4">
                                 <div className="flex flex-col  gap-2  ">
                                     <div className="flex flex-row justify-between">
-                                        <span className="text-md mx-2 flex"><BookMarkedIcon />Chapter's Notes:</span ><span className="text-md mx-2 flex cursor-pointer " onClick={() => setAddChapter(!addChapter)}><PlusCircle /> Add Chapters</span>
+                                        <span className="text-md mx-2 flex"><BookMarkedIcon />Chapter's Notes:</span ><span className="text-md mx-2 flex cursor-pointer " onClick={() => setAddFile(!addFile)}><PlusCircle /> Add Notes:</span>
                                     </div>
+                                    {addFile && <FileForm setChapterData={setChapterData} setAddFile={setAddFile}/>}
 
+                                </div>
+                                <div className=" m-2 border p-2 rounded">
+                                    <span className="text-md mx-2 flex"> <FileAxis3DIcon />Course Attachments</span>
+                                    <div className='m-2'>
+                                        {
+                                            !chapterData?.files?.length ? (
+
+                                                <span>Notes are not available...</span>
+
+                                            )
+                                                :
+                                                <div>
+                                                    {
+                                                        chapterData?.files?.map((item) => (
+                                                            <div className='relative' >
+                                                                <FileCard
+                                                                    key={item._id}
+                                                                    item= {item}
+                                                                />
+                                                                <DeleteIcon className='h-5 w-5 absolute top-1 right-1 cursor-pointer' onClick={() => deleteFile(item._id)} />
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </div>
+                                        }
+                                    </div>
                                 </div>
                             </div>
 

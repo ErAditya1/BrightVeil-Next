@@ -77,11 +77,11 @@ export default function CourseCard({ _id }: Props) {
               <Skeleton className="w-full rounded animate-pulse" />
             ) : (
               <Image
-                src={courseData.thumbnail.secure_url || '/placeholder-image.png'}
+                src={courseData?.thumbnail?.secure_url || '/placeholder-image.png'}
                 loading="lazy"
                 width={500}
                 height={500}
-                alt={courseData.title || 'Course Thumbnail'}
+                alt={courseData?.title || 'Course Thumbnail'}
               />
             )}
           </AspectRatio>
@@ -106,10 +106,10 @@ export default function CourseCard({ _id }: Props) {
               />
               <div className="card-content flex justify-center flex-col">
                 <p  className="line-clamp-2 break-words text-sm sm:text-md ">
-                  {courseData.title}
+                  {courseData?.title}
                 </p>
                 <p className="line-clamp-1 text-xs sm:text-md">
-                  @{courseData.author.username}
+                  @{courseData?.author.username}
                 </p>
               </div>
             </div>
@@ -132,7 +132,7 @@ export default function CourseCard({ _id }: Props) {
             >
               <div className="flex flex-row items-center bg-background text-foreground p-1 rounded-lg text-xs">
                 <BookOpen className="mx-2" size={15} />
-                <span>{courseData.chapterCount} Chapters</span>
+                <span>{courseData?.chapterCount} Chapters</span>
               </div>
 
               {courseData?.isEnrolled ? (
@@ -144,12 +144,12 @@ export default function CourseCard({ _id }: Props) {
               :
               <>
                 {
-                  courseData.sellingPrice > 0? (
+                  courseData?.sellingPrice > 0? (
                     <div className="flex flex-row items-center bg-background text-foreground p-1 rounded-lg text-xs">
                       <BiMoney className="mx-2" size={15} />
                       <span>
-                        ${courseData.sellingPrice.toFixed(2)}
-                        {courseData.isFree? '(Free)' : ''}
+                        ${courseData?.sellingPrice.toFixed(2)}
+                        {courseData?.isFree? '(Free)' : ''}
                       </span>
                     </div>
                   )
@@ -157,7 +157,7 @@ export default function CourseCard({ _id }: Props) {
                     <div className="flex flex-row items-center bg-background text-foreground p-1 rounded-lg text-xs line-clamp-1">
                       <BiMoney className="mx-2" size={15} />
                       <span>
-                        {courseData.isFree? 'Free' : 'Price not available'}
+                        {courseData?.isFree? 'Free' : 'Price not available'}
                       </span>
                     </div>
                   )

@@ -13,10 +13,7 @@ export const updateProfileSchema = z.object({
   username: usernameValidation,
   about: z.string().max(200, "About content should not exceed 200 characters").optional(),
   mobileNumber:z.string().min(10, "Please enter valid mobile number").max(10, "Please enter valid mobile number"),
-  avatar: z.instanceof(File).optional()
-  .refine((file) => {
-    return !file || file.size <= MAX_UPLOAD_SIZE;
-  }, 'File size must be less than 3MB')
+  email: z.string().email(),
   
   
 });

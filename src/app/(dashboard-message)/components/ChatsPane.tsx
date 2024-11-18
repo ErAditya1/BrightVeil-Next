@@ -29,7 +29,7 @@ import GoBackButton from '@/components/GoBack';
 
 
 
-export default function ChatsPane() {
+export default function ChatsPane({ handleSlide }: any) {
 
 
   const dispatch = useAppDispatch()
@@ -49,6 +49,12 @@ export default function ChatsPane() {
     setFilteredChat(chats)
     setFilterNewChat(users)
     if (chats.length > 0) sortChats(chats)
+    if (chats.length === 0) {
+      setIsAddNew(true)
+    } else {
+      setIsAddNew(false)
+    }
+
   }, [chats, users])
 
   const sortChats = (chats: any) => {
@@ -89,41 +95,41 @@ export default function ChatsPane() {
         })
         return
       }
-      
-        const formData = new FormData();
-        if (groupAvatar) {
-          formData.append("avatar", groupAvatar)
-        }
-        formData.append("name", groupName)
 
-        selectedUsers.forEach((selectedUser) => {
-          formData.append(`participants`, selectedUser);
-        });
+      const formData = new FormData();
+      if (groupAvatar) {
+        formData.append("avatar", groupAvatar)
+      }
+      formData.append("name", groupName)
 
-        // console.log(formData.get("avatar"));
+      selectedUsers.forEach((selectedUser) => {
+        formData.append(`participants`, selectedUser);
+      });
+
+      // console.log(formData.get("avatar"));
 
 
-        api.post(`/v1/chat-app/chats/group`, formData)
-          .then((res) => {
-            console.log(res.data.data)
-            toast({
-              title: 'Group created successfully',
-              description: res.data.message,
-              variant: 'success'
-            })
-            dispatch(addNewChat(res.data.data));
-            setGroupName('')
-            setIsGroupCreating(false)
-            setIsAddNew(false)
-            setSelectedUsers([]);
-            URL.revokeObjectURL(groupAvatarUrl)
-            setGroupAvatarUrl('')
-            setGroupAvatar(undefined)
+      api.post(`/v1/chat-app/chats/group`, formData)
+        .then((res) => {
+          console.log(res.data.data)
+          toast({
+            title: 'Group created successfully',
+            description: res.data.message,
+            variant: 'success'
           })
-          .catch((error) => {
-            console.error(error)
-          })
-      
+          dispatch(addNewChat(res.data.data));
+          setGroupName('')
+          setIsGroupCreating(false)
+          setIsAddNew(false)
+          setSelectedUsers([]);
+          URL.revokeObjectURL(groupAvatarUrl)
+          setGroupAvatarUrl('')
+          setGroupAvatar(undefined)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+
 
     } else {
       toast({
@@ -184,51 +190,24 @@ export default function ChatsPane() {
               pb={1.5}
             >
               <GoBackButton />
-              <Typography
-                fontSize={{ xs: 'md', md: 'lg' }}
-                component="h1"
-                fontWeight="lg"
-                endDecorator={
-                  <Chip
-                    variant="soft"
-                    color="primary"
-                    size="md"
-                    slotProps={{ root: { component: 'span' } }}
-                  >
-                    4
-                  </Chip>
-                }
-                sx={{ mr: 'auto' }}
-              >
-                Messages
-              </Typography>
-              <div>
-                <Box>
-                  <IconButton
-                    variant="plain"
-                    aria-label="edit"
-                    color="neutral"
-                    size="sm"
-                    // sx={{ display: { xs: 'none', sm: 'unset' } }}
-                    onClick={() => { setIsAddNew(!isAddNew) }}
-                  >
-                    <MdAddComment className='text-2xl' />
-                  </IconButton>
-                  <IconButton
-                    variant="plain"
-                    aria-label="edit"
-                    color="neutral"
-                    size="sm"
-                    onClick={() => {
-                      toggleMessagesPane();
-                    }}
-                    sx={{ display: { sm: 'none' } }}
-                  >
-                    <CloseRoundedIcon />
-                  </IconButton>
-                </Box>
+
+
+
+              <Box className="space-x-2">
+                <IconButton
+                  variant="plain"
+                  aria-label="edit"
+                  color="neutral"
+                  size="sm"
+                  // sx={{ display: { xs: 'none', sm: 'unset' } }}
+                  onClick={() => { setIsAddNew(!isAddNew), setIsGroupCreating(false) }}
+                >
+                  <MdAddComment className='text-2xl' />
+                </IconButton>
+
                 <ColorSchemeToggle />
-              </div>
+              </Box>
+
               {/* <Dropdown>
                 <MenuButton><MoreVertRoundedIcon /></MenuButton>
                 <Menu>
@@ -360,6 +339,7 @@ export default function ChatsPane() {
                           >
 
                             <ListItemButton
+
                               onClick={() => {
                                 setIsGroupCreating(true)
                                 setIsAddNew(false)
@@ -383,6 +363,7 @@ export default function ChatsPane() {
 
                             {filterNewChats?.map((chat: any) => (
                               <NewChatListItem
+                                handleSlide={handleSlide}
                                 key={chat._id}
                                 setIsAddNew={setIsAddNew}
                                 {...chat}
@@ -414,6 +395,7 @@ export default function ChatsPane() {
                     >
                       {filteredChats?.map((chat: any) => (
                         <ChatListItem
+                          handleSlide={handleSlide}
                           key={chat._id}
                           {...chat}
                         />

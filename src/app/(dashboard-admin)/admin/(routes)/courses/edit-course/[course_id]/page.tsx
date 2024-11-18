@@ -58,7 +58,7 @@ function EditCourse() {
         try {
             
             const response = await api.patch(`/v1/courses/course/publish/${course_id}`, {});
-            setCourseData({...courseData, isPublished:courseData.isPublished ?false:true});
+            setCourseData({...courseData, isPublished:courseData?.isPublished ?false:true});
             console.log(response);
             toast({
                 title: 'Success!',

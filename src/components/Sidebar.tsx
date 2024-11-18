@@ -90,9 +90,9 @@ export default function Sidebar() {
   const menuItem = [
 
     {
-      label: 'Dashboard',
+      label: user?.role && 'Dashboard',
       href: `/${user?.role}`,
-      icon: <DashboardRoundedIcon />,
+      icon: user?.role &&<DashboardRoundedIcon />,
     },
     {
       label: 'Home',

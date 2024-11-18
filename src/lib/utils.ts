@@ -38,7 +38,7 @@ export function openSidebar() {
   
   export function closeMessagesPane() {
     if (isClient) {
-      document.documentElement.style.removeProperty('--MessagesPane-slideIn');
+      document.documentElement.style.setProperty('--MessagesPane-slideIn', '0');
       document.body.style.removeProperty('overflow');
     }
   }
@@ -48,10 +48,12 @@ export function openSidebar() {
       const slideIn = window
         .getComputedStyle(document.documentElement)
         .getPropertyValue('--MessagesPane-slideIn');
-      if (slideIn) {
-        closeMessagesPane();
-      } else {
-        openMessagesPane();
+        console.log(slideIn);
+        if (slideIn) {
+          closeMessagesPane();
+        } else {
+          openMessagesPane();
+          console.log('No messages pane')
       }
     }
   }

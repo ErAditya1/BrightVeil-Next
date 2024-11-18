@@ -107,7 +107,7 @@ function EditCourse() {
 
         <div>
             {
-                courseData.title && (
+                courseData?.title && (
                     <div className='w-full'>
                         <div className="flex flex-row gap-4 m-2 justify-end ">
                             <Button className='float-right' onClick={publishCourse}>

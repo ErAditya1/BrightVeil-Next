@@ -19,6 +19,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import AvatarLayout from '@/components/AvatarLayout';
+import { FaUserCircle } from 'react-icons/fa';
 
 const UserProfile = () => {
   const [loading, setLoading] = useState(true)
@@ -85,31 +87,48 @@ const UserProfile = () => {
     <div className="w-full sm:p-4">
       <div className=" mx-auto mt-10 p-4  w-full  dark:bg-gray-900 dark:text-white">
         {/* Banner Image */}
-        <div className="relative ">
+        <div className="relative  max-h-48 md:max-h-64 xl:max-h-72 w-full ">
           {
             loading  ? <Skeleton className='w-full h-full' /> :
+            <>
             
-              <Image
-                src={profile?.coverImage?.url}
-                alt="Banner"
-                height={5000}
-                width={5000}
-                className="object-cover w-full h-full rounded"
-              />
+            
+            {
+              profile?.coverImage?.url?
+                <Image
+                  src={profile?.coverImage?.url}
+                  alt="Cover Image"
+                  height={500}
+                  width={1920}
+                  className="object-cover w-full h-full"
+                />
+                :
+                <div className="bg-gradient-to-r from-blue-500 to-purple-500 w-full h-full" />
+            }
+            </>
+            
           }
           {/* Profile Photo */}
           <div className="absolute -bottom-12 left-4">
 
-            {
-              loading ? <Skeleton className='rounded-full border-4 border-white w-24 h-24' /> :
-                <Image
-                  src={profile?.avatar?.url}
-                  alt="Profile"
-                  height={500}
-                  width={500}
-                  className="rounded-full border-4 border-white w-24 h-24"
-                />
-            }
+          {
+                loading ? <Skeleton className='rounded-full border-4 border-white w-24 h-24' /> :
+                  <>
+                    {
+                      profile?.avatar?.url ?
+                        <Image
+                          src={profile?.avatar?.url}
+                          alt="Profile Avatar"
+                          className="rounded-full w-24 h-24"
+                          height={500}
+                          width={500}
+                        />
+                        :
+                        <FaUserCircle className='w-20 h-20 sm:h-24 sm:w-24 bg-background rounded-full'/>
+                        
+                    }
+                  </>
+              }
           </div>
         </div>
 

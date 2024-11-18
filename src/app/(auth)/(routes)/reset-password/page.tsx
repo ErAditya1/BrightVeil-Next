@@ -19,7 +19,7 @@ import { useSearchParams } from 'next/navigation';
 import { toast } from '@/components/ui/use-toast';
 import { resetSchema } from '@/schemas/signInSchema';
 import { useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { EyeIcon, EyeOff, Loader2 } from 'lucide-react';
 import BottomGradient from '@/components/BottomGradient';
 import api from '@/api';
 import { ApiResponse } from '@/types/ApiResponse';
@@ -30,6 +30,7 @@ function ResetPassword() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token'); // Get the query parameter 'token'
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
 
   const form = useForm<z.infer<typeof resetSchema>>({
     resolver: zodResolver(resetSchema),
@@ -106,9 +107,13 @@ function ResetPassword() {
               name="password1"
               control={form.control}
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <Input {...field} />
+                <FormItem className='relative'>
+                  <FormLabel> Confirm Password</FormLabel>
+                  <Input type={showPassword ? "text": 'password'} {...field} />
+                    <span className="text-gray-400 hover:text-gray-600 cursor-pointer absolute right-2 bottom-2" onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword? <EyeOff/> : <EyeIcon/>}
+                    </span>
+                  
                   <FormMessage />
                 </FormItem>
               )}

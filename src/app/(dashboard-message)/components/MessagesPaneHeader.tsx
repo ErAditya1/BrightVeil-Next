@@ -26,7 +26,7 @@ import { useRouter } from 'next/navigation';
 
 
 
-export default function MessagesPaneHeader() {
+export default function MessagesPaneHeader({handleSlide}:any) {
   const selectedChat = useAppSelector((state) => state.chat.selectedChat)
   const user = useAppSelector(state=> state.auth.user);
   const dispatch = useAppDispatch()
@@ -44,7 +44,7 @@ export default function MessagesPaneHeader() {
             variant: 'success'
           })
           router.push("/message")
-          
+          handleSlide()
           dispatch(deleteChat(selectedChat))
           // redirect to chats page
         })
@@ -65,6 +65,7 @@ export default function MessagesPaneHeader() {
             description: res.data.message,
             variant: 'success'
           })
+          handleSlide()
           dispatch(deleteChat(selectedChat))
           // redirect to chats page
         })
@@ -86,6 +87,7 @@ export default function MessagesPaneHeader() {
             description: res.data.message,
             variant: 'success'
           })
+          handleSlide()
           dispatch(deleteChat(selectedChat))
           // redirect to chats page
         })
@@ -95,6 +97,7 @@ export default function MessagesPaneHeader() {
     
 
   }
+ 
 
   return (
     <Stack
@@ -116,7 +119,7 @@ export default function MessagesPaneHeader() {
           sx={{
             display: { xs: 'inline-flex', sm: 'none' },
           }}
-          onClick={() => toggleMessagesPane()}
+          onClick={ handleSlide}
         >
           <ArrowBackIosNewRoundedIcon />
         </IconButton>
@@ -124,7 +127,7 @@ export default function MessagesPaneHeader() {
         <div>
           <Typography
             fontWeight="lg"
-            fontSize="lg"
+            fontSize="md"
             component="h2"
             noWrap
             endDecorator={
@@ -166,10 +169,10 @@ export default function MessagesPaneHeader() {
         <Button
           color="neutral"
           variant="outlined"
-          size="sm"
           sx={{
             display: 'inline-flex' ,
           }}
+          className='text-xs sm:text-sm'
         >
           {selectedChat?.isGroupChat ? <span>View Group</span> : <Link href={`/user/profile/${selectedChat?.username}`}>View Profile</Link>}
         </Button>

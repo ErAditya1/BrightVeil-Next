@@ -17,7 +17,7 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { signInSchema } from '@/schemas/signInSchema';
 import { useEffect, useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { EyeIcon, EyeOff, Loader2 } from 'lucide-react';
 import BottomGradient from '@/components/BottomGradient';
 import api from '@/api';
 import { ApiResponse } from '@/types/ApiResponse';
@@ -31,6 +31,7 @@ export default function SignInForm() {
   const dispatch  = useAppDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
+  const [showPassword, setShowPassword] = useState(false)
   useEffect(()=>{setCurrentTime(Date.now())},[])
 
   const form = useForm<z.infer<typeof signInSchema>>({
@@ -151,9 +152,13 @@ export default function SignInForm() {
               name="password"
               control={form.control}
               render={({ field }) => (
-                <FormItem>
+                <FormItem className='relative'>
                   <FormLabel>Password</FormLabel>
-                  <Input type="password" {...field} />
+                  <Input type={showPassword ? "text": 'password'} {...field} />
+                    <span className="text-gray-400 hover:text-gray-600 cursor-pointer absolute right-2 bottom-2" onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword? <EyeOff/> : <EyeIcon/>}
+                    </span>
+                  
                   <FormMessage />
                 </FormItem>
               )}
