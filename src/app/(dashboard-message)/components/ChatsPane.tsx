@@ -25,6 +25,8 @@ import Image from 'next/image';
 import ColorSchemeToggle from '@/components/ColorSchemeToggle';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import GoBackButton from '@/components/GoBack';
+import Link from 'next/link';
+import SidebarTop from '@/components/SidebarTop';
 
 
 
@@ -189,24 +191,11 @@ export default function ChatsPane({ handleSlide }: any) {
               p={2}
               pb={1.5}
             >
-              <GoBackButton />
+              
 
+              <SidebarTop/>
 
-
-              <Box className="space-x-2">
-                <IconButton
-                  variant="plain"
-                  aria-label="edit"
-                  color="neutral"
-                  size="sm"
-                  // sx={{ display: { xs: 'none', sm: 'unset' } }}
-                  onClick={() => { setIsAddNew(!isAddNew), setIsGroupCreating(false) }}
-                >
-                  <MdAddComment className='text-2xl' />
-                </IconButton>
-
-                <ColorSchemeToggle />
-              </Box>
+             
 
               {/* <Dropdown>
                 <MenuButton><MoreVertRoundedIcon /></MenuButton>

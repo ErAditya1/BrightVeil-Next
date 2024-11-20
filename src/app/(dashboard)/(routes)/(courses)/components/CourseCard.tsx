@@ -148,7 +148,7 @@ export default function CourseCard({ _id }: Props) {
                     <div className="flex flex-row items-center bg-background text-foreground p-1 rounded-lg text-xs">
                       <BiMoney className="mx-2" size={15} />
                       <span>
-                        ${courseData?.sellingPrice.toFixed(2)}
+                      ₹{courseData?.sellingPrice.toFixed(2)}
                         {courseData?.isFree? '(Free)' : ''}
                       </span>
                     </div>

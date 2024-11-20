@@ -109,7 +109,7 @@ export default function MessagesPaneHeader({handleSlide}:any) {
       }}
       py={{ xs: 2, md: 2 }}
       px={{ xs: 1, md: 2 }}
-      className="bg-card text-card-foreground"
+      className="bg-card text-card-foreground max-w-dvw"
     >
       <Stack direction="row" spacing={{ xs: 1, md: 2 }} alignItems="center">
         <IconButton
@@ -149,7 +149,7 @@ export default function MessagesPaneHeader({handleSlide}:any) {
               ) : undefined
             }
           >
-            {selectedChat?.name}
+            <p className='line-clamp-2 break-words'>{selectedChat?.name}</p>
           </Typography>
           {!selectedChat?.isGroupChat && <Typography level="body-sm">@{selectedChat?.username}</Typography>}
         </div>

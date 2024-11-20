@@ -171,7 +171,7 @@ function ShareButton({ className, textToShare }: any) {
               chats?.length ? chats.map((chat, index) => {
                 if (chat.isGroupChat) {
                   return (
-                    <div key={index} className='flex flex-col items-center gap-2 w-1/4' onClick={()=>sendMessage(chat?._id)}>
+                    <div key={index} className='flex flex-col items-center gap-2 w-1/4' onClick={() => sendMessage(chat?._id)}>
                       <AvatarLayout src={chat?.avatar?.url} alt={chat?.name} className='w-10 h-10 rounded-full' name={chat?.name} />
                       <div>
                         <span className='text-sm font-medium text-center'>{chat?.name}</span>
@@ -181,11 +181,11 @@ function ShareButton({ className, textToShare }: any) {
                 } else {
                   const chatUser = chat.participants.find((participant) => participant._id !== user?._id)
                   return (
-                    <div key={index} className='flex flex-col items-center gap-2 w-1/4' onClick={()=>sendMessage(chat?._id)}>
+                    <div key={index} className='flex flex-col items-center gap-2 w-1/4' onClick={() => sendMessage(chat?._id)}>
                       <AvatarLayout src={chatUser?.avatar?.url} alt={chatUser?.name} className='w-10 h-10 rounded-full' />
                       <div>
                         <span className='text-sm font-medium text-center'>{chatUser?.username}</span>
-                        <span className='text-xs'>{'jjj'}</span>
+                        {/* <span className='text-xs'>{'jjj'}</span> */}
                       </div>
                     </div>
                   )

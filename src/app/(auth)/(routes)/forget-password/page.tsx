@@ -22,6 +22,7 @@ import BottomGradient from '@/components/BottomGradient';
 import api from '@/api';
 import { ApiResponse } from '@/types/ApiResponse';
 import { AxiosError } from 'axios';
+import Image from 'next/image';
 
 export default function RequestPasswordForm() {
   const router = useRouter();
@@ -76,7 +77,23 @@ export default function RequestPasswordForm() {
     
     <div className="flex justify-center items-center min-h-dvh ">
       <div className="w-full max-w-md p-8 space-y-8 bg-card text-card-foreground  border-2 rounded-lg shadow-md">
-        <div className="text-center">
+        <div className="text-center flex justify-center flex-col items-center">
+        <div className='w-20 h-20 rounded-full border-2 flex justify-center items-center'>
+            <Image 
+             src='/brightveil_dark.jpeg'
+             alt="brightveil logo"
+             width={120}
+             height={120}
+             className=" w-full h-full rounded-full p-2 hidden dark:block"
+             />
+             <Image 
+             src='/brightveil_light.jpeg'
+             alt="brightveil logo"
+             width={120}
+             height={120}
+             className=" w-full h-full rounded-full p-2 block dark:hidden"
+             />
+          </div>
           <h1 className="text-4xl font-extrabold text-foreground tracking-tight lg:text-5xl mb-6">
             Reset Pasword
           </h1>

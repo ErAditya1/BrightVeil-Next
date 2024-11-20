@@ -26,6 +26,7 @@ import BottomGradient from '@/components/BottomGradient';
 
 import api from '@/api';
 import { BsGithub, BsGoogle } from 'react-icons/bs';
+import Image from 'next/image';
 
 export default function SignUpForm() {
   const [username, setUsername] = useState('');
@@ -100,7 +101,7 @@ export default function SignUpForm() {
 
       // Default error message
       let errorMessage = axiosError.response?.data.message;
-      
+
 
       toast({
         title: 'Sign Up Failed',
@@ -115,7 +116,23 @@ export default function SignUpForm() {
   return (
     <div className="flex justify-center items-center min-h-dvh ">
       <div className="w-full max-w-md p-8 space-y-8 bg-card border-2 text-card-foreground rounded-lg shadow-md">
-        <div className="text-center">
+        <div className="text-center flex justify-center flex-col items-center">
+          <div className='w-20 h-20 rounded-full border-2 flex justify-center items-center'>
+            <Image
+              src='/brightveil_dark.jpeg'
+              alt="brightveil logo"
+              width={120}
+              height={120}
+              className=" w-full h-full rounded-full p-2 hidden dark:block"
+            />
+            <Image
+              src='/brightveil_light.jpeg'
+              alt="brightveil logo"
+              width={120}
+              height={120}
+              className=" w-full h-full rounded-full p-2 block dark:hidden"
+            />
+          </div>
           <h1 className="text-4xl font-extrabold text-foreground  tracking-tight lg:text-5xl mb-6">
             Join BrightVeil
           </h1>
@@ -124,7 +141,7 @@ export default function SignUpForm() {
         <div className="flex flex-row gap-2 ">
           <button
             className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-           
+
           >
             <BsGithub className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
 
@@ -137,7 +154,7 @@ export default function SignUpForm() {
           </button>
           <button
             className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-           
+
           >
             <BsGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
 
@@ -180,8 +197,8 @@ export default function SignUpForm() {
                     <>
                       <p
                         className={`text-sm ${usernameMessage === 'Username is available'
-                            ? 'text-green-500'
-                            : 'text-red-500'
+                          ? 'text-green-500'
+                          : 'text-red-500'
                           }`}
                       >
                         {usernameMessage}
@@ -222,11 +239,11 @@ export default function SignUpForm() {
               render={({ field }) => (
                 <FormItem className='relative'>
                   <FormLabel>Password</FormLabel>
-                  <Input type={showPassword ? "text": 'password'} {...field} />
-                    <span className="text-gray-400 hover:text-gray-600 cursor-pointer absolute right-2 bottom-2" onClick={() => setShowPassword(!showPassword)}>
-                      {showPassword? <EyeOff/> : <EyeIcon/>}
-                    </span>
-                  
+                  <Input type={showPassword ? "text" : 'password'} {...field} />
+                  <span className="text-gray-400 hover:text-gray-600 cursor-pointer absolute right-2 bottom-2" onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <EyeOff /> : <EyeIcon />}
+                  </span>
+
                   <FormMessage />
                 </FormItem>
               )}

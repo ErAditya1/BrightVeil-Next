@@ -209,15 +209,17 @@ const RazorpayCheckout = () => {
                                 <div className="w-[50%] h-4  text-xl">Items in cat:</div>
                                 <div className="flex gap-5 w-full">
                                     <div className="w-[250px]   rounded-sm ">
-                                        <img
+                                        <Image
                                             src={courseData?.thumbnail?.secure_url}
                                             alt="loading-img"
                                             className="aspect-video "
+                                            height={500}
+                                            width={500}
                                         />
                                     </div>
                                     <div className="flex flex-col gap-2 justify-center w-full">
-                                        <div className="w-[75%] h-3  rounded-sm">
-                                            {courseData?.title}
+                                        <div className="w-[75%]   rounded-sm">
+                                            <p className='text-xs sm:text-sm'>{courseData?.title}</p>
                                         </div>
                                         <div className="w-[15%] h-3 ">
                                             <span>{courseData?.sellingPrice}</span>
@@ -525,7 +527,7 @@ const RazorpayCheckout = () => {
                                                     </span>
                                                 </span>
                                                 <span className="Typography_root__0mOSn font-bold Typography_regular__5kKM_">
-                                                    <span className="text-gray-400">{amount}</span>
+                                                    <span className="text-foreground">₹{amount}</span>
                                                 </span>
                                             </div>
                                         </div>

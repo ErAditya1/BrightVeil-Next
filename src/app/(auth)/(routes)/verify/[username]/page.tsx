@@ -26,6 +26,7 @@ import {
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import api, { API_URL } from '@/api';
+import Image from 'next/image';
 
 export default function VerifyAccount() {
   const router = useRouter();
@@ -71,7 +72,23 @@ export default function VerifyAccount() {
   return (
     <div className="flex justify-center items-center min-h-dvh ">
       <div className="w-full max-w-md p-8 space-y-8 flex items-center flex-col bg-card border-2 text-card-foreground rounded-lg shadow-md">
-        <div className="text-center">
+        <div className="text-center flex justify-center flex-col items-center">
+        <div className='w-20 h-20 rounded-full border-2 flex justify-center items-center'>
+            <Image 
+             src='/brightveil_dark.jpeg'
+             alt="brightveil logo"
+             width={120}
+             height={120}
+             className=" w-full h-full rounded-full p-2 hidden dark:block"
+             />
+             <Image 
+             src='/brightveil_light.jpeg'
+             alt="brightveil logo"
+             width={120}
+             height={120}
+             className=" w-full h-full rounded-full p-2 block dark:hidden"
+             />
+          </div>
           <h1 className="text-4xl font-extrabold text-card-foreground  tracking-tight lg:text-5xl mb-6">
             Verify Your Account
           </h1>

@@ -43,6 +43,10 @@ import GoBackButton from '@/components/GoBack';
 import User from './User';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { logoutUser } from '@/store/user/userSlice';
+import Image from 'next/image';
+import SidebarTop from './SidebarTop';
+import { BiSolidBookContent } from 'react-icons/bi';
+import { SiApostrophe } from 'react-icons/si';
 
 
 
@@ -59,7 +63,7 @@ function Toggler({
   }) => React.ReactNode;
 }) {
   const [open, setOpen] = React.useState(defaultExpanded);
-  React.useEffect(() =>setOpen(false),[]);
+  React.useEffect(() => setOpen(false), []);
   return (
     <React.Fragment>
       {renderToggle({ open, setOpen })}
@@ -90,41 +94,68 @@ export default function Sidebar() {
   const menuItem = [
 
     {
-      label: user?.role && 'Dashboard',
+      label: 'Dashboard',
       href: `/${user?.role}`,
-      icon: user?.role &&<DashboardRoundedIcon />,
+      icon: user?.role && <DashboardRoundedIcon />,
+      visible: ['admin', 'student', 'teacher', 'parent']
     },
     {
       label: 'Home',
       href: '/',
       icon: <HomeRoundedIcon />,
+      visible: ['', 'admin', 'student', 'teacher', 'parent']
     },
     {
       label: 'Courses',
       href: '/courses',
       icon: <CastForEducationIcon />,
+      visible: ['', 'admin', 'student', 'teacher', 'parent']
     },
     {
       label: 'Messages',
       href: '/message',
       icon: <QuestionAnswerRoundedIcon />,
+      visible: ['', 'admin', 'student', 'teacher', 'parent']
     },
 
     {
       label: 'User',
       icon: <GroupRoundedIcon />,
+      visible: ['', 'admin', 'student', 'teacher', 'parent'],
       subMenu: [
         {
           label: 'Profile',
           href: '/user/profile',
           icon: <FaceIcon />,
+          visible: ['',  'student', 'teacher', 'parent'],
         },
         {
           label: 'Edit Profile',
           href: '/user/edit-profile',
           icon: <PersonAddIcon />,
+          visible: ['', 'admin', 'student', 'teacher', 'parent'],
         },
-        
+
+      ]
+    },
+    {
+      label: 'Manage Content',
+      icon: <BiSolidBookContent />,
+      visible: [ 'admin', 'teacher'],
+      subMenu: [
+        {
+          label: 'Courses',
+          href: `${user?.role}/courses`,
+          icon: <CastForEducationIcon />,
+          visible: ['admin','teacher'],
+        },
+        {
+          label: 'Posts',
+          href: `${user?.role}/posts`,
+          icon: <SiApostrophe />,
+          visible: ['admin'],
+        },
+
       ]
     },
 
@@ -185,16 +216,7 @@ export default function Sidebar() {
         }}
         onClick={() => closeSidebar()}
       />
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }} className="mt-12  br:mt-0">
-
-        <GoBackButton />
-        <IconButton variant="soft" color="primary" size="sm">
-          <BrightnessAutoRoundedIcon />
-        </IconButton>
-        <Typography level="title-lg">BrightVeil</Typography>
-        <ColorSchemeToggle sx={{ ml: 'auto' }} />
-
-      </Box>
+      <SidebarTop />
 
       <Box
         sx={{
@@ -218,53 +240,61 @@ export default function Sidebar() {
           className=""
         >
           {menuItem.map((item, index) => {
-            if (item.subMenu) {
-              return (
-                <ListItem nested key={index}>
-                  <Toggler
-                    defaultExpanded
-                    renderToggle={({ open, setOpen }) => (
-                      <ListItemButton onClick={() => setOpen(!open)}>
-                        {item.icon}
-                        <ListItemContent>
-                          <Typography level="title-sm">{item.label}</Typography>
-                        </ListItemContent>
-                        <KeyboardArrowDownIcon
-                          sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
-                        />
-                      </ListItemButton>
-                    )}
-                  >
-                    <List>
-                      {
-                        item.subMenu.map((subItem, index) => (
-                          <ListItem className=" " key={index}>
-                            <ListItemButton >
-                              {subItem.icon}
-                              <ListItemContent>
-                                <Link href={subItem.href}><Typography className=" text-xs">{subItem.label}</Typography></Link>
-                              </ListItemContent>
-                            </ListItemButton>
-                          </ListItem>
+            if (item.visible.includes(user?.role!)) {
+              if (item.subMenu) {
+                return (
+                  <ListItem nested key={index}>
+                    <Toggler
+                      defaultExpanded
+                      renderToggle={({ open, setOpen }) => (
+                        <ListItemButton onClick={() => setOpen(!open)}>
+                          {item.icon}
+                          <ListItemContent>
+                            <Typography level="title-sm">{item.label}</Typography>
+                          </ListItemContent>
+                          <KeyboardArrowDownIcon
+                            sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
+                          />
+                        </ListItemButton>
+                      )}
+                    >
+                      <List>
+                        {
 
-                        ))
-                      }
-                    </List>
-                  </Toggler>
-                </ListItem>
-              )
-            }
-            else {
-              return (
-                <ListItem key={index}>
-                  <ListItemButton>
-                    {item.icon}
-                    <ListItemContent>
-                      <Link href={item.href}><Typography level="title-sm">{item.label}</Typography></Link>
-                    </ListItemContent>
-                  </ListItemButton>
-                </ListItem>
-              )
+                          item.subMenu.map((subItem, index) => {
+                            if (item.visible.includes(user?.role!)) {
+                              return (
+                                <ListItem className=" " key={index}>
+                                  <ListItemButton >
+                                    {subItem.icon}
+                                    <ListItemContent>
+                                      <Link href={subItem.href}><Typography className=" text-xs">{subItem.label}</Typography></Link>
+                                    </ListItemContent>
+                                  </ListItemButton>
+                                </ListItem>
+                              )
+                            }
+
+
+                          })
+                        }
+                      </List>
+                    </Toggler>
+                  </ListItem>
+                )
+              }
+              else {
+                return (
+                  <ListItem key={index}>
+                    <ListItemButton>
+                      {item.icon}
+                      <ListItemContent>
+                        <Link href={item.href}><Typography level="title-sm">{item.label}</Typography></Link>
+                      </ListItemContent>
+                    </ListItemButton>
+                  </ListItem>
+                )
+              }
             }
           })}
 

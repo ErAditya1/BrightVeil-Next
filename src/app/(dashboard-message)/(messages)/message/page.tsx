@@ -408,8 +408,6 @@ function Page() {
     <Sheet
       sx={{
         flex: 1,
-        height: '100%',
-
         mx: 'auto',
         pt: { xs: 'var(--Header-height)', sm: 0 },
         display: 'grid',
@@ -428,10 +426,9 @@ function Page() {
           },
           transition: 'transform 0.4s, width 0.4s',
           zIndex: 100,
-          width: '100%',
 
         }}
-        className={`h-full overflow-auto transform transition-transform duration-300 ${isSlideIn ? "translate-x-0" : "-translate-x-full"
+        className={`h-full w-full overflow-auto transform transition-transform duration-300 ${isSlideIn ? "translate-x-0" : "-translate-x-full"
           }`}
 
       >

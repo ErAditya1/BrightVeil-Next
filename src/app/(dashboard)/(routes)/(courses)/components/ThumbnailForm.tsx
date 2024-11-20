@@ -58,7 +58,7 @@ export default function ThumbnailForm({ thumbnail }: any) {
                     });
                     setEdit(false)
                     setFile(null)
-                    setFileUrl(res.data?.data?.thumbnail?.secure_Url)
+                    setFileUrl(res.data?.data?.thumbnail?.secure_url)
 
                     // you can run some server action or api here
                     // to add the necessary data to your database

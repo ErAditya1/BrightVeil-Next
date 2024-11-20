@@ -133,7 +133,7 @@ const UserProfile = () => {
                         alt="Cover Image"
                         height={500}
                         width={1920}
-                        className="object-cover bg-cover  max-h-48 md:max-h-64 xl:max-h-72 h-full w-full"
+                        className="object-cover bg-cover  max-h-48 md:max-h-64 xl:max-h-72 h-full w-full rounded-md"
                       />
                       :
                       <div className="bg-gradient-to-r from-blue-500 to-purple-500 w-full h-full" />

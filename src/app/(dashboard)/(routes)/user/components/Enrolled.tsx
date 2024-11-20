@@ -12,7 +12,7 @@ function Enrolled() {
                { 
                videos?.map((data,index) => {
                 return (
-                    <CourseCard key={index}/>
+                    <CourseCard _id={''} key={index}/>
                 )
               })
               }
