@@ -167,37 +167,7 @@ export default function VideoCard({ _id, key }: any) {
           }
 
         </CardContent>
-        <CardOverflow className=" h-14">
-          <Divider inset="context" />
-          {
-            isLoading ? (
-              <CardContent className="">
-                <div className="flex flex-row flrx-nowrap justify-between items-center p-0">
-                  <span><Skeleton className="w-16 h-5 rounded" /></span>
-                  <span><Skeleton className="w-12 h-5 rounded" /></span>
-                </div>
-              </CardContent>
-            ) : (
-
-              <CardContent orientation="horizontal" className="flex items-center  justify-between m-0 p-0"
-              >
-                <div className=" flex flex-row  items-center bg-background text-foreground p-1 rounded-lg text-xs" >
-                  <span><BookOpen className='mx-2' size={15} /></span> <span>{videoData?.chapterCount} Chapters</span>
-                </div>
-                {
-                  videoData?.isFree && (
-                    <div className=" flex flex-row items-center bg-background text-foreground p-1 rounded-lg text-xs" >
-                      <span><BiMoney className='mx-2' size={15} /></span><span>Free</span>
-                    </div>
-                  )
-                }
-
-
-
-              </CardContent>
-            )
-          }
-        </CardOverflow>
+        
       </Card>
     </Link>
   );
