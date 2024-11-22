@@ -15,8 +15,8 @@ import ThumbnailForm from '@/app/(dashboard)/(routes)/(courses)/components/Thumb
 import CategoryForm from '@/app/(dashboard)/(routes)/(courses)/components/LanguageForm'
 import { DatePickerWithRange } from '@/app/(dashboard)/(routes)/(courses)/components/DurationForm'
 import PriceForm from '@/app/(dashboard)/(routes)/(courses)/components/PriceForm'
-import ChapterForm from '@/app/(dashboard)/(routes)/(courses)/components/ChaptersForm'
-import ChapterList from '@/app/(dashboard)/(routes)/(courses)/components/ChapterList'
+import ChapterForm from '@/app/(dashboard)/(routes)/(courses)/components/chapter/ChaptersForm'
+import ChapterList from '@/app/(dashboard)/(routes)/(courses)/components/chapter/ChapterList'
 
 function EditCourse() {
 

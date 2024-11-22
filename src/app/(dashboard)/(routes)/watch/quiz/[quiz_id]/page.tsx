@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { motion } from "framer-motion";
 import { toast } from '@/components/ui/use-toast';
 import { AxiosError } from 'axios';
+import QuizResult from '../../../(courses)/components/quiz/QuizResult';
 
 const QuizPage = () => {
   const router = useRouter();
@@ -92,13 +93,14 @@ const QuizPage = () => {
 
   if (result?.status === "completed" && isResult) {
     return (
-      <></>
-      // <QuizResults
-      //   totalQuestions={result?.totalQuestions}
-      //   answers={result?.answers}
-      //   questions={questions}
-      //   setIsResult={setIsResult}
-      // />
+      
+      <QuizResult
+        totalQuestions={result?.totalQuestions}
+        answers={result?.answers}
+        questions={questions}
+        setIsResult={setIsResult}
+      />
+      // <QuizResult/>
     );
 
   } else {
@@ -133,7 +135,7 @@ const QuizPage = () => {
             {questions?.map((question, index) => (
               <motion.div
                 key={index}
-                className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700"
+                className="p-6 bg-card rounded-lg shadow-lg border"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4 }}
@@ -146,7 +148,7 @@ const QuizPage = () => {
                   {question?.options.map((option: any, optionIndex: any) => (
                     <label
                       key={optionIndex}
-                      className="flex items-center space-x-3 hover:bg-blue-100 dark:hover:bg-blue-600 dark:hover:text-white transition-colors rounded-lg p-2 cursor-pointer"
+                      className="flex items-center space-x-3 hover:bg-blue-100 dark:hover:bg-blue-600 dark:hover:text-white transition-colors rounded-lg p-2 cursor-pointer border bg-background"
                     >
                       <input
                         type="radio"

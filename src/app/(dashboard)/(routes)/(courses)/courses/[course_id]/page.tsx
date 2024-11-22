@@ -3,7 +3,7 @@
 import { Card, CardContent, Chip } from '@mui/joy';
 import { useParams } from 'next/navigation';
 import React, { Suspense, useState } from 'react'
-import MiniVideoCard from '../../components/MiniVideoCard';
+import MiniVideoCard from '../../components/chapter/MiniVideoCard';
 import FollowButton from '@/components/FollowButton';
 import LikeButton from '@/components/LikeButton';
 import ShareButton from '@/components/ShareButton';
@@ -22,6 +22,8 @@ import { HiMiniReceiptPercent } from 'react-icons/hi2';
 import { toast } from '@/components/ui/use-toast';
 import { AxiosError } from 'axios';
 import Link from 'next/link';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import QuizCard from '../../components/quiz/QuizCard';
 
 function ExploreCourse() {
   const [loading, setLoading] = useState(true)
@@ -59,8 +61,8 @@ function ExploreCourse() {
       discount: 0,
       chat: {
         _id: '',
-      }
-
+      },
+      quizzes:[],
     }
   );
   const [videos, setVideos] = useState([{
@@ -256,24 +258,59 @@ function ExploreCourse() {
 
         <div className='max-h-dvh w-full flex flex-col lg:flex-none lg:max-h-dvh  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
           <div className='flex flex-row justify-between p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl z-10'>
-            <div className=''>
-              <h1 className='text-2xl font-bold line-clamp-1'>Chapters:</h1>
-              {/* <p className='aaa'>Course Description</p> */}
-            </div>
+           
             <div className='flex items-center h-full right-2 lg:hidden '>
               <ChevronDownCircle size={30} className={`duration-500 ${mapVideos && 'rotate-180'}`} onClick={() => { setMapVideos(!mapVideos) }} />
             </div>
           </div>
-          <div className=' w-full h-full gap-4 lg:absolute top-20'>
+          <div className=' w-full h-full gap-4 lg:absolute top-3'>
+            <Tabs defaultValue="videos" className=" px-0 w-full ">
+              <TabsList className=" overflow-auto  flex  justify-start w-full ">
+                <div className=" w-fit  flex">
+                  <TabsTrigger value="videos">Videos</TabsTrigger>
+                  <TabsTrigger value="quizzes">Quizzes</TabsTrigger>
 
-            {
-              mapVideos &&
-              videos?.map((video) => {
-                return (
-                  <MiniVideoCard key={video._id} _id={video._id} videoId={video.videoId} thumbnail={video?.thumbnail?.secure_url} title={video?.title} channelName={video?.channelName} uploadedDate={video?.uploadedDate} views={video?.views} isFree={video?.isFree} />
-                )
-              })
-            }
+                </div>
+              </TabsList>
+              <TabsContent value="videos" className='p-0'>
+                <Card className='max-h-dvh overflow-auto m-0 p-0 w-full dark:bg-background'>
+
+                  <CardContent className="">
+                    {
+                      mapVideos &&
+                      videos?.map((video) => {
+                        return (
+                          <MiniVideoCard key={video._id} _id={video._id} videoId={video.videoId} thumbnail={video?.thumbnail?.secure_url} title={video?.title} channelName={video?.channelName} uploadedDate={video?.uploadedDate} views={video?.views} isFree={video?.isFree} />
+                        )
+                      })
+                    }
+                  </CardContent>
+
+                </Card>
+
+
+              </TabsContent>
+              <TabsContent value="quizzes" className='gap-0 p-0' >
+                <Card className='max-h-dvh overflow-auto m-0 w-full dark:bg-background'>
+
+                  <CardContent className="">
+                    {
+                      mapVideos &&
+                      courseData?.quizzes?.map((quiz) => {
+                        return (
+                          <QuizCard quiz={quiz} className=""/>
+                        )
+                      })
+                    }
+                  </CardContent>
+
+                </Card>
+
+
+              </TabsContent>
+
+            </Tabs>
+
           </div>
         </div>
 

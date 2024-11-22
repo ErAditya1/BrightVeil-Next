@@ -16,10 +16,12 @@ import ThumbnailForm from '@/app/(dashboard)/(routes)/(courses)/components/Thumb
 import CategoryForm from '@/app/(dashboard)/(routes)/(courses)/components/LanguageForm'
 import { DatePickerWithRange } from '@/app/(dashboard)/(routes)/(courses)/components/DurationForm'
 import PriceForm from '@/app/(dashboard)/(routes)/(courses)/components/PriceForm'
-import ChapterForm from '@/app/(dashboard)/(routes)/(courses)/components/ChaptersForm'
-import ChapterList from '@/app/(dashboard)/(routes)/(courses)/components/ChapterList'
+import ChapterForm from '@/app/(dashboard)/(routes)/(courses)/components/chapter/ChaptersForm'
+import ChapterList from '@/app/(dashboard)/(routes)/(courses)/components/chapter/ChapterList'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { addEditCourse } from '@/store/post/postSlice'
+import QuizForm from '@/app/(dashboard)/(routes)/(courses)/components/quiz/QuizAddForm'
+import QuizList from '@/app/(dashboard)/(routes)/(courses)/components/quiz/QuizList'
 
 function EditCourse() {
 
@@ -37,35 +39,37 @@ function EditCourse() {
         discount: 0,
         sellingPrice: 0,
         attachments: [],
+        quizzes: [],
         from: '',
         to: '',
         isPublished: false
     });
     const [addChapter, setAddChapter] = useState(false)
-    const user = useAppSelector(state=> state.auth.user);
+    const [addQuiz, setAddQuiz] = useState(false)
+    const user = useAppSelector(state => state.auth.user);
     useEffect(() => {
-        
+
         api.get(`/v1/courses/course/get-edit-course-data/${course_id}`)
             .then(res => {
                 setCourseData(res.data.data[0])
                 dispatch(addEditCourse(res.data.data[0]))
             })
             .catch(err => console.log(err))
-        
-    }, [course_id ]);
 
-    const publishCourse = async ()=>{
+    }, [course_id]);
+
+    const publishCourse = async () => {
         try {
-            
+
             const response = await api.patch(`/v1/courses/course/publish/${course_id}`, {});
-            setCourseData({...courseData, isPublished:courseData?.isPublished ?false:true});
+            setCourseData({ ...courseData, isPublished: courseData?.isPublished ? false : true });
             console.log(response);
             toast({
                 title: 'Success!',
                 description: response?.data?.message,
-                variant:'success',
+                variant: 'success',
             });
-        
+
         } catch (error) {
             const axiosError = error as AxiosError<ApiResponse>;
             console.log(axiosError)
@@ -83,7 +87,7 @@ function EditCourse() {
     const onReorder = async (updateData: { _id: string, position: number }[]) => {
 
         try {
-            
+
             const response = await api.put(`/v1/courses/course/reorder-chapters/${course_id}`, {
                 updateData
             });
@@ -94,7 +98,7 @@ function EditCourse() {
                 variant: 'success',
             });
             setCourseData((prevState) => ({ ...prevState, chapters: response?.data?.data }));
-        
+
         } catch (error) {
             console.error(error);
             toast({
@@ -105,8 +109,11 @@ function EditCourse() {
         }
     }
 
-    const onEdit = (_id:String) => {
+    const onEdit = (_id: String) => {
         router.push(`/${user?.role}/courses/edit-course/${course_id}/chapters/${_id}`)
+    }
+    const onQuizEdit = (_id: String) => {
+        router.push(`/${user?.role}/courses/edit-course/${course_id}/${_id}`)
     }
 
 
@@ -119,7 +126,7 @@ function EditCourse() {
                         <div className="flex flex-row gap-4 m-2 justify-end ">
                             <Button className='float-right' onClick={publishCourse}>
                                 <BiMoneyWithdraw className='h-5 w-5 mr-2' />
-                               {courseData?.isPublished ? "Unpublish Course": "Publish Course"} 
+                                {courseData?.isPublished ? "Unpublish Course" : "Publish Course"}
                             </Button>
                         </div>
                         <div className='grid md:grid-cols-2 gap-4 p-4 w-full '>
@@ -130,7 +137,7 @@ function EditCourse() {
                                 </div>
                                 <TitleForm title={courseData?.title} />
                                 <DescriptionForm description={courseData?.description} />
-                                <ThumbnailForm thumbnail = {courseData?.thumbnail} setCourseData/>
+                                <ThumbnailForm thumbnail={courseData?.thumbnail} setCourseData />
                                 <CategoryForm language={courseData?.language} />
                                 <DatePickerWithRange from={courseData?.from} to={courseData?.to} />
                                 <div className="flex flex-row ">
@@ -145,7 +152,7 @@ function EditCourse() {
                                 </div>
                                 {
 
-                                    addChapter && <ChapterForm setCourseData= {setCourseData} setAddChapter={setAddChapter}/>
+                                    addChapter && <ChapterForm setCourseData={setCourseData} setAddChapter={setAddChapter} />
                                 }
                                 <div className=" m-2 border p-2 rounded">
                                     <span className="text-md mx-2 flex"> <FileAxis3DIcon />Course Attachments</span>
@@ -163,6 +170,35 @@ function EditCourse() {
                                                         onRender={onReorder}
 
                                                         items={courseData?.chapters || []}
+
+                                                    />
+                                                </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div className="flex flex-row justify-between">
+                                    <span className="text-md mx-2 flex"><BookMarkedIcon /> Quizes</span ><span className="text-md mx-2 flex cursor-pointer " onClick={() => setAddQuiz(!addQuiz)}><PlusCircle /> Add Quiz</span>
+                                </div>
+                                {
+
+                                    addQuiz && <QuizForm setCourseData={setCourseData} setAddQuiz={setAddQuiz} />
+                                }
+                                <div className=" m-2 border p-2 rounded">
+                                    <span className="text-md mx-2 flex"> <FileAxis3DIcon />Course Attachments</span>
+                                    <div className='m-2'>
+                                        {
+                                            !courseData?.quizzes?.length ? (
+
+                                                <span>Quizes are not available...</span>
+
+                                            )
+                                                :
+                                                <div>
+                                                    <QuizList
+                                                        onEdit={onQuizEdit}
+                                                        onRender={onReorder}
+
+                                                        items={courseData?.quizzes || []}
 
                                                     />
                                                 </div>

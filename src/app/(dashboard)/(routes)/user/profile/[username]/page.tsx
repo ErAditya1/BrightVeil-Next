@@ -21,7 +21,7 @@ import api from '@/api';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
-import VideoCard from '../../../(courses)/components/VideoCard';
+import VideoCard from '../../../(courses)/components/chapter/VideoCard';
 import CourseCard from '../../../(courses)/components/CourseCard';
 import { useParams, useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';

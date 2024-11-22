@@ -5,7 +5,7 @@ import { Play, Pause, Volume2, VolumeX, PlayCircle, PauseCircle, ChevronRightIco
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { IoSettings } from 'react-icons/io5';
 
-import Duration from './Duration';
+import Duration from '../Duration';
 import { MdForward10, MdOutlineClose, MdOutlineLoop, MdOutlinePictureInPicture, MdOutlinePictureInPictureAlt, MdOutlineReplay10 } from 'react-icons/md';
 import Image from 'next/image';
 import { BsFillPipFill, BsFullscreen, BsFullscreenExit, BsPip } from 'react-icons/bs';

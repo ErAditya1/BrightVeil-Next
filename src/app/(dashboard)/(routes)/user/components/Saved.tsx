@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import VideoCard from '../../(courses)/components/VideoCard';
+import VideoCard from '../../(courses)/components/chapter/VideoCard';
 
 function Saved() {
   

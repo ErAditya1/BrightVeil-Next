@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import api from '@/api';
 import { toast } from '@/components/ui/use-toast';
 import { AxiosError } from 'axios';
-import { BlogPostSchema } from '@/schemas/BlogPostSchema';
+import { BlogPostSchema } from '@/schemas/blogPostSchema';
 // Adjust to match your Post model import
 
 // Define TypeScript types for form data

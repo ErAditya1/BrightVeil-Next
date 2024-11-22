@@ -3,14 +3,13 @@
 import { Card, CardContent, Chip, Divider, Typography } from '@mui/joy';
 import { useParams, useRouter } from 'next/navigation';
 import React, { Suspense, useEffect, useState } from 'react'
-import MiniVideoCard from '../../../(courses)/components/MiniVideoCard';
+import MiniVideoCard from '../../../(courses)/components/chapter/MiniVideoCard';
 import FollowButton from '@/components/FollowButton';
 import LikeButton from '@/components/LikeButton';
 import ShareButton from '@/components/ShareButton';
 import FileCard from '../../../(courses)/components/FileCard';
 import TestCard from '../../../(courses)/components/TestCard';
 import { ChevronDownCircle } from 'lucide-react';
-import CustomVideoPlayer from '../../../(courses)/components/YoutubePlayer';
 import api from '@/api';
 import AvatarLayout from '@/components/AvatarLayout';
 import { SiCashapp } from 'react-icons/si';
@@ -20,6 +19,7 @@ import CommentCard from '@/components/CommentCard';
 import SaveButton from '@/components/SaveButton';
 import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
 import { Skeleton } from '@/components/ui/skeleton';
+import CustomVideoPlayer from '../../../(courses)/components/chapter/YoutubePlayer';
 
 
 function Page() {

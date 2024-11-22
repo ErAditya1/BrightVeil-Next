@@ -16,65 +16,56 @@ import { ApiResponse } from '@/types/ApiResponse'
 import ChapterThumbnailForm from '@/app/(dashboard)/(routes)/(courses)/components/chapter/ChapterThumbnailForm'
 import FileForm from '@/app/(dashboard)/(routes)/(courses)/components/FileForm'
 import FileCard from '@/app/(dashboard)/(routes)/(courses)/components/FileCard'
+import QuizTitleForm from '@/app/(dashboard)/(routes)/(courses)/components/quiz/QuizTitleForm'
+import QuizDescriptionForm from '@/app/(dashboard)/(routes)/(courses)/components/quiz/QuizDescriptionForm'
+import QuizThumbnailForm from '@/app/(dashboard)/(routes)/(courses)/components/quiz/QuizThumbnailForm'
+import QuizVisibility from '@/app/(dashboard)/(routes)/(courses)/components/quiz/QuizVisibilityForm'
+import AddQuizQuestionForm from '@/app/(dashboard)/(routes)/(courses)/components/quiz/AddQuestionForm'
 
 
-function EditCourse() {
+function EditQuiz() {
 
-    const { chapter_id } = useParams();
+    const { quiz_id } = useParams();
     const router = useRouter();
-    const [addFile, setAddFile] = useState(false)
+    const [addQuestion, setAddQuestion] = useState(false)
 
 
-    const [chapterData, setChapterData] = useState({
+    const [quizData, setQuizData] = useState({
         title: '',
         description: '',
         thumbnail: '',
-        videoId: '',
         isPublished: '',
         visibility: '',
-        files: [{
-            _id:'',
+        questions: [{
+            _id: '',
             title: '',
-            file:{}
 
         }],
-        tests: [],
-        order: 0,
     });
 
     useEffect(() => {
 
-        api.get(`/v1/videos/video/get-video/${chapter_id}`)
+        api.get(`/v1/quiz/get/${quiz_id}`)
             .then(res => {
                 console.log(res)
-                setChapterData(res.data.data)
+                setQuizData(res.data.data)
             })
             .catch(err => console.log(err))
 
-    }, [chapter_id]);
+    }, [quiz_id]);
 
-    const deleteFile = async (file_id:string) => {
-        try {
-           const res = await api.delete(`/v1/videos/video/file/${file_id}`)
-            console.log(res)
-            setChapterData(prevState => ({...prevState, files: prevState.files.filter(file => file._id!== file_id) }));
-            
-            
-        } catch (error) {
-            console.log(error)
-        }
-    }
+
 
     const onPublish = async () => {
         // setIsSubmitting(true);
 
         try {
 
-            const response = await api.patch(`/v1/videos/video/update-videoPublish/${chapter_id}`, {},
+            const response = await api.patch(`/v1/quiz/published/${quiz_id}`, {},
 
             );
             console.log(response);
-            setChapterData(response?.data?.data);
+            setQuizData(response?.data?.data);
             toast({
                 title: 'Success!',
                 description: response?.data?.message,
@@ -100,48 +91,46 @@ function EditCourse() {
             // setIsSubmitting(false);
         }
     };
-    const onUnPublish = async () => {
+    const deleteQuiz = async () => {
         // setIsSubmitting(true);
-
         try {
 
-            const response = await api.patch(`/v1/videos/video/update-videoUnPublish/${chapter_id}`, {},
+            const response = await api.delete(`/v1/quiz/delete/${quiz_id}`,
 
             );
             console.log(response);
-            setChapterData(response?.data?.data);
+            router.back();
             toast({
                 title: 'Success!',
                 description: response?.data?.message,
                 variant: 'success',
             });
 
-            // setIsSubmitting(false);
 
-
-        } catch (error) {
-
-
+        }
+        catch (error) {
+            const axiosError = error as AxiosError<ApiResponse>;
+            console.log(axiosError)
+            // Default error message
+            let errorMessage = axiosError.response?.data.message;
 
 
             toast({
                 title: 'Creation Failed',
-                description: "Something wrong while publishing",
+                description: errorMessage,
                 variant: 'destructive',
             });
-
-            // setIsSubmitting(false);
         }
-    };
-    const deleteChapter = async () => {
+    }
+    const deleteQuestion = async (_id:string) => {
         // setIsSubmitting(true);
         try {
 
-            const response = await api.delete(`/v1/videos/video/delete-chapter/${chapter_id}`,
+            const response = await api.delete(`/v1/quiz/delete-question/${_id}`,
 
             );
             console.log(response);
-            router.back();
+            setQuizData(response?.data?.data);
             toast({
                 title: 'Success!',
                 description: response?.data?.message,
@@ -171,65 +160,61 @@ function EditCourse() {
 
         <div>
             {
-                chapterData.title && (
+                quizData?.title && (
                     <div className='w-full flex justify-center items-center'>
 
                         <div className='w-full my-auto grid md:grid-cols-2 gap-4 p-4  '>
 
                             <div className="flex flex-col  gap-2  ">
                                 <div className="flex flex-row justify-between items-center">
-                                    <span className='flex'><LayoutDashboard /><span className="text-md mx-2">Customise your course</span></span><div className="flex flex-row gap-4 m-2 justify-end ">
+                                    <span className='flex'><LayoutDashboard /><span className="text-md mx-2">Customise your Quiz</span></span><div className="flex flex-row gap-4 m-2 justify-end ">
 
-                                        <Button className='float-right' onClick={deleteChapter}>Delete Chapter</Button>
+                                        <Button className='float-right' onClick={deleteQuiz}>Delete Quiz</Button>
                                     </div>
                                 </div>
-                                <ChapterVideoIdForm videoId={chapterData?.videoId} />
-                                <ChapterTitleForm title={chapterData?.title} />
-                                <ChapterDescriptionForm description={chapterData?.description} />
-                                <ChapterThumbnailForm thumbnail={chapterData?.thumbnail} />
-                                <ChapterVisibility />
-                                {/* <CategoryForm language={chapterData?.language} /> */}
+                                <QuizTitleForm title={quizData?.title} />
+                                <QuizDescriptionForm description={quizData?.description} />
+                                <QuizThumbnailForm thumbnail={quizData?.thumbnail} />
+                                <QuizVisibility />
+                                {/* <CategoryForm language={quizData?.language} /> */}
 
-                                {
-                                    !chapterData?.isPublished ? <Button className='float-right' onClick={onPublish}>
-                                        <BiMoneyWithdraw className='h-5 w-5 mr-2' />
-                                        Publish Chapter
-                                    </Button>
-                                        : <Button className='float-right' onClick={onUnPublish}>
-                                            <BookMarkedIcon className='h-5 w-5 mr-2' />
-                                            Unpublish Chapter
-                                        </Button>
-                                }
+                                <Button className='float-right' onClick={onPublish}>
+                                    <BiMoneyWithdraw className='h-5 w-5 mr-2' />
+                                    {
+                                        !quizData?.isPublished ? " Publish Chapter" : "UnPublish"}
+
+                                </Button>
+
 
 
                             </div>
                             <div className="my-4">
                                 <div className="flex flex-col  gap-2  ">
                                     <div className="flex flex-row justify-between">
-                                        <span className="text-md mx-2 flex"><BookMarkedIcon />Chapter's Notes:</span ><span className="text-md mx-2 flex cursor-pointer " onClick={() => setAddFile(!addFile)}><PlusCircle /> Add Notes:</span>
+                                        <span className="text-md mx-2 flex"><BookMarkedIcon />Chapter's Notes:</span ><span className="text-md mx-2 flex cursor-pointer " onClick={() => setAddQuestion(!addQuestion)}><PlusCircle /> Add Notes:</span>
                                     </div>
-                                    {addFile && <FileForm setChapterData={setChapterData} setAddFile={setAddFile}/>}
+                                    {addQuestion && <AddQuizQuestionForm setQuizData={setQuizData} setAddQuestion={setAddQuestion}/>}
 
                                 </div>
                                 <div className=" m-2 border p-2 rounded">
                                     <span className="text-md mx-2 flex"> <FileAxis3DIcon />Course Attachments</span>
                                     <div className='m-2'>
                                         {
-                                            !chapterData?.files?.length ? (
+                                            !quizData?.questions?.length ? (
 
-                                                <span>Notes are not available...</span>
+                                                <span>No questions Are available...</span>
 
                                             )
                                                 :
                                                 <div>
                                                     {
-                                                        chapterData?.files?.map((item) => (
+                                                        quizData?.questions?.map((item) => (
                                                             <div className='relative' >
                                                                 <FileCard
                                                                     key={item._id}
                                                                     item= {item}
                                                                 />
-                                                                <DeleteIcon className='h-5 w-5 absolute top-1 right-1 cursor-pointer' onClick={() => deleteFile(item._id)} />
+                                                                <DeleteIcon className='h-5 w-5 absolute top-1 right-1 cursor-pointer' onClick={() => deleteQuestion(item._id)} />
                                                             </div>
                                                         ))
                                                     }
@@ -247,4 +232,4 @@ function EditCourse() {
     )
 }
 
-export default EditCourse
+export default EditQuiz

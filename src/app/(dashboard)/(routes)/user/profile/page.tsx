@@ -13,7 +13,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import api from '@/api';
-import VideoCard from '../../(courses)/components/VideoCard';
+import VideoCard from '../../(courses)/components/chapter/VideoCard';
 import CourseCard from '../../(courses)/components/CourseCard';
 import Image from 'next/image';
 import Link from 'next/link';
