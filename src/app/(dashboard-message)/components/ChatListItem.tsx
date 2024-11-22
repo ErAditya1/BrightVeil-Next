@@ -3,20 +3,15 @@ import * as React from 'react';
 import Box from '@mui/joy/Box';
 import ListDivider from '@mui/joy/ListDivider';
 import ListItem from '@mui/joy/ListItem';
-import ListItemButton, { ListItemButtonProps } from '@mui/joy/ListItemButton';
+import ListItemButton from '@mui/joy/ListItemButton';
 import Stack from '@mui/joy/Stack';
-import Typography from '@mui/joy/Typography';
-import CircleIcon from '@mui/icons-material/Circle';
 import AvatarWithStatus from './AvatarWithStatus';
-import { ChatProps, MessageProps, UserProps } from '@/types/MessageProps';
 import { toggleMessagesPane } from '@/lib/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { addUnreadCount, ChatInterface, LastMessageInterface, selectChat, SelectedChat, UserInterface } from '@/store/chat/chatSlice';
+import {  ChatInterface, SelectedChat } from '@/store/chat/chatSlice';
 
-import { getChatObjectMetadata } from '@/utils';
 import { timeAgo } from '@/utils/agoTime';
 import Link from 'next/link';
-import MessageStatus from './MessageStatus';
 import { Chip } from '@mui/joy';
 
 type ChatListItemProps = ChatInterface & {

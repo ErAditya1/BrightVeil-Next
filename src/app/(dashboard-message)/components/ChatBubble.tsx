@@ -1,16 +1,13 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react';
-import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
 import IconButton from '@mui/joy/IconButton';
 import Stack from '@mui/joy/Stack';
 import Sheet from '@mui/joy/Sheet';
-import Typography from '@mui/joy/Typography';
 import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { timeAgo } from '@/utils/agoTime';
-import { FaCheck } from "react-icons/fa6";
 import MessageStatus from './MessageStatus';
 import { useSocket } from '@/context/SocketContext';
 import { addChats, ChatMessage, removeDeletedMessage } from '@/store/chat/chatSlice';

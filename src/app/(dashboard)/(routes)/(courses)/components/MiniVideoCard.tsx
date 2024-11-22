@@ -4,6 +4,7 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { timeAgo } from '@/utils/agoTime';
 import Image from 'next/image';
 import { SiCashapp } from "react-icons/si";
+import { Skeleton } from '@/components/ui/skeleton';
 
 type PropsType = {
     _id: string,
@@ -37,7 +38,8 @@ export default function MiniVideoCard({ videoId, thumbnail, title, _id, views, u
 
         <Link href={`/watch/video/${videoId}`}>
             <div className="relative w-full h-24  p-2 z-0">
-                <div className="p-0 flex flex-row w-full h-full bg-card text-card-foreground rounded"
+               {
+                videoId !== '' ?  <div className="p-0 flex flex-row w-full h-full bg-card text-card-foreground rounded"
 
                 >
                     <div className="h-full aspect-video rounded-lg " >
@@ -86,6 +88,9 @@ export default function MiniVideoCard({ videoId, thumbnail, title, _id, views, u
 
                     </div>
                 </div>
+                : 
+                <Skeleton className="w-full h-full"/>
+               }
             </div>
         </Link>
 

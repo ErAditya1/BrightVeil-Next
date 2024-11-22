@@ -145,13 +145,13 @@ export default function Sidebar() {
       subMenu: [
         {
           label: 'Courses',
-          href: `${user?.role}/courses`,
+          href: `/${user?.role}/courses`,
           icon: <CastForEducationIcon />,
           visible: ['admin','teacher'],
         },
         {
           label: 'Posts',
-          href: `${user?.role}/posts`,
+          href: `/${user?.role}/posts`,
           icon: <SiApostrophe />,
           visible: ['admin'],
         },

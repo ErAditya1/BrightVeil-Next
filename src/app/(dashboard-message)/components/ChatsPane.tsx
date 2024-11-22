@@ -3,14 +3,10 @@ import * as React from 'react';
 import Stack from '@mui/joy/Stack';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
-import { Box, Chip, Dropdown, IconButton, Input, ListItemButton, Menu, MenuButton, MenuItem } from '@mui/joy';
+import { Box,Input, ListItemButton } from '@mui/joy';
 import List from '@mui/joy/List';
-import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ChatListItem from './ChatListItem';
-import { toggleMessagesPane } from '@/lib/utils';
-import { MdAddComment } from 'react-icons/md';
 import NewChatListItem from './NewChatListItem';
 
 import api from '@/api';
@@ -20,12 +16,8 @@ import { TbUsersGroup } from "react-icons/tb";
 import GroupListItem from './GroupListItem';
 import { FaCamera } from 'react-icons/fa6';
 import { toast } from '@/components/ui/use-toast';
-import { addNewChat, selectChat } from '@/store/chat/chatSlice';
+import { addNewChat } from '@/store/chat/chatSlice';
 import Image from 'next/image';
-import ColorSchemeToggle from '@/components/ColorSchemeToggle';
-import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
-import GoBackButton from '@/components/GoBack';
-import Link from 'next/link';
 import SidebarTop from '@/components/SidebarTop';
 
 

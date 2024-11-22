@@ -8,14 +8,14 @@ import axios, { AxiosError } from 'axios'
 import api from '@/api'
 import { toast } from '@/components/ui/use-toast'
 import ThumbnailForm from '@/app/(dashboard)/(routes)/(courses)/components/ThumbnailForm'
-import ChapterTitleForm from '@/app/(dashboard)/(routes)/(courses)/components/ChapterTitleForm'
-import ChapterDescriptionForm from '@/app/(dashboard)/(routes)/(courses)/components/ChapterDescriptionForm'
-import ChapterVideoIdForm from '@/app/(dashboard)/(routes)/(courses)/components/ChapterVideoIdForm'
-import ChapterVisibility from '@/app/(dashboard)/(routes)/(courses)/components/ChapterVisibilityForm'
+import ChapterTitleForm from '@/app/(dashboard)/(routes)/(courses)/components/chapter/ChapterTitleForm'
+import ChapterDescriptionForm from '@/app/(dashboard)/(routes)/(courses)/components/chapter/ChapterDescriptionForm'
+import ChapterVideoIdForm from '@/app/(dashboard)/(routes)/(courses)/components/chapter/ChapterVideoIdForm'
+import ChapterVisibility from '@/app/(dashboard)/(routes)/(courses)/components/chapter/ChapterVisibilityForm'
 import { ApiResponse } from '@/types/ApiResponse'
-import ChapterThumbnailForm from '@/app/(dashboard)/(routes)/(courses)/components/ChapterThumbnailForm'
-import FileForm from '@/app/(dashboard)/(routes)/(courses)/components/FileForm'
-import FileCard from '@/app/(dashboard)/(routes)/(courses)/components/FileCard'
+import ChapterThumbnailForm from '@/app/(dashboard)/(routes)/(courses)/components/chapter/ChapterThumbnailForm'
+import FileForm from '@/app/(dashboard)/(routes)/(courses)/components/chapter/FileForm'
+import FileCard from '@/app/(dashboard)/(routes)/(courses)/components/chapter/FileCard'
 
 
 function EditCourse() {
@@ -171,7 +171,7 @@ function EditCourse() {
 
         <div>
             {
-                chapterData.title && (
+                chapterData?.title && (
                     <div className='w-full flex justify-center items-center'>
 
                         <div className='w-full my-auto grid md:grid-cols-2 gap-4 p-4  '>

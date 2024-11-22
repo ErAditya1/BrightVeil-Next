@@ -22,6 +22,9 @@ import { HiMiniReceiptPercent } from 'react-icons/hi2';
 import { toast } from '@/components/ui/use-toast';
 import { AxiosError } from 'axios';
 import Link from 'next/link';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CardHeader, CardTitle } from '@/components/ui/card';
+import QuizCard from '../../components/quiz/QuizCard';
 
 function ExploreCourse() {
   const [loading, setLoading] = useState(true)
@@ -59,7 +62,16 @@ function ExploreCourse() {
       discount: 0,
       chat: {
         _id: '',
-      }
+      },
+      quizzes: [{
+        _id: '',
+        title: '',
+        isFree: false,
+        isPublished: false,
+        thumbnail: {
+          url: '',
+        }
+      }]
 
     }
   );
@@ -77,6 +89,8 @@ function ExploreCourse() {
     views: 0,
 
   }]);
+
+
 
   const [mapVideos, setMapVideos] = useState(true);
 
@@ -255,25 +269,67 @@ function ExploreCourse() {
         </Card>
 
         <div className='max-h-dvh w-full flex flex-col lg:flex-none lg:max-h-dvh  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
-          <div className='flex flex-row justify-between p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl z-10'>
-            <div className=''>
-              <h1 className='text-2xl font-bold line-clamp-1'>Chapters:</h1>
-              {/* <p className='aaa'>Course Description</p> */}
-            </div>
+          <div className='flex flex-row justify-between p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl z-10 right-0'>
+            
             <div className='flex items-center h-full right-2 lg:hidden '>
               <ChevronDownCircle size={30} className={`duration-500 ${mapVideos && 'rotate-180'}`} onClick={() => { setMapVideos(!mapVideos) }} />
             </div>
           </div>
-          <div className=' w-full h-full gap-4 lg:absolute top-20'>
+          <div className=' w-full h-full gap-4 lg:absolute top-4'>
+            <Tabs defaultValue="videos" className=" px-0 w-full ">
+              <TabsList className=" overflow-auto  flex  justify-start w-full ">
+                <div className=" w-fit  flex">
+                  <TabsTrigger value="videos">Videos</TabsTrigger>
+                  {
+                    courseData?.quizzes?.length !== 0 && <TabsTrigger value="quizes">Quizes</TabsTrigger>
+                  }
 
-            {
-              mapVideos &&
-              videos?.map((video) => {
-                return (
-                  <MiniVideoCard key={video._id} _id={video._id} videoId={video.videoId} thumbnail={video?.thumbnail?.secure_url} title={video?.title} channelName={video?.channelName} uploadedDate={video?.uploadedDate} views={video?.views} isFree={video?.isFree} />
-                )
-              })
-            }
+                </div>
+              </TabsList>
+
+              <TabsContent value="videos" className='p-0'>
+                <Card className='max-h-dvh overflow-auto m-0 p-0 w-full border-none'>
+                  
+                  <CardContent className="p-0 border-none">
+                    {
+                      mapVideos && videos.length !== 0 &&
+                      videos?.map((video) => {
+                        return (
+                          <MiniVideoCard key={video._id} _id={video._id} videoId={video.videoId} thumbnail={video?.thumbnail?.secure_url} title={video?.title} channelName={video?.channelName} uploadedDate={video?.uploadedDate} views={video?.views} isFree={video?.isFree} />
+                        )
+                      })
+                    }
+                  </CardContent>
+
+                </Card>
+
+              </TabsContent>
+
+              <TabsContent value="quizes" className=''>
+                <Card className='max-h-dvh overflow-auto m-0 w-full p-0'>
+                 
+                 
+                  <CardContent className="p-0">
+                    {
+                     mapVideos && courseData?.quizzes?.length !== 0 && courseData?.quizzes?.map((quiz: any) => {
+                        if (quiz) {
+                          return (
+                            <div key={quiz?._id}>
+                              <QuizCard _id={quiz._id} title={quiz.title} isFree={quiz?.isFree} updated_at={quiz?.updated_at} thumbnail={quiz?.thumbnail}/>
+                            </div>
+                          )
+                        }
+                      })
+                    }
+                  </CardContent>
+
+                </Card>
+
+              </TabsContent>
+
+            </Tabs>
+
+
           </div>
         </div>
 
@@ -394,14 +450,7 @@ function ExploreCourse() {
 
 
 
-            {/* {
-              videos?.map(() => {
-                return (
-                  <MiniVideoCard />
 
-                )
-              })
-            } */}
           </div>
         </div>
 
