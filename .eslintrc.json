@@ -1,11 +1,21 @@
 {
-  "extends": "next/core-web-vitals",
-  
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
   "plugins": [
-    "react-refresh"
+    "react-refresh",
+    "@typescript-eslint",
+    "prettier"
   ],
   "rules": {
-    "react-refresh/only-export-components": "warn"
+    "react-refresh/only-export-components": "warn",
+    "react/jsx-uses-react": "off", // No need for React import in JSX with Next.js 12+
+    "react/jsx-uses-vars": "error", // Ensures JSX vars are correctly used
+    "react/function-component-definition": ["warn", { "namedComponents": "arrow-function" }],
+    "react/prop-types": "off", // Disable PropTypes checking since TypeScript is used
+    "prettier/prettier": "error", // Enforce Prettier formatting
+    "@typescript-eslint/explicit-module-boundary-types": "off" // Optional: to allow missing return types in functions
   }
-  
 }

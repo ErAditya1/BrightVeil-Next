@@ -8,7 +8,7 @@ if (isProduction) {
   console.warn = () => {};
 }
 
-const nextConfig= {
+const nextConfig = {
   reactStrictMode: true,
   images: {
     remotePatterns: [
@@ -43,5 +43,9 @@ const nextConfig= {
   },
 };
 
+// Wrap the config with bundle analyzer
+const bundleAnalyzerConfig = {
+  enabled: isProduction,  // Enable only in production
+};
 
-export default nextConfig
+export default withBundleAnalyzer(bundleAnalyzerConfig)(nextConfig);

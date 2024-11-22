@@ -1,0 +1,13 @@
+'use client'
+
+import BlogPostForm from "../components/PostForm"
+
+function page() {
+  return (
+    <div>
+        <BlogPostForm/>
+    </div>
+  )
+}
+
+export default page
