@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -31,17 +31,22 @@ import Image from 'next/image';
 export default function VerifyAccount() {
   const router = useRouter();
   const params = useParams<{ username: string }>();
+  const [sending, setSending] = useState(false)
 
   const { toast } = useToast();
   const form = useForm<z.infer<typeof verifySchema>>({
     resolver: zodResolver(verifySchema),
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const username = params.username;
 
+  useEffect(()=>{
+    setTimeout(()=>setSending(false),1000*60)
+  },[])
   const onSubmit = async (data: z.infer<typeof verifySchema>) => {
     try {
       setIsSubmitting(true)
-      const username = params.username;
+      
       const response = await api.post<ApiResponse>(`/v1/users/verify-code`, {
         username,
         code: data.code,
@@ -66,6 +71,33 @@ export default function VerifyAccount() {
       });
     }
   };
+
+  const resendCode = async () =>{
+    if(sending) return
+    setSending(true)
+      try {
+
+        const response = await api.patch("/v1/users/verify-code",{username: username})
+        if(response.status==201){
+          toast({
+            title: 'Success',
+            description: 'Verification code has been sent again.',
+            variant:'success',
+          })
+        }
+        
+      } catch (error) {
+        const errorMsg = error as AxiosError<AxiosError>
+        console.error(errorMsg)
+        toast({
+          title: 'Error',
+          description: errorMsg.response?.data.message,
+          variant: 'destructive',
+        })
+      }finally{
+         setTimeout(()=>setSending(false),1000*60)
+        }
+  }
 
  
 
@@ -121,6 +153,9 @@ export default function VerifyAccount() {
                 </FormItem>
               )}
             />
+
+              {!sending && <p className='float-right cursor-pointer underline select-none' onClick={resendCode}>Resend Code👆</p>
+            }
 
             <Button type="submit" className='w-full' disabled={isSubmitting}>
               {isSubmitting ? (

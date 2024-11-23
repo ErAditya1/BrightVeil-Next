@@ -140,7 +140,7 @@ export default function AddQuizQuestionForm({ quizId, setQuizData, setAddQuestio
                                     <FormMessage />
                                     <SelectContent>
                                         {field.value !== '' && field.value !== null && field.value !== undefined ? (
-                                            field?.value?.map((option:any, index:number) => (
+                                            field?.map((option:any, index:number) => (
                                                 <SelectItem key={index} value={option||'nn'}>
                                                     Option {index + 1}: {option}
                                                 </SelectItem>
