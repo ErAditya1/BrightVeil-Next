@@ -45,6 +45,7 @@ const nextConfig= {
   typescript: {
     ignoreBuildErrors: false,
   },
+  
 };
 
 

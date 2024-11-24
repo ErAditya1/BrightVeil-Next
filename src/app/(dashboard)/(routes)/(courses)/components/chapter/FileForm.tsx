@@ -47,7 +47,18 @@ export default function FileForm({ setChapterData, setAddFile }: any) {
            
 
 
-            const response = await api.post(`/v1/videos/video/file/${chapter_id}`, formData
+            const response = await api.post(`/v1/videos/video/file/${chapter_id}`, formData,{
+                headers: {
+                    'Content-Type':'multipart/form-data'
+                }
+
+                //,
+                // onUploadProgress: (progressEvent) => {
+                //     const { loaded, total } = progressEvent;
+                //     const percentage = Math.round((loaded * 100) / total);
+                //     console.log(`Percentage: ${percentage}%`);
+                // }
+            }
 
             );
             toast({

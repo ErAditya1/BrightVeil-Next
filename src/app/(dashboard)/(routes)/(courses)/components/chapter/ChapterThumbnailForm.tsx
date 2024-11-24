@@ -48,7 +48,11 @@ export default function ChapterThumbnailForm({ thumbnail }: any) {
 
             try {
 
-                const res = await api.patch(`/v1/videos/video/update-thumbnail/${chapter_id}`, formData,
+                const res = await api.patch(`/v1/videos/video/update-thumbnail/${chapter_id}`, formData,{
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    }
+                }
 
                 )
                 if (res) {

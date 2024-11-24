@@ -87,14 +87,14 @@ function ResetPassword() {
           <div className="text-center flex justify-center flex-col items-center">
             <div className='w-20 h-20 rounded-full border-2 flex justify-center items-center'>
               <Image
-                src='/brightveil_dark.jpeg'
+                src='/brightveilDark.jpeg'
                 alt="brightveil logo"
                 width={120}
                 height={120}
                 className=" w-full h-full rounded-full p-2 hidden dark:block"
               />
               <Image
-                src='/brightveil_light.jpeg'
+                src='/brightveilLight.jpeg'
                 alt="brightveil logo"
                 width={120}
                 height={120}

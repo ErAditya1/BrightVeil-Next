@@ -46,8 +46,10 @@ const BlogPostForm = () => {
             if(data.image){
                 formData.append('image', data.image)
             }
+            
             formData.append('title', data.title)
             formData.append('content', data.content)
+
                 const res = await api.post('/v1/posts/add', formData,{
                     headers: {
                         'Content-Type':'multipart/form-data'

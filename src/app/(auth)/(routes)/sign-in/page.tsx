@@ -100,14 +100,14 @@ export default function SignInForm() {
     try {
 
 
-      // const result = await api.get('/v1/users/google');
-      // console.log(result)
+      const result = await api.get('/redirect');
+      console.log(result)
 
       //>> Here  I am providing the server google oauth url directlu then it's working
 
-      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI}/v1/users/google`: 'http://localhost:8000/api/v1/users/google';
+      // const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI}/v1/users/google`: 'http://localhost:8000/api/v1/users/google';
 
-      window.location.href= `${redirectUrl}`
+      // window.location.href= `${redirectUrl}`
 
 
     } catch (error) {
@@ -152,14 +152,14 @@ export default function SignInForm() {
         <div className="text-center flex justify-center flex-col items-center">
           <div className='w-20 h-20 rounded-full border-2 flex justify-center items-center'>
             <Image 
-             src='/brightveil_dark.jpeg'
+             src='/brightveilDark.jpeg'
              alt="brightveil logo"
              width={120}
              height={120}
              className=" w-full h-full rounded-full p-2 hidden dark:block"
              />
              <Image 
-             src='/brightveil_light.jpeg'
+             src='/brightveilLight.jpeg'
              alt="brightveil logo"
              width={120}
              height={120}

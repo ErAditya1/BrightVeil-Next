@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster";
 import { SocketProvider } from "@/context/SocketContext";
 
-import { Providers } from "./Providers";
+import { Providers } from "./providers";
 import UserContext from "@/context/UserContext";
 
 
@@ -20,9 +20,9 @@ export const metadata = {
   description: "A website built with Next.js, MUI, and Socket.io",
 
   icons: {
-    icon: "/brightveil_light.jpeg",
-    apple: "/brightveil_light.jpeg",
-    shortcut: "/brightveil_light.jpeg",
+    icon: "/brightveilLight.jpeg",
+    apple: "/brightveilLight.jpeg",
+    shortcut: "/brightveilLight.jpeg",
   },
 };
 

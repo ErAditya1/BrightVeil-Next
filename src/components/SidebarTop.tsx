@@ -13,13 +13,13 @@ function SidebarTop() {
     <Link href='/' className='w-full h-full flex flex-row gap-2 items-center'>
       <IconButton variant="soft" color="primary" size="sm" className='max-h-10 max-w-10'>
         {/* <BrightnessAutoRoundedIcon /> */}
-        <Image src='/brightveil_dark.jpeg'
+        <Image src='/brightveilDark.jpeg'
           height={500}
           width={500}
           alt="Bright Veil Logo"
           className='h-full w-full rounded-full hidden dark:block'
         />
-        <Image src='/brightveil_light.jpeg'
+        <Image src='/brightveilLight.jpeg'
           height={500}
           width={500}
           alt="Bright Veil Logo"
