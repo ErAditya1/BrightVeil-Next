@@ -184,7 +184,7 @@ function EditCourse() {
                                 </div>
                                 {
 
-                                    addQuiz && <QuizPost setCourseData={setCourseData} setAddChapter={setAddChapter} />
+                                    addQuiz && <QuizPost setCourseData={setCourseData} setAddQuiz={setAddQuiz} />
                                 }
                                 <div className=" m-2 border p-2 rounded">
                                     <span className="text-md mx-2 flex"> <FileAxis3DIcon />Quizes </span>

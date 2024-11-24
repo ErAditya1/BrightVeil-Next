@@ -96,6 +96,56 @@ export default function SignInForm() {
     }
   };
 
+  const loginWithGoogle = async () => {
+    try {
+
+
+      // const result = await api.get('/v1/users/google');
+      // console.log(result)
+
+      //>> Here  I am providing the server google oauth url directlu then it's working
+
+      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI}/v1/users/google`: 'http://localhost:8000/api/v1/users/google';
+
+      window.location.href= `${redirectUrl}`
+
+
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      toast({
+        title: 'Google Login Failed',
+        description: axiosError?.response?.data.message,
+        variant: 'destructive',
+      })
+      console.error('Error during Google login:', error);
+      // Handle the error during Google OAuth
+    }
+  }
+  const loginWithGithub = async () => {
+    try {
+      // const result = await api.get('/v1/users/github',{
+      //   withCredentials: true,
+      // });
+      // console.log(result);
+
+      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI}/v1/users/github`: 'http://localhost:8000/api/v1/users/github';
+
+      window.location.href= `${redirectUrl}`
+      // Handle the result from Google OAuth
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+
+      toast({
+        title: 'Github Login Failed',
+        description: axiosError?.response?.data.message,
+        variant: 'destructive',
+      })
+      console.error('Error during Github login:', error);
+      // Handle the error during Google OAuth
+    }
+  }
+
+
   return (
     <div className="flex justify-center items-center min-h-dvh ">
       <div className="w-full max-w-md p-8 space-y-8 bg-card text-card-foreground  border-2 rounded-lg shadow-md">
@@ -123,8 +173,8 @@ export default function SignInForm() {
         </div>
         <div className="flex flex-row gap-2 ">
           <button
-            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-            
+            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full bg-background rounded-md h-10 font-medium shadow-input  dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
+            onClick={loginWithGithub}
           >
             <BsGithub className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
 
@@ -136,9 +186,9 @@ export default function SignInForm() {
 
           </button>
           <button
-            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
+            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full  rounded-md h-10 font-medium shadow-input bg-background dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             
-            
+            onClick={loginWithGoogle}
           >
 
             <BsGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />

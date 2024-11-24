@@ -102,7 +102,6 @@ export default function CourseCard({ _id }: Props) {
               <AvatarLayout
                 src={courseData?.author?.avatar?.url || '/fallback-avatar.png'}
                 name={courseData?.author?.name}
-                username={courseData?.author?.username}
               />
               <div className="card-content flex justify-center flex-col">
                 <p  className="line-clamp-2 break-words text-sm sm:text-md ">

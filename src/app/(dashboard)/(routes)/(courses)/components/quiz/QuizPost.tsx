@@ -21,7 +21,7 @@ import { AxiosError } from 'axios';
 import { createQuiz } from '@/schemas/quizSchema';
 
 
-export default function QuizPost({ setCourseData, setAddChapter }: any) {
+export default function QuizPost({ setCourseData, setAddQuiz }: any) {
     const router = useRouter();
     // const [isSubmitting, setIsSubmitting] = useState(false);
     const { course_id } = useParams()
@@ -54,7 +54,11 @@ export default function QuizPost({ setCourseData, setAddChapter }: any) {
                     description: response?.data?.message,
                     variant: 'success',
                 });
-                setAddChapter(false)
+                setAddQuiz(false)
+                const quiz = response.data.data
+                setCourseData((prev:any)=>{
+                    return {...prev, quizzes:[...prev.quizzes, quiz]}
+                } )
                
         
             // setIsSubmitting(false);

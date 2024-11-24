@@ -1,14 +1,14 @@
 import axios from 'axios';
 
 export const API_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://lms-backend-mh2d.onrender.com/api' 
+  ? process.env.NEXT_PUBLIC_SERVER_URI
   : 'http://localhost:8000/api';
 
 console.log(API_URL);
 
 const api = axios.create({
   baseURL: API_URL,              // Base URL for all requests
-  withCredentials: true,         // Include credentials (cookies) in cross-origin requests
+  withCredentials: true,       // Include credentials (cookies) in cross-origin requests
   headers: {
     'Content-Type': 'application/json', // Default content type
   },

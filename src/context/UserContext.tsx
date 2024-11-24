@@ -5,7 +5,7 @@ import { toast } from '@/components/ui/use-toast';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { loginUser, logoutUser } from '@/store/user/userSlice';
 import { AxiosError } from 'axios';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
 import { FaSpinner } from 'react-icons/fa6';
 import { MdOutlineCloudOff } from 'react-icons/md';
@@ -14,6 +14,8 @@ function UserContext({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
+  const searchParams = useSearchParams();
+  const accessToken = searchParams.get('accessToken');
 
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const [loading, setLoading] = useState(true);
@@ -56,10 +58,17 @@ function UserContext({ children }: { children: React.ReactNode }) {
 
     if (isOnline) {
       api
-        .get('/v1/users/current-user')
+        .get('/v1/users/current-user',{
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        })
         .then((response) => {
           console.log('user fetched successfully');
           const user = response.data.data;
+          if(accessToken){
+            localStorage.setItem('BrightVeilUser', JSON.stringify(user));
+          }
           dispatch(loginUser(user));
           if (isPublicPath) {
             router.push('/');
