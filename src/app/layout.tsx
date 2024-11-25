@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster";
 import { SocketProvider } from "@/context/SocketContext";
 
-import { Providers } from "./providers";
+import { Providers } from "./Providers";
 import UserContext from "@/context/UserContext";
 
 
