@@ -6,11 +6,11 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { loginUser, logoutUser } from '@/store/user/userSlice';
 import { AxiosError } from 'axios';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { FaSpinner } from 'react-icons/fa6';
 import { MdOutlineCloudOff } from 'react-icons/md';
 
-function UserContext({ children }: { children: React.ReactNode }) {
+function Page({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
@@ -54,11 +54,10 @@ function UserContext({ children }: { children: React.ReactNode }) {
   }, []); // Empty dependency array means this effect runs only once, on mount
 
   useEffect(() => {
-    console.log("isOnline checking", isOnline);
 
     if (isOnline) {
       api
-        .get('/v1/users/current-user',{
+        .get('/v1/users/current-user', {
           headers: {
             'Authorization': `Bearer ${accessToken}`,
           },
@@ -66,7 +65,7 @@ function UserContext({ children }: { children: React.ReactNode }) {
         .then((response) => {
           console.log('user fetched successfully');
           const user = response.data.data;
-          if(accessToken){
+          if (accessToken) {
             localStorage.setItem('BrightVeilUser', JSON.stringify(user));
           }
           dispatch(loginUser(user));
@@ -75,7 +74,6 @@ function UserContext({ children }: { children: React.ReactNode }) {
           }
         })
         .catch((error) => {
-          console.error('Error fetching user:', error);
           const axiosError = error as AxiosError<AxiosError>;
           if (!isPublicPath) {
             toast({
@@ -116,15 +114,23 @@ function UserContext({ children }: { children: React.ReactNode }) {
       </div>
     );
   } else if (!isOnline) {
-    return(
+    return (
       <div className="bg-background text-foreground h-dvh w-screen flex justify-center items-center m-0 p-0 text-sm sm:text-md">
-      <MdOutlineCloudOff className=" mx-4" size={50} />
-      No Network Connetion ...
-    </div>
+        <MdOutlineCloudOff className=" mx-4" size={50} />
+        No Network Connetion ...
+      </div>
     )
   }
 
   return <>{children}</>;
 }
 
-export default UserContext;
+export default function UserContext ({ children }:any) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Page>
+        {children}
+      </Page>
+    </Suspense>
+  )
+}

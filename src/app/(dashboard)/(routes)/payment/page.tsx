@@ -6,7 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from '@/components/ui/use-toast';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 
 const RazorpayCheckout = () => {
     const params = useSearchParams()
@@ -175,6 +175,9 @@ const RazorpayCheckout = () => {
     };
 
     return (
+        <Suspense fallback={<div>Loading...</div>}>
+
+
         <div
             id=""
             className="flex flex-col gap-9 pb-5 md:gap-6 overflow-auto relative scrollbar-hide mx-auto max-w-[948px] px-3 w-full"
@@ -550,6 +553,7 @@ const RazorpayCheckout = () => {
                 </section>
             </article>
         </div>
+        </Suspense>
     );
 };
 

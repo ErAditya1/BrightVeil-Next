@@ -36,10 +36,6 @@ import Link from 'next/link';
 
 import api from '@/api';
 import { useRouter } from 'next/navigation';
-import { toast } from '@/components/ui/use-toast';
-import ColorSchemeToggle from '@/components/ColorSchemeToggle';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import GoBackButton from '@/components/GoBack';
 import User from './User';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { logoutUser } from '@/store/user/userSlice';
@@ -112,12 +108,17 @@ export default function Sidebar() {
       visible: ['', 'admin', 'student', 'teacher', 'parent']
     },
     {
+      label: 'Posts',
+      href: '/posts',
+      icon: <SiApostrophe />,
+      visible: ['', 'admin', 'student', 'teacher', 'parent']
+    },
+    {
       label: 'Messages',
       href: '/message',
       icon: <QuestionAnswerRoundedIcon />,
       visible: ['', 'admin', 'student', 'teacher', 'parent']
     },
-
     {
       label: 'User',
       icon: <GroupRoundedIcon />,

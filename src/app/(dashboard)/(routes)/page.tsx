@@ -1,8 +1,5 @@
 "use client";
 import api from "@/api";
-import { Spotlight } from "@/components/ui/Spotlight";
-import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
-import { title } from "process";
 import React, { useEffect, useState } from "react";
 import CourseCard from "./(courses)/components/CourseCard";
 

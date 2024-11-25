@@ -11,7 +11,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -35,7 +35,7 @@
     ".next/types/**/*.ts",
     "backend/src/emails/VerificationEmail.js",
     "src/app/(dashboard)/(routes)/(courses)/components/Video.jsx"
-  ],
+, "next.config.mjs"  ],
   "exclude": [
     "node_modules"
   ]

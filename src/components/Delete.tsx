@@ -3,7 +3,7 @@ import api from "@/api";
 import React from "react";
 import { FaTrash } from "react-icons/fa6";
 
-export default function Delete({ className, url }) {
+export default function Delete({ className, url }:{className: string, url: string}) {
   
 
   const deleteHandler = () => {

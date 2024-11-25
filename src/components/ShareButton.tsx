@@ -95,10 +95,10 @@ function ShareButton({ className, textToShare }: any) {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button className='bg-transparent text-foreground hover:bg-transparent p-0 m-0'>
+      <DialogTrigger asChild className={className}>
+        <Button className='bg-transparent text-foreground hover:bg-transparent p-0 m-0 text-center '>
 
-          <Share2 />
+          <Share2 className='text-md'/>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">

@@ -31,10 +31,10 @@ function LikeButton({className , liked, likeCnt , type,_id}:any) {
   return (
     <button
     onClick={likePostHandler}
-    className={`  flex   justify-center items-center rounded-full  ${className}`}
+    className={`  flex justify-center items-center rounded-full  ${className}`}
   >
-    <p>{isLiked? <BiSolidLike className="mx-2 p-0" /> : <AiOutlineLike className={` mx-2  p-0`} />}</p>
-    <Chip>{likeCount}</Chip>
+    <p>{isLiked? <BiSolidLike className="m-0 p-0 " /> : <AiOutlineLike className={` m-0  p-0`} />}</p>
+    {likeCount && <Chip>{likeCount}</Chip>}
 </button>
   )
 }

@@ -1,11 +1,6 @@
 'use client'
 
-import * as React from 'react';
-import AspectRatio from '@mui/joy/AspectRatio';
-import Card from '@mui/joy/Card';
-import CardContent from '@mui/joy/CardContent';
-import CardOverflow from '@mui/joy/CardOverflow';
-import Divider from '@mui/joy/Divider';
+import React, { useEffect, useState } from 'react';
 import Typography from '@mui/joy/Typography';
 import {
   Avatar,
@@ -13,60 +8,121 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar"
 import { Skeleton } from '@/components/ui/skeleton';
-import { BookOpen} from 'lucide-react';
+import { BookOpen, MoreVertical } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import api from '@/api';
+import { toast } from './ui/use-toast';
+import { AxiosError } from 'axios';
+import AvatarLayout from './AvatarLayout';
+import LikeButton from './LikeButton';
+import ShareButton from './ShareButton';
 
-export default function PostCard({key}:any) {
-  const [isLoading, setIsLoading] = React.useState(false);
+export default function PostCard({ _id }: any) {
+
+
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [post, setPost] = useState({
+    author: {
+      avatar: {
+        url: '',
+      },
+      username: '',
+      name: '',
+    },
+    title: '',
+    content: '',
+    image: {
+      url: '',
+    },
+
+    createdAt: '',
+  })
+
+  useEffect(() => {
+
+    api.get(`/v1/posts//get-data/${_id}`)
+      .then((response) => {
+        const data = response.data.data
+        setPost(data)
+        console.log(data)
+        setIsLoading(false)
+      })
+      .catch((error) => {
+        const axiosError = error as AxiosError<AxiosError>
+        console.log(axiosError)
+
+      })
+
+  }, [_id])
+
   return (
-    <Link href='/posts/abcd' key={key}>
-      <Card variant="outlined" className="bg-card dark:bg-card text-card-foreground">
-      <CardOverflow>
-        <AspectRatio ratio="2">
-          {
-            isLoading ? (
-              <Skeleton className=" w-full rounded" />
-            ) : (
-              <Image
-                src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?auto=format&fit=crop&w=318"
-                loading="lazy"
-                width={500}
-                height={500}
-                alt=""
-              />
-            )
-          }
-        </AspectRatio>
-      </CardOverflow>
-      <CardContent className="flex flex-row items-centr" >
+
+    <div className="bg-card  text-card-foreground aspect-square p-0 rounded relative ">
+
+
+      <div className='w-full h-full'>
         {
           isLoading ? (
-            <React.Fragment>
-              <Skeleton className="h-12 w-12 rounded-full" />
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-[250px]" />
-                <Skeleton className="h-4 w-[200px]" />
-              </div>
-            </React.Fragment>
-          ) :
-            (
-              <React.Fragment>
-                <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <div className="card-content ">
-                  <Typography level="title-md" className="line-clamp-2">Yosemite National Park</Typography>
-                  <Typography level="body-sm">California</Typography>
-                </div>
-              </React.Fragment>
-            )
+            <Skeleton className=" w-full rounded" />
+          ) : (
+            <Image
+              src={post?.image?.url}
+              loading="lazy"
+              width={500}
+              height={500}
+              className='rounded w-full aspect-square'
+              alt=""
+            />
+          )
         }
 
-      </CardContent>
-      
-    </Card>
-    </Link>
+
+      </div>
+      <div className="  bottom-0  absolute   w-full p-1 " >
+        <div className='absolute bottom-14 right-2 w-8 p-1 rounded h-full  flex flex-col gap-2 items-center justify-center mx-auto'>
+          <div className='bg-blue-50 dark:bg-gray-800 bg-opacity-55 rounded-full flex justify-center items-center p-2 border shadow-xl'>
+            <LikeButton className="h-5 w-5 text-xl"/>
+          </div>
+          <div className='bg-blue-50 dark:bg-gray-800 bg-opacity-55 rounded-full flex justify-center items-center p-2 border shadow-xl'>
+            <ShareButton className="h-5 w-5"/>
+          </div>
+
+        </div>
+        <div className='flex flex-row h-fit  items-center w-full '>
+          {
+            isLoading ? (
+              <div className='gap-1 flex flex-row w-full'>
+                <Skeleton className="h-10 w-10 rounded-full" />
+                <div className="space-y-2 flex flex-col w-full">
+                  <Skeleton className="h-3 w-full" />
+                  <Skeleton className="h-3 w-full" />
+                </div>
+              </div>
+            ) :
+              (
+                <div className='bg-blue-50 dark:bg-gray-800 bg-opacity-55 flex flex-row gap-2 items-center w-full h-full  p-1 rounded'>
+                  <div className='flex flex-row gap-1 w-full'>
+                    <AvatarLayout name={post?.author?.name} src={post?.author?.avatar?.url} />
+                    <div className="card-content ">
+                      <p className="line-clamp-1 text-sm">{post?.title}</p>
+                      <p className='text-xs line-clamp-1'>{post?.author?.username}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <MoreVertical />
+                  </div>
+                </div>
+              )
+          }
+        </div>
+
+      </div>
+      <div>
+
+      </div>
+
+    </div>
+
   );
 }

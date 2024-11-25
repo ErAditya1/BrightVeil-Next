@@ -34,14 +34,11 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { closeSidebar } from '@/lib/utils';
 import Link from 'next/link';
 
-import api from '@/api';
 import { useRouter } from 'next/navigation';
-import { toast } from '@/components/ui/use-toast';
-import ColorSchemeToggle from '@/components/ColorSchemeToggle';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import GoBackButton from '@/components/GoBack';
 import User from '@/components/User';
 import { useAppSelector } from '@/store/hooks';
+import SidebarTop from '@/components/SidebarTop';
 
 
 
@@ -191,16 +188,7 @@ export default function AdminSidebar() {
         }}
         onClick={() => closeSidebar()}
       />
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-
-        <GoBackButton />
-        <IconButton variant="soft" color="primary" size="sm">
-          <BrightnessAutoRoundedIcon />
-        </IconButton>
-        <Typography level="title-lg">BrightVeil</Typography>
-        <ColorSchemeToggle sx={{ ml: 'auto' }} />
-
-      </Box>
+      <SidebarTop/>
 
       <Box
         sx={{

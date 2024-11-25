@@ -337,7 +337,7 @@ function Page() {
 
     if (selectedChat?._id && socket) {
 
-      
+
 
 
       // If the socket connection exists, emit an event to join the specific chat using its ID.
@@ -353,7 +353,7 @@ function Page() {
     // An empty dependency array ensures this useEffect runs only once, similar to componentDidMount.
   }, [selectedChat._id]);
 
- 
+
 
 
   // This useEffect handles the setting up and tearing down of socket event listeners.
@@ -398,57 +398,59 @@ function Page() {
       socket.off(MESSAGE_DELETE_EVENT, onMessageDelete);
     };
 
-    
+
   }, [socket, chats]);
 
-  const handleSlide = ()=> {setIsSlideIn(!isSlideIn)}
+  const handleSlide = () => { setIsSlideIn(!isSlideIn) }
 
 
   return (
-    <Sheet
-      sx={{
-        flex: 1,
-        mx: 'auto',
-        pt: { xs: 'var(--Header-height)', sm: 0 },
-        display: 'grid',
-        gridTemplateColumns: {
-          xs: '1fr',
-          sm: 'minmax(min-content, min(30%, 400px)) 1fr',
-        },
-      }}
-      className="h-dvh  top-0"
-    >
+    <Suspense fallback={<div>Loading...</div>}>
       <Sheet
         sx={{
-          position: { xs: 'fixed', sm: 'sticky' },
-          transform: {
-            sm: 'none',
+          flex: 1,
+          mx: 'auto',
+          pt: { xs: 'var(--Header-height)', sm: 0 },
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'minmax(min-content, min(30%, 400px)) 1fr',
           },
-          transition: 'transform 0.4s, width 0.4s',
-          zIndex: 100,
-
         }}
-        className={`h-full w-full overflow-auto transform transition-transform duration-300 ${isSlideIn ? "translate-x-0" : "-translate-x-full"
-          }`}
-
+        className="h-dvh  top-0"
       >
-        <ChatsPane handleSlide={handleSlide}/>
+        <Sheet
+          sx={{
+            position: { xs: 'fixed', sm: 'sticky' },
+            transform: {
+              sm: 'none',
+            },
+            transition: 'transform 0.4s, width 0.4s',
+            zIndex: 100,
+
+          }}
+          className={`h-full w-full overflow-auto transform transition-transform duration-300 ${isSlideIn ? "translate-x-0" : "-translate-x-full"
+            }`}
+
+        >
+          <ChatsPane handleSlide={handleSlide} />
+        </Sheet>
+        {
+          !selectedChat?._id ?
+            <div className="w-full h-full flex justify-center items-center bg-background">
+              <Image src="/whatsapp.gif"
+                loading="lazy"
+                width={200}
+                height={200}
+                className="h-20 w-20 rounded-full" alt="whatsapp loading button" />
+            </div>
+            : <MessagesPane handleSlide={handleSlide} />
+
+
+        }
+
       </Sheet>
-      {
-        !selectedChat?._id ?
-          <div className="w-full h-full flex justify-center items-center bg-background">
-            <Image src="/whatsapp.gif"
-              loading="lazy"
-              width={200}
-              height={200}
-              className="h-20 w-20 rounded-full" alt="whatsapp loading button" />
-          </div>
-          : <MessagesPane handleSlide={handleSlide} />
-
-
-      }
-
-    </Sheet>
+    </Suspense>
   );
 }
 

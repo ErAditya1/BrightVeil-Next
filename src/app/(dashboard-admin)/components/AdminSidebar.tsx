@@ -33,7 +33,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { closeSidebar } from '@/lib/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import ColorSchemeToggle from '@/components/ColorSchemeToggle';
 import GoBackButton from '@/components/GoBack';
 import { MdAssignment, MdOutlineCoPresent, MdSubject } from 'react-icons/md';
 import { CassetteTape, ListChecks, TextSelection } from 'lucide-react';
@@ -41,6 +40,7 @@ import { SlCalender } from 'react-icons/sl';
 import { GrAnnounce } from 'react-icons/gr';
 import User from '@/components/User';
 import { useAppSelector } from '@/store/hooks';
+import SidebarTop from '@/components/SidebarTop';
 
 
 
@@ -237,19 +237,7 @@ export default function AdminSidebar() {
         }}
         onClick={() => closeSidebar()}
       />
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-
-        
-          <GoBackButton />
-        
-        <IconButton variant="soft" color="primary" size="sm">
-          <BrightnessAutoRoundedIcon />
-        </IconButton>
-        <Typography level="title-lg">BrightVeil</Typography>
-        <ColorSchemeToggle sx={{ ml: 'auto' }} />
-
-      </Box>
-
+      <SidebarTop/>
       <Box
         sx={{
           minHeight: 0,

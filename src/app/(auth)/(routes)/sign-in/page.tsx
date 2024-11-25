@@ -28,12 +28,13 @@ import { BsGithub, BsGoogle } from 'react-icons/bs';
 import Image from 'next/image';
 
 export default function SignInForm() {
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   const router = useRouter();
-  const dispatch  = useAppDispatch();
+  const dispatch = useAppDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [showPassword, setShowPassword] = useState(false)
-  useEffect(()=>{setCurrentTime(Date.now())},[])
+  useEffect(() => { setCurrentTime(Date.now()) }, [])
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -55,11 +56,11 @@ export default function SignInForm() {
         identifier: data.identifier,
         password: data.password,
       });
-      
 
-      
+
+
       const user = result.data.data.user
-      user.accessTokenExpires= currentTime +   (1000*60*60) ;
+      user.accessTokenExpires = currentTime + (1000 * 60 * 60);
       console.log(user);
       dispatch(loginUser(user))
       localStorage.setItem('BrightVeilUser', JSON.stringify(user));
@@ -69,7 +70,7 @@ export default function SignInForm() {
 
         title: 'Login Successful',
         description: result?.data?.message,
-        variant:'success',
+        variant: 'success',
       })
       router.push('/');
 
@@ -100,14 +101,14 @@ export default function SignInForm() {
     try {
 
 
-      const result = await api.get('/redirect');
-      console.log(result)
+      // const result = await api.get('/redirect');
+      // console.log(result)
 
       //>> Here  I am providing the server google oauth url directlu then it's working
 
-      // const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI}/v1/users/google`: 'http://localhost:8000/api/v1/users/google';
+      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI}/v1/users/google` : 'http://localhost:8000/api/v1/users/google';
 
-      // window.location.href= `${redirectUrl}`
+      window.location.href = `${redirectUrl}`
 
 
     } catch (error) {
@@ -128,9 +129,9 @@ export default function SignInForm() {
       // });
       // console.log(result);
 
-      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI}/v1/users/github`: 'http://localhost:8000/api/v1/users/github';
+      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI}/v1/users/github` : 'http://localhost:8000/api/v1/users/github';
 
-      window.location.href= `${redirectUrl}`
+      window.location.href = `${redirectUrl}`
       // Handle the result from Google OAuth
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
@@ -151,20 +152,20 @@ export default function SignInForm() {
       <div className="w-full max-w-md p-8 space-y-8 bg-card text-card-foreground  border-2 rounded-lg shadow-md">
         <div className="text-center flex justify-center flex-col items-center">
           <div className='w-20 h-20 rounded-full border-2 flex justify-center items-center'>
-            <Image 
-             src='/brightveilDark.jpeg'
-             alt="brightveil logo"
-             width={120}
-             height={120}
-             className=" w-full h-full rounded-full p-2 hidden dark:block"
-             />
-             <Image 
-             src='/brightveilLight.jpeg'
-             alt="brightveil logo"
-             width={120}
-             height={120}
-             className=" w-full h-full rounded-full p-2 block dark:hidden"
-             />
+            <Image
+              src='/brightveilDark.jpeg'
+              alt="brightveil logo"
+              width={120}
+              height={120}
+              className=" w-full h-full rounded-full p-2 hidden dark:block"
+            />
+            <Image
+              src='/brightveilLight.jpeg'
+              alt="brightveil logo"
+              width={120}
+              height={120}
+              className=" w-full h-full rounded-full p-2 block dark:hidden"
+            />
           </div>
           <h1 className="text-4xl font-extrabold text-foreground tracking-tight lg:text-5xl mb-6">
             Welcome Back to BrightVeil
@@ -187,7 +188,7 @@ export default function SignInForm() {
           </button>
           <button
             className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full  rounded-md h-10 font-medium shadow-input bg-background dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-            
+
             onClick={loginWithGoogle}
           >
 
@@ -221,11 +222,11 @@ export default function SignInForm() {
               render={({ field }) => (
                 <FormItem className='relative'>
                   <FormLabel>Password</FormLabel>
-                  <Input type={showPassword ? "text": 'password'} {...field} />
-                    <span className="text-gray-400 hover:text-gray-600 cursor-pointer absolute right-2 bottom-2" onClick={() => setShowPassword(!showPassword)}>
-                      {showPassword? <EyeOff/> : <EyeIcon/>}
-                    </span>
-                  
+                  <Input type={showPassword ? "text" : 'password'} {...field} />
+                  <span className="text-gray-400 hover:text-gray-600 cursor-pointer absolute right-2 bottom-2" onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <EyeOff /> : <EyeIcon />}
+                  </span>
+
                   <FormMessage />
                 </FormItem>
               )}

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Link from 'next/link';
-import { useParams, useSearchParams } from 'next/navigation';
 import { timeAgo } from '@/utils/agoTime';
 import Image from 'next/image';
 import { SiCashapp } from "react-icons/si";

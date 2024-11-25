@@ -12,13 +12,18 @@ export default function ColorSchemeToggle(props: IconButtonProps) {
   const { setTheme, resolvedTheme } = useTheme();
   const { mode, setMode } = useColorScheme();
 
+  const [isClient, setIsClient] = React.useState(false);
   // Sync Joy UI mode with `next-themes` resolvedTheme
-  const isClient: boolean = typeof window !== 'undefined' && typeof document !== 'undefined';
   React.useEffect(() => {
+    setIsClient(true)
+    
+  }, []);
+  React.useEffect(() => {
+    setIsClient(true)
     if (resolvedTheme !== mode && isClient) {
       setMode(resolvedTheme as 'light' | 'dark');
     }
-  }, [resolvedTheme, setMode, mode]);
+  }, [resolvedTheme, setMode, mode, isClient]);
 
   // Handle the theme toggling logic
   const handleToggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {

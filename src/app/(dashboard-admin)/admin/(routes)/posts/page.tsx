@@ -1,6 +1,6 @@
 'use client'
+import BlogPostForm from '@/app/(dashboard)/(routes)/(Post)/components/PostForm'
 import React from 'react'
-import BlogPostForm from '../components/PostForm'
 
 function page() {
   return (
