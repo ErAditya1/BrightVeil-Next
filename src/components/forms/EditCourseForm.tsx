@@ -98,7 +98,7 @@ function EditCourse() {
     }
 
     const onEdit = (_id:String) => {
-        router.push(`/courses/edit-course/${course_id}/chapters/${_id}`)
+        router.push(`/chapters/${_id}`)
     }
 
     console.log(courseData)

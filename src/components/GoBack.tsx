@@ -1,5 +1,5 @@
 import { IconButton } from '@mui/joy';
-import { ArrowBigLeft, CircleArrowLeft } from 'lucide-react';
+import {  CircleArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Fragment } from 'react';
 

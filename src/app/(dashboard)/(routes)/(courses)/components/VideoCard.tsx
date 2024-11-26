@@ -5,14 +5,14 @@ import CardContent from '@mui/joy/CardContent';
 import { Skeleton } from '@/components/ui/skeleton';
 import { BookOpen } from 'lucide-react';
 import Link from 'next/link';
-import { AspectRatio, Card, CardOverflow, Divider, Typography } from '@mui/joy';
+import { AspectRatio, Card, CardOverflow, Divider } from '@mui/joy';
 import api from '@/api';
 import Image from 'next/image';
 import AvatarLayout from '@/components/AvatarLayout';
 import ReactPlayer from 'react-player';
-import { Button } from '@/components/ui/button';
 import { BsVolumeOff, BsVolumeUp } from 'react-icons/bs';
 import { BiMoney } from 'react-icons/bi';
+import ValidatedImage from '@/components/Image';
 
 export default function VideoCard({ _id, key }: any) {
 
@@ -39,7 +39,6 @@ export default function VideoCard({ _id, key }: any) {
   React.useEffect(() => {
     api.get(`/v1/videos/video/get-video/${_id}`)
       .then((res) => {
-        console.log(res)
         setIsLoading(false)
         setVideoData(res.data.data)
       })
@@ -129,7 +128,7 @@ export default function VideoCard({ _id, key }: any) {
                         </div>
                       </div>
                     </>) :
-                      <Image
+                      <ValidatedImage
                         src={videoData?.thumbnail?.secure_url}
                         loading="lazy"
                         width={500}

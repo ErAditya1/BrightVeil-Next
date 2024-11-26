@@ -125,7 +125,9 @@ const BlogPostForm = () => {
                                             const file = e.target.files?.[0] || null;
                                             field.onChange(file); // Update field value manually
                                         }}
-                                        value={undefined}/>
+                                        value={undefined}
+                                        accept='image/*'
+                                        />
                                     <FormMessage />
                                 </FormItem>
                             )}

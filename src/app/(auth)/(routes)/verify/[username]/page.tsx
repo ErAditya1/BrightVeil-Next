@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -31,12 +31,15 @@ import Image from 'next/image';
 export default function VerifyAccount() {
   const router = useRouter();
   const params = useParams<{ username: string }>();
+  const [resendCode, setResendCode] = useState(false)
 
   const { toast } = useToast();
   const form = useForm<z.infer<typeof verifySchema>>({
     resolver: zodResolver(verifySchema),
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  
 
   const onSubmit = async (data: z.infer<typeof verifySchema>) => {
     try {
@@ -67,27 +70,59 @@ export default function VerifyAccount() {
     }
   };
 
- 
+  const resendCodeHandler = async () => {
+    if (resendCode) return
+    try {
+      setResendCode(true)
+      const username = params.username;
+      const response = await api.patch<ApiResponse>(`/v1/users/verify-code`, {
+        username,
+      });
+      if(response.status === 200) {
+        toast({
+          title: 'Verify Code Success',
+          description: response.data.message,
+          variant:'success',
+        })
+      }
+    } catch (error) {
+      setTimeout(() => {
+        setIsSubmitting(false)
+      },1000)
+      const axiosError = error as AxiosError<ApiResponse>;
+      toast({
+        title: 'Resend Failed',
+        description:
+          axiosError.response?.data.message ??
+          'An error occurred. Please try again.',
+        variant: 'destructive',
+      });
+      setResendCode(false)
+    }finally{() => {
+      setResendCode(false)
+    }}
+  }
+
 
   return (
     <div className="flex justify-center items-center min-h-dvh ">
       <div className="w-full max-w-md p-8 space-y-8 flex items-center flex-col bg-card border-2 text-card-foreground rounded-lg shadow-md">
         <div className="text-center flex justify-center flex-col items-center">
-        <div className='w-20 h-20 rounded-full border-2 flex justify-center items-center'>
-            <Image 
-             src='/brightveilDark.jpeg'
-             alt="brightveil logo"
-             width={120}
-             height={120}
-             className=" w-full h-full rounded-full p-2 hidden dark:block"
-             />
-             <Image 
-             src='/brightveilLight.jpeg'
-             alt="brightveil logo"
-             width={120}
-             height={120}
-             className=" w-full h-full rounded-full p-2 block dark:hidden"
-             />
+          <div className='w-20 h-20 rounded-full border-2 flex justify-center items-center'>
+            <Image
+              src='/brightveilDark.jpeg'
+              alt="brightveil logo"
+              width={120}
+              height={120}
+              className=" w-full h-full rounded-full p-2 hidden dark:block"
+            />
+            <Image
+              src='/brightveilLight.jpeg'
+              alt="brightveil logo"
+              width={120}
+              height={120}
+              className=" w-full h-full rounded-full p-2 block dark:hidden"
+            />
           </div>
           <h1 className="text-4xl font-extrabold text-card-foreground  tracking-tight lg:text-5xl mb-6">
             Verify Your Account
@@ -134,7 +169,9 @@ export default function VerifyAccount() {
             </Button>
           </form>
         </Form>
-       
+        {
+          !resendCode && <p className='cursor-pointer text-blue-700 float-righ select-nonet'onClick={resendCodeHandler}>Resend Code👆</p>
+        }
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ const Table = ({
   data: any[];
 }) => {
   return (
-    <div className="w-full overflow-auto">
+    <div className="w-full overflow-auto" key={Date.now()}>
       <table className="w-full mt-4">
       <thead>
         <tr className="text-left aaa bg-gray-200 dark:bg-gray-900 h-10 p-4 mx-2 gap-4 text-sm">

@@ -1,0 +1,219 @@
+'use client'
+import api from '@/api'
+import BlogPostForm from '@/app/(dashboard)/(routes)/(Post)/components/PostForm'
+import PostCard from '@/components/PostCard'
+import { AxiosError } from 'axios'
+import React, { useEffect, useState } from 'react'
+import VideoCard from '../../../(courses)/components/VideoCard'
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import {
+    Form,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import ChapterTitleForm from '../../../(courses)/components/chapter/ChapterTitleForm'
+import ChapterDescriptionForm from '../../../(courses)/components/chapter/ChapterDescriptionForm'
+import ChapterThumbnailForm from '../../../(courses)/components/chapter/ChapterThumbnailForm'
+import ChapterVisibility from '../../../(courses)/components/chapter/ChapterVisibilityForm'
+import { Button } from '@/components/ui/button'
+import { BookMarkedIcon } from 'lucide-react'
+import { videoSchema } from '@/schemas/videoSchema';
+import Image from 'next/image'
+import { toast } from '@/components/ui/use-toast';
+
+
+function page() {
+    const [thumbnail, setThumbnail] = useState('')
+
+
+    const [videos, setVideos] = useState([
+        {
+            _id: ''
+        }
+    ])
+
+    useEffect(() => {
+        api.get("/v1/videos/video/get-admin-videos")
+            .then((response) => {
+                const data = response.data.data
+                console.log(data)
+                setVideos(data)
+            })
+            .catch((error) => {
+                const axiosError = error as AxiosError<AxiosError>
+                console.log(axiosError)
+
+            })
+
+    }, [])
+
+
+
+    const form = useForm<z.infer<typeof videoSchema>>({
+        resolver: zodResolver(videoSchema),
+        defaultValues: {
+            videoId: '',
+            title: '',
+            description: '',
+
+        },
+    });
+    const onSubmit = async (data: z.infer<typeof videoSchema>) => {
+        console.log("hjee")
+        try {
+            const formData = new FormData();
+            formData.append('videoId', data.videoId)
+            formData.append('title', data.title)
+            formData.append('description', data.description)
+            formData.append('thumbnail', data.thumbnail)
+            // Code to be executed
+            const response = await api.post("/v1/videos/post", formData)
+            const res = response?.data?.data
+            setThumbnail('')
+            setVideos((prev) => [{ _id: res._id }, ...prev])
+            toast({
+                title: "Video Posted",
+                description: response?.data?.message,
+                variant: "success"
+            })
+
+        } catch (error) {
+            const axiosError = error as AxiosError<AxiosError>
+            console.error(axiosError);
+            toast({
+                title: "Upload Failed",
+                description: axiosError?.response?.data?.message,
+                variant: "destructive"
+            })
+
+        }
+    }
+
+    return (
+        <div className='flex flex-col gap-4'>
+            <div>
+                <div className='w-full flex justify-center items-center'>
+
+                    <div className='w-full my-auto grid md:grid-cols-2 gap-4 p-4  '>
+
+                        <div className="flex flex-col  gap-2  ">
+                            <div className="flex justify-center items-center ">
+                                <div className="w-full bg-card text-card-foreground  border rounded shadow-md p-2">
+
+
+                                    <Form {...form}>
+                                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+
+                                            <FormField
+                                                name="videoId"
+                                                control={form.control}
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel className='flex justify-between'><span>VideoId:</span></FormLabel>
+                                                        <Input type="text" {...field} />
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                name="title"
+                                                control={form.control}
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel className='flex justify-between'><span>Title:</span></FormLabel>
+                                                        <Input type="text" {...field} />
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                name="description"
+                                                control={form.control}
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel className='flex justify-between'><span>Description:</span></FormLabel>
+                                                        <Input type="text" {...field} />
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                name="thumbnail"
+                                                control={form.control}
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel className='flex justify-between'><span>Thumbnail:</span></FormLabel>
+                                                        <Input type="file"
+                                                            onChange={(e) => {
+                                                                const file = e.target.files?.[0] || null;
+                                                                field.onChange(file); // Update field value manually
+                                                                if (file) {
+
+                                                                    setThumbnail(URL.createObjectURL(file))
+                                                                }
+
+                                                            }}
+                                                            value={undefined}
+                                                            accept="image/*"
+                                                        />
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            {thumbnail &&
+                                                <div className="w-56 aspect-video flex justify-center">
+                                                    <Image
+                                                        src={thumbnail}
+                                                        height={500}
+                                                        width={500}
+                                                        alt="Thumbnail"
+                                                        className="h-full w-full rounded border"
+                                                    />
+                                                </div>
+                                            }
+
+                                            <div className="w-full flex justify-center mt-3">
+                                                <Button className='float-right' type="submit">
+                                                    <BookMarkedIcon className='h-5 w-5 mr-2' />
+                                                    Publish Chapter
+                                                </Button>
+                                            </div>
+                                        </form>
+
+                                    </Form>
+
+                                </div>
+                            </div>
+
+
+
+
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div className="w-full p-4">
+
+                <div className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {
+                        videos[0]?._id && videos?.map((video, index) => (
+                            <VideoCard key={video?._id} _id={video?._id} />
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default page

@@ -43,6 +43,7 @@ import Image from 'next/image';
 import SidebarTop from './SidebarTop';
 import { BiSolidBookContent } from 'react-icons/bi';
 import { SiApostrophe } from 'react-icons/si';
+import { Video } from 'lucide-react';
 
 
 
@@ -154,6 +155,12 @@ export default function Sidebar() {
           label: 'Posts',
           href: `/${user?.role}/posts`,
           icon: <SiApostrophe />,
+          visible: ['admin'],
+        },
+        {
+          label: 'Videos',
+          href: `/${user?.role}/chapters`,
+          icon: <Video />,
           visible: ['admin'],
         },
 

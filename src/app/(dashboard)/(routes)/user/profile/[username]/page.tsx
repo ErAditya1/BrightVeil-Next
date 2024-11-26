@@ -39,6 +39,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import UserFollowCard from '@/components/UserFollowCard';
+import PostCard from '@/components/PostCard';
 
 
 const UserProfile = () => {
@@ -279,13 +280,13 @@ const UserProfile = () => {
                   <CardContent className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {
                       profile?.posts?.map((post: any) => {
-                        if (post?.post_Id) {
+                        
                           return (
-                            <div key={post?.post_Id}>
-                              <VideoCard _id={post?.post_Id} />
+                            <div key={post?._id}>
+                              <PostCard _id={post?._id} />
                             </div>
                           )
-                        }
+                        
                       })
                     }
                   </CardContent>

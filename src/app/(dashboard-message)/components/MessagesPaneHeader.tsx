@@ -111,7 +111,7 @@ export default function MessagesPaneHeader({handleSlide}:any) {
       px={{ xs: 1, md: 2 }}
       className="bg-card text-card-foreground max-w-dvw"
     >
-      <Stack direction="row" spacing={{ xs: 1, md: 2 }} alignItems="center">
+      <Stack direction="row" spacing={{ xs: 1, md: 2 }} alignItems="center"  className=''>
         <IconButton
           variant="plain"
           color="neutral"
@@ -129,7 +129,6 @@ export default function MessagesPaneHeader({handleSlide}:any) {
             fontWeight="lg"
             fontSize="md"
             component="h2"
-            noWrap
             endDecorator={
               selectedChat?.isOnline ? (
                 <Chip
@@ -149,7 +148,7 @@ export default function MessagesPaneHeader({handleSlide}:any) {
               ) : undefined
             }
           >
-            <p className='line-clamp-2 break-words'>{selectedChat?.name}</p>
+            <p className='line-clamp-2 text-sm break-words break-all'>{selectedChat?.name} </p>
           </Typography>
           {!selectedChat?.isGroupChat && <Typography level="body-sm">@{selectedChat?.username}</Typography>}
         </div>

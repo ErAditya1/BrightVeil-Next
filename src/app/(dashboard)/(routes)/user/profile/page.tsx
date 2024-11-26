@@ -34,6 +34,7 @@ import { Button } from '@/components/ui/button';
 import { AxiosError } from 'axios';
 import { toast } from '@/components/ui/use-toast';
 import UserFollowCard from '@/components/UserFollowCard';
+import PostCard from '@/components/PostCard';
 const UserProfile = () => {
   const [loading, setLoading] = useState(true)
 
@@ -286,7 +287,7 @@ const UserProfile = () => {
                     if (post?.post_Id) {
                       return (
                         <div key={post?.post_Id}>
-                          <VideoCard videoId={post?.post_Id} />
+                          <PostCard _id={post?.post_Id} />
                         </div>
                       )
                     }
@@ -348,7 +349,7 @@ const UserProfile = () => {
                     if (post?.post_Id) {
                       return (
                         <div key={post?.post_Id}>
-                          <VideoCard videoId={post?.post_Id} />
+                          <PostCard _id={post?.post_Id} />
                         </div>
                       )
                     }
@@ -411,7 +412,7 @@ const UserProfile = () => {
                     if (post?.post_Id) {
                       return (
                         <div key={post?.post_Id}>
-                          <VideoCard videoId={post?.post_Id} />
+                          <PostCard _id={post?.post_Id} />
                         </div>
                       )
                     }

@@ -35,7 +35,9 @@ export default function PostCard({ _id }: any) {
     image: {
       url: '',
     },
-
+    likeCount: 0,
+    isLiked: false,
+    _id:"",
     createdAt: '',
   })
 
@@ -45,7 +47,6 @@ export default function PostCard({ _id }: any) {
       .then((response) => {
         const data = response.data.data
         setPost(data)
-        console.log(data)
         setIsLoading(false)
       })
       .catch((error) => {
@@ -80,9 +81,9 @@ export default function PostCard({ _id }: any) {
 
       </div>
       <div className="  bottom-0  absolute   w-full p-1 " >
-        <div className='absolute bottom-14 right-2 w-8 p-1 rounded h-full  flex flex-col gap-2 items-center justify-center mx-auto'>
+        <div className='absolute bottom-20 right-2 w-8 p-1 rounded h-full  flex flex-col gap-2 items-center justify-center mx-auto'>
           <div className='bg-blue-50 dark:bg-gray-800 bg-opacity-55 rounded-full flex justify-center items-center p-2 border shadow-xl'>
-            <LikeButton className="h-5 w-5 text-xl"/>
+            <LikeButton liked={post?.isLiked}  type='post' _id ={post?._id}className="h-5 w-5 text-xl"/>
           </div>
           <div className='bg-blue-50 dark:bg-gray-800 bg-opacity-55 rounded-full flex justify-center items-center p-2 border shadow-xl'>
             <ShareButton className="h-5 w-5"/>

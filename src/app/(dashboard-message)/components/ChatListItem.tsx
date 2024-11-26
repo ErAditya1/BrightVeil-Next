@@ -8,14 +8,15 @@ import Stack from '@mui/joy/Stack';
 import AvatarWithStatus from './AvatarWithStatus';
 import { toggleMessagesPane } from '@/lib/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import {  ChatInterface, SelectedChat } from '@/store/chat/chatSlice';
+import { ChatInterface, SelectedChat } from '@/store/chat/chatSlice';
 
 import { timeAgo } from '@/utils/agoTime';
 import Link from 'next/link';
 import { Chip } from '@mui/joy';
+import MessageStatus from './MessageStatus';
 
 type ChatListItemProps = ChatInterface & {
-  handleSlide: ()=> void
+  handleSlide: () => void
 };
 
 export default function ChatListItem(props: ChatListItemProps) {
@@ -50,28 +51,28 @@ export default function ChatListItem(props: ChatListItemProps) {
             alignItems: 'initial',
             gap: 1,
           }}
+          className='w-full'
         >
           <Stack direction="row" spacing={1.5}>
             <AvatarWithStatus online={chat?.isOnline} src={chat?.avatar?.url || ''} name={chat?.name || ''} username={chat?.username || ""} />
-            <Link href={`/message?${chat?.isGroupChat? `g=${chat?._id}` :`u=${chat?.username}`}`} className='w-full' >
-              <div  className="flex flex-col w-full" onClick={props.handleSlide}>
+            <Link href={`/message?${chat?.isGroupChat ? `g=${chat?._id}` : `u=${chat?.username}`}`} className='w-full' >
+              <div className="flex flex-col w-full" onClick={props.handleSlide}>
                 <p className='line-clamp-1 text-sm sm:text-md'>{chat?.name}</p>
                 <p className='line-clamp-1 text-xs sm:text-sm'>@{chat?.username}</p>
-                {/* <p className='line-clamp-1 text-xs sm:text-sm'>{user?._id === props?.lastMessage?.sender?._id && <MessageStatus messageStatus={props?.lastMessage?.status} />} {props?.lastMessage?.content}
-                </p> */}
+
               </div>
             </Link>
-            
+
             <Box
               sx={{
                 lineHeight: 1.5,
                 textAlign: 'right',
               }}
-
+              className="flex"
             >
 
               <p
-                className={`text-xs break-keep ${props.unreadCount !== 0 && "text-green-600"}`}
+                className={`text-[8px] break-keep ${props?.unreadCount !== 0 && "text-green-600"}`}
               >
                 {props?.lastMessage?.createdAt && timeAgo(props?.lastMessage?.createdAt)}
               </p>
@@ -82,6 +83,11 @@ export default function ChatListItem(props: ChatListItemProps) {
 
             </Box>
           </Stack>
+          <div className='flex flex-row items-center gap-1 w-full max-w-full '>
+            {user?._id === props?.lastMessage?.sender?._id && <MessageStatus messageStatus={props?.lastMessage?.status} />}
+            <p className='line-clamp-2 text-xs  break-words break-all'> {props?.lastMessage?.content}
+            </p>
+          </div>
 
 
         </ListItemButton>

@@ -77,7 +77,7 @@ export default function ChatBubble(props: ChatBubbleProps) {
     onMouseLeave={() => setIsHovered(false)}
     className={`relative max-w-[200px]  sm:max-w-84 md:max-w-96  break-words whitespace-pre-wrap  p-1 m-0 rounded-lg  ${isSent ? `bg-[#075e54] text-card-foreground ${!whoPrevious && 'rounded-tr-none ml-12'}` : `bg-card text-card-foreground  ml-4  ${!whoPrevious && 'rounded-tl-none '}` } ${!whoPrevious && "mt-4 "}`}
     >
-      {!whoPrevious  && <p className='text-xs '>@{sender.username}</p>}
+      {!whoPrevious  && <p className={`${isSent && ' text-white'} text-xs sm:text-sm`}>@{sender.username}</p>}
 
       {attachments?.length > 0 &&
         attachments?.map((attachment,index) =>(
@@ -113,7 +113,7 @@ export default function ChatBubble(props: ChatBubbleProps) {
       >
         <div className={`m-1 relative`}>
 
-          <p className={`${isSent && ' text-white'} `}>
+          <p className={`${isSent && ' text-white'} text-xs sm:text-sm`}>
             {content}
 
           </p>

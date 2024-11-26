@@ -111,10 +111,10 @@ function EditCourse() {
     }
 
     const onEdit = (_id: String) => {
-        router.push(`/${user?.role}/courses/edit-course/${course_id}/chapters/${_id}`)
+        router.push(`/admin/chapters/${_id}`)
     }
     const onQuizEdit = (_id: String) => {
-        router.push(`/${user?.role}/courses/edit-course/${course_id}/${_id}`)
+        router.push(`/admin/courses/edit-course/${course_id}/${_id}`)
     }
 
 

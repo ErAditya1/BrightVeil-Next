@@ -120,13 +120,15 @@ export default function FileForm({ setChapterData, setAddFile }: any) {
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className='flex justify-between'><span>Description:</span></FormLabel>
+                                    <FormLabel className='flex justify-between'><span>File:</span></FormLabel>
                                     <Input type="file"
                                         onChange={(e) => {
                                             const file = e.target.files?.[0] || null;
                                             field.onChange(file); // Update field value manually
                                         }}
-                                        value={undefined} />
+                                        value={undefined}
+                                        accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,text/plain, application/pdf"
+                                        />
                                     <FormMessage />
                                 </FormItem>
                             )}
