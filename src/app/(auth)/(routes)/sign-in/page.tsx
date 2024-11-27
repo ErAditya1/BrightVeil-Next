@@ -102,7 +102,7 @@ export default function SignInForm() {
     try {
 
 
-      const result = await api.get('/v1/google');
+      const result = await api.get('/v1/users/google');
       console.log(result)
 
       //>> Here  I am providing the server google oauth url directlu then it's working
