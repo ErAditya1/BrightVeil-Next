@@ -1,4 +1,4 @@
-import Image from "next/image";
+import ValidatedImage from '@/components/Image';
 import MenuLink from "./menuLink/menuLink";
 import styles from "./sidebar.module.css";
 import {
@@ -83,7 +83,7 @@ const Sidebar = async () => {
   return (
     <div className={styles.container}>
       <div className={styles.user}>
-        <Image
+        <ValidatedImage
           className={styles.userImage}
           src={user.img || "/noavatar.png"}
           alt=""

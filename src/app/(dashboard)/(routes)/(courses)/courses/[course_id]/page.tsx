@@ -3,14 +3,14 @@
 import { Card, CardContent, Chip } from '@mui/joy';
 import { useParams } from 'next/navigation';
 import React, { Suspense, useState } from 'react'
-import MiniVideoCard from '../../components/MiniVideoCard';
+import MiniVideoCard from '../../components/chapter/MiniVideoCard';
 import FollowButton from '@/components/FollowButton';
 import LikeButton from '@/components/LikeButton';
 import ShareButton from '@/components/ShareButton';
 import { ChevronDownCircle } from 'lucide-react';
 import api from '@/api';
 import AvatarLayout from '@/components/AvatarLayout';
-import Image from 'next/image';
+import ValidatedImage from '@/components/ValidatedImage';
 import { Skeleton } from '@/components/ui/skeleton';
 import { FaCommentDots } from 'react-icons/fa6';
 import { AiOutlineMessage, AiTwotoneEye } from 'react-icons/ai';
@@ -156,7 +156,7 @@ function ExploreCourse() {
           <div className=' aspect-video col-span-8 rounded-xl border p-0'>
             {
               loading ? <Skeleton className='w-full aspect-video' /> :
-                <Image
+                <ValidatedImage
                   height={500}
                   width={500}
                   src={courseData?.thumbnail?.secure_url}
@@ -315,7 +315,7 @@ function ExploreCourse() {
                         if (quiz) {
                           return (
                             <div key={quiz?._id}>
-                              <QuizCard _id={quiz._id} title={quiz.title} isFree={quiz?.isFree} updated_at={quiz?.updated_at} thumbnail={quiz?.thumbnail}/>
+                              <QuizCard _id={quiz._id} title={quiz.title} isFree={quiz?.isFree} uploadedDate={quiz?.uploadedDate} thumbnail={quiz?.thumbnail.url} channelName={quiz?.channelName} views={quiz?.views}/>
                             </div>
                           )
                         }

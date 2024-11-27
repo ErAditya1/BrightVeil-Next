@@ -21,7 +21,6 @@ import QuizDescriptionForm from '@/app/(dashboard)/(routes)/(courses)/components
 import QuizThumbnailForm from '@/app/(dashboard)/(routes)/(courses)/components/quiz/ThumbnailForm'
 import QuizVisibility from '@/app/(dashboard)/(routes)/(courses)/components/quiz/VisibilityForm'
 import QuizQuestionForm from '@/app/(dashboard)/(routes)/(courses)/components/quiz/QuizQuestionForm'
-import QuizCard from '@/app/(dashboard)/(routes)/(courses)/components/quiz/QuizCard'
 import { boolean } from 'zod'
 
 

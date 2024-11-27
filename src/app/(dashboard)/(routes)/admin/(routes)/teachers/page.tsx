@@ -7,7 +7,7 @@ import { role, teachersData } from "@/lib/data";
 import { useAppSelector } from "@/store/hooks";
 import { SlidersHorizontal, SortDesc, ViewIcon } from "lucide-react";
 ;
-import Image from "next/image";
+import ValidatedImage from '@/components/ValidatedImage';
 import Link from "next/link";
 
 type Teacher = {
@@ -66,7 +66,7 @@ const TeacherListPage = () => {
       className="border-b  text-sm hover:bg-lamaPurpleLight"
     >
       <td className="flex items-center gap-4 p-4 text-nowrap px-4">
-        <Image
+        <ValidatedImage
           src={item.photo}
           alt=""
           width={40}
@@ -92,7 +92,7 @@ const TeacherListPage = () => {
           </Link>
           {user?.role === "admin" && (
             // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple">
-            //   <Image src="/delete.png" alt="" width={16} height={16} />
+            //   <ValidatedImage src="/delete.png" alt="" width={16} height={16} />
             // </button>
             <FormModal table="teacher" type="delete" id={item.id}/>
           )}
@@ -117,7 +117,7 @@ const TeacherListPage = () => {
             </button>
             {user?.role === "admin" && (
               // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-              //   <Image src="/plus.png" alt="" width={14} height={14} />
+              //   <ValidatedImage src="/plus.png" alt="" width={14} height={14} />
               // </button>
               <FormModal table="teacher" type="create"/>
             )}

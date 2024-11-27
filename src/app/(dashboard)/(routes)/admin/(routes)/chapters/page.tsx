@@ -17,18 +17,16 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import ChapterTitleForm from '../../../(courses)/components/chapter/ChapterTitleForm'
-import ChapterDescriptionForm from '../../../(courses)/components/chapter/ChapterDescriptionForm'
-import ChapterThumbnailForm from '../../../(courses)/components/chapter/ChapterThumbnailForm'
-import ChapterVisibility from '../../../(courses)/components/chapter/ChapterVisibilityForm'
+
 import { Button } from '@/components/ui/button'
 import { BookMarkedIcon } from 'lucide-react'
 import { videoSchema } from '@/schemas/videoSchema';
-import Image from 'next/image'
+import ValidatedImage from '@/components/ValidatedImage';
 import { toast } from '@/components/ui/use-toast';
 
 
 function page() {
+    const [isForm, setIsForm] = useState(false)
     const [thumbnail, setThumbnail] = useState('')
 
 
@@ -75,6 +73,7 @@ function page() {
             // Code to be executed
             const response = await api.post("/v1/videos/post", formData)
             const res = response?.data?.data
+            setIsForm(false)
             setThumbnail('')
             setVideos((prev) => [{ _id: res._id }, ...prev])
             toast({
@@ -97,111 +96,109 @@ function page() {
 
     return (
         <div className='flex flex-col gap-4'>
-            <div>
-                <div className='w-full flex justify-center items-center'>
+            <div className='flex justify-center items-center'>
+                <Button onClick={() => setIsForm(!isForm)}>Add Video</Button>
+            </div>
+            {
+                isForm && <div>
+                    <div className='w-full flex justify-center items-center'>
 
-                    <div className='w-full my-auto grid md:grid-cols-2 gap-4 p-4  '>
+                        <div className='w-full my-auto grid md:grid-cols-2 gap-4 p-4  '>
 
-                        <div className="flex flex-col  gap-2  ">
-                            <div className="flex justify-center items-center ">
-                                <div className="w-full bg-card text-card-foreground  border rounded shadow-md p-2">
+                            <div className="flex flex-col  gap-2  ">
+                                <div className="flex justify-center items-center ">
+                                    <div className="w-full bg-card text-card-foreground  border rounded shadow-md p-2">
 
 
-                                    <Form {...form}>
-                                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                                        <Form {...form}>
+                                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 
-                                            <FormField
-                                                name="videoId"
-                                                control={form.control}
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel className='flex justify-between'><span>VideoId:</span></FormLabel>
-                                                        <Input type="text" {...field} />
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                            <FormField
-                                                name="title"
-                                                control={form.control}
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel className='flex justify-between'><span>Title:</span></FormLabel>
-                                                        <Input type="text" {...field} />
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                            <FormField
-                                                name="description"
-                                                control={form.control}
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel className='flex justify-between'><span>Description:</span></FormLabel>
-                                                        <Input type="text" {...field} />
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                            <FormField
-                                                name="thumbnail"
-                                                control={form.control}
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel className='flex justify-between'><span>Thumbnail:</span></FormLabel>
-                                                        <Input type="file"
-                                                            onChange={(e) => {
-                                                                const file = e.target.files?.[0] || null;
-                                                                field.onChange(file); // Update field value manually
-                                                                if (file) {
+                                                <FormField
+                                                    name="videoId"
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel className='flex justify-between'><span>VideoId:</span></FormLabel>
+                                                            <Input type="text" {...field} />
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <FormField
+                                                    name="title"
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel className='flex justify-between'><span>Title:</span></FormLabel>
+                                                            <Input type="text" {...field} />
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <FormField
+                                                    name="description"
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel className='flex justify-between'><span>Description:</span></FormLabel>
+                                                            <Input type="text" {...field} />
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <FormField
+                                                    name="thumbnail"
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel className='flex justify-between'><span>Thumbnail:</span></FormLabel>
+                                                            <Input type="file"
+                                                                onChange={(e) => {
+                                                                    const file = e.target.files?.[0] || null;
+                                                                    field.onChange(file); // Update field value manually
+                                                                    if (file) {
 
-                                                                    setThumbnail(URL.createObjectURL(file))
-                                                                }
+                                                                        setThumbnail(URL.createObjectURL(file))
+                                                                    }
 
-                                                            }}
-                                                            value={undefined}
-                                                            accept="image/*"
+                                                                }}
+                                                                value={undefined}
+                                                                accept="image/*"
+                                                            />
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                {thumbnail &&
+                                                    <div className="w-56 aspect-video flex justify-center">
+                                                        <ValidatedImage
+                                                            src={thumbnail}
+                                                            height={500}
+                                                            width={500}
+                                                            alt="Thumbnail"
+                                                            className="h-full w-full rounded border"
                                                         />
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                            {thumbnail &&
-                                                <div className="w-56 aspect-video flex justify-center">
-                                                    <Image
-                                                        src={thumbnail}
-                                                        height={500}
-                                                        width={500}
-                                                        alt="Thumbnail"
-                                                        className="h-full w-full rounded border"
-                                                    />
+                                                    </div>
+                                                }
+
+                                                <div className="w-full flex justify-center mt-3">
+                                                    <Button className='float-right' type="submit">
+                                                        <BookMarkedIcon className='h-5 w-5 mr-2' />
+                                                        Publish Chapter
+                                                    </Button>
                                                 </div>
-                                            }
+                                            </form>
 
-                                            <div className="w-full flex justify-center mt-3">
-                                                <Button className='float-right' type="submit">
-                                                    <BookMarkedIcon className='h-5 w-5 mr-2' />
-                                                    Publish Chapter
-                                                </Button>
-                                            </div>
-                                        </form>
+                                        </Form>
 
-                                    </Form>
-
+                                    </div>
                                 </div>
                             </div>
-
-
-
-
-
-
                         </div>
-
-
                     </div>
                 </div>
-            </div>
+            }
+
             <div className="w-full p-4">
 
                 <div className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">

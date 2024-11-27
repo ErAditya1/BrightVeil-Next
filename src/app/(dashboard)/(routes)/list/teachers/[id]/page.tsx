@@ -3,8 +3,9 @@ import BigCalendar from "@/components/BigCalender";
 import FormModal from "@/components/FormModal";
 import Performance from "@/components/Performance";
 import { role } from "@/lib/data";
-import Image from "next/image";
+import ValidatedImage from '@/components/ValidatedImage';
 import Link from "next/link";
+import Image from "next/image";
 
 const SingleTeacherPage = () => {
   return (

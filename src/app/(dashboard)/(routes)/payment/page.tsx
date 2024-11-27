@@ -4,7 +4,7 @@ import api from '@/api';
 import GoBackButton from '@/components/GoBack';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from '@/components/ui/use-toast';
-import Image from 'next/image';
+import ValidatedImage from '@/components/ValidatedImage';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect, useState } from 'react';
 
@@ -212,7 +212,7 @@ const RazorpayCheckout = () => {
                                 <div className="w-[50%] h-4  text-xl">Items in cat:</div>
                                 <div className="flex gap-5 w-full">
                                     <div className="w-[250px]   rounded-sm ">
-                                        <Image
+                                        <ValidatedImage
                                             src={courseData?.thumbnail?.secure_url}
                                             alt="loading-img"
                                             className="aspect-video "

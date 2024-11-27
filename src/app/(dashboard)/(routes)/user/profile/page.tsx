@@ -15,7 +15,7 @@ import {
 import api from '@/api';
 import VideoCard from '../../(courses)/components/VideoCard';
 import CourseCard from '../../(courses)/components/CourseCard';
-import Image from 'next/image';
+import ValidatedImage from '@/components/ValidatedImage';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -127,7 +127,7 @@ const UserProfile = () => {
 
                 {
                   profile?.coverImage?.url ?
-                    <Image
+                    <ValidatedImage
                       src={profile?.coverImage?.url}
                       alt="Cover Image"
                       height={500}
@@ -148,7 +148,7 @@ const UserProfile = () => {
                 <>
                   {
                     profile?.avatar?.url ?
-                      <Image
+                      <ValidatedImage
                         src={profile?.avatar?.url}
                         alt="Profile Avatar"
                         className="rounded-full w-24 h-24"

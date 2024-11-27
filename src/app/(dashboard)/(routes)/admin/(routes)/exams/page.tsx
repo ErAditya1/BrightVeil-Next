@@ -7,7 +7,7 @@ import { examsData, role } from "@/lib/data";
 import { useAppSelector } from "@/store/hooks";
 import { SlidersHorizontal, SortDesc } from "lucide-react";
 ;
-import Image from "next/image";
+import ValidatedImage from '@/components/ValidatedImage';
 
 type Exam = {
   id: number;

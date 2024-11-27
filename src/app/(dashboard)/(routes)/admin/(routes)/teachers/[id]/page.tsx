@@ -4,9 +4,10 @@ import FormModal from "@/components/FormModal";
 import Performance from "@/components/Performance";
 import { role } from "@/lib/data";
 import { CalendarDaysIcon, PhoneCall } from "lucide-react";
-import Image from "next/image";
+import ValidatedImage from '@/components/ValidatedImage';
 import Link from "next/link";
 import { MdBloodtype, MdEmail } from "react-icons/md";
+import Image from "next/image";
 
 const SingleTeacherPage = () => {
   return (
@@ -18,7 +19,7 @@ const SingleTeacherPage = () => {
           {/* USER INFO CARD */}
           <div className="bg-card text-card-foreground py-6 px-4 rounded-md flex-1 flex gap-4">
             <div className="w-1/3">
-              <Image
+              <ValidatedImage
                 src="https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=1200"
                 alt=""
                 width={144}

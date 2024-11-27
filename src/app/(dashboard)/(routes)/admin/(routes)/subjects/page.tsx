@@ -6,7 +6,7 @@ import TableSearch from "@/components/TableSearch";
 import { role, subjectsData } from "@/lib/data";
 import { HiMiniAdjustmentsHorizontal } from "react-icons/hi2";
 
-import Image from "next/image";
+import ValidatedImage from '@/components/ValidatedImage';
 import { SlidersHorizontal, SortDesc } from "lucide-react";
 ;
 import { useAppSelector } from "@/store/hooks";

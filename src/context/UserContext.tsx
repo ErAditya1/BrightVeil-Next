@@ -54,6 +54,15 @@ function Page({ children }: { children: React.ReactNode }) {
       ),
     [pathname],
   );
+  const commanPath = useMemo(
+    () =>
+      ['/terms-services', '/privacy-policy'].some((path) =>
+        pathname.startsWith(path),
+      ),
+    [pathname],
+  );
+
+  
 
   // Monitor online/offline status
   useEffect(() => {
@@ -104,7 +113,7 @@ function Page({ children }: { children: React.ReactNode }) {
       })
       .catch((error) => {
         const axiosError = error as AxiosError<AxiosError>;
-        if (!isPublicPath) {
+        if (!isPublicPath && !commanPath) {
           toast({
             title: 'Authentication Failed',
             description: axiosError.response?.data?.message || 'Error occurred',
@@ -127,7 +136,7 @@ function Page({ children }: { children: React.ReactNode }) {
 
   // Redirect logged-in users from public paths
   useEffect(() => {
-    if (isLoggedIn && isPublicPath) {
+    if (isLoggedIn && isPublicPath ) {
       router.replace('/');
     }
   }, [isLoggedIn, isPublicPath, router]);

@@ -3,6 +3,7 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { parentsData, role } from "@/lib/data";
+import ValidatedImage from '@/components/ValidatedImage';
 import Image from "next/image";
 
 type Parent = {

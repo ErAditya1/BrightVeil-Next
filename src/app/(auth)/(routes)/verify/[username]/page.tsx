@@ -26,6 +26,7 @@ import {
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import api, { API_URL } from '@/api';
+import ValidatedImage from '@/components/ValidatedImage';
 import Image from 'next/image';
 
 export default function VerifyAccount() {
@@ -110,14 +111,14 @@ export default function VerifyAccount() {
         <div className="text-center flex justify-center flex-col items-center">
           <div className='w-20 h-20 rounded-full border-2 flex justify-center items-center'>
             <Image
-              src='/brightveilDark.jpeg'
+              src='/brightveilDark.jpg'
               alt="brightveil logo"
               width={120}
               height={120}
               className=" w-full h-full rounded-full p-2 hidden dark:block"
             />
             <Image
-              src='/brightveilLight.jpeg'
+              src='/brightveilLight.jpg'
               alt="brightveil logo"
               width={120}
               height={120}

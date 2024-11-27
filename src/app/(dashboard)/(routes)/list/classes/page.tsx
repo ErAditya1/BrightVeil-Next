@@ -3,7 +3,7 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { classesData, role } from "@/lib/data";
-import Image from "next/image";
+import ValidatedImage from '@/components/ValidatedImage';
 
 type Class = {
   id: number;
@@ -71,10 +71,10 @@ const ClassListPage = () => {
           <TableSearch />
           <div className="flex items-center gap-4 self-end">
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-              <Image src="/filter.png" alt="" width={14} height={14} />
+              <ValidatedImage src="/filter.png" alt="" width={14} height={14} />
             </button>
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-              <Image src="/sort.png" alt="" width={14} height={14} />
+              <ValidatedImage src="/sort.png" alt="" width={14} height={14} />
             </button>
             {role === "admin" && <FormModal table="class" type="create" />}
           </div>

@@ -3,12 +3,11 @@
 import { Card, CardContent, Chip, Divider, Typography } from '@mui/joy';
 import { useParams, useRouter } from 'next/navigation';
 import React, { Suspense, useEffect, useState } from 'react'
-import MiniVideoCard from '../../../(courses)/components/MiniVideoCard';
+import MiniVideoCard from '../../../(courses)/components/chapter/MiniVideoCard';
 import FollowButton from '@/components/FollowButton';
 import LikeButton from '@/components/LikeButton';
 import ShareButton from '@/components/ShareButton';
 import FileCard from '../../../(courses)/components/chapter/FileCard';
-import TestCard from '../../../(courses)/components/quiz/TestCard';
 import { ChevronDownCircle } from 'lucide-react';
 import CustomVideoPlayer from '../../../(courses)/components/YoutubePlayer';
 import api from '@/api';
@@ -285,20 +284,7 @@ function Page() {
           <div className='p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl m-2'>
             <h1 className='text-2xl font-bold'>Test :</h1>
           </div>
-          {
-            loading ?
-              <Skeleton className='h-32 w-56' />
-              :
-              <div className='w-full flex flex-row flex-wrap  gap-4 m-2'>
-                {playingVideoData?.tests?.length > 0 &&
-                  playingVideoData?.tests?.map((test: any) => {
-                    return (
-                      <TestCard key={test._id} />
-                    )
-                  })
-                }
-              </div>
-          }
+         
 
           <CardContent className="">
             <div className='p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl m-0 '>

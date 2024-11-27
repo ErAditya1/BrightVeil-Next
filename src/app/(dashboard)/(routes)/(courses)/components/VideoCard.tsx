@@ -3,7 +3,7 @@
 import React, { useRef, useState } from 'react';
 import CardContent from '@mui/joy/CardContent';
 import { Skeleton } from '@/components/ui/skeleton';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, Edit, Pen, PlayCircle } from 'lucide-react';
 import Link from 'next/link';
 import { AspectRatio, Card, CardOverflow, Divider } from '@mui/joy';
 import api from '@/api';
@@ -12,15 +12,18 @@ import AvatarLayout from '@/components/AvatarLayout';
 import ReactPlayer from 'react-player';
 import { BsVolumeOff, BsVolumeUp } from 'react-icons/bs';
 import { BiMoney } from 'react-icons/bi';
-import ValidatedImage from '@/components/Image';
+import ValidatedImage from '@/components/ValidatedImage';
+import { useRouter } from 'next/navigation';
 
 export default function VideoCard({ _id, key }: any) {
 
+  const router = useRouter()
   const [playingVideo, setPlayingVideo] = React.useState(false)
   const [videoData, setVideoData] = React.useState({
     thumbnail: {
       secure_url: '',
     },
+    _id: '',
     videoId: '',
     title: '',
     author: {
@@ -33,7 +36,7 @@ export default function VideoCard({ _id, key }: any) {
     },
     chapterCount: 0,
     isFree: false,
-
+    isAuthor: false,
 
   })
   React.useEffect(() => {
@@ -72,14 +75,29 @@ export default function VideoCard({ _id, key }: any) {
 
   };
 
+  const playVideo = () => {
+    router.push(`/watch/video/${videoData?.videoId}`)
+  }
+
+  const editVideo = () => {
+    router.push(`/admin/chapters/${videoData?._id}`)
+  }
+
   const skipVideo = () => {
 
   };
   return (
-    <Link href={`/watch/video/${videoData?.videoId}`} key={key} >
+    <div className='relative'  key={key} >
+
+      {
+        videoData?.isAuthor && <div className='absolute top-1 left-1 text-4xl z-10'>
+          <Edit onClick={editVideo} className='cursor-pointer'/>
+        </div>
+      }
       <Card className="bg-card   text-card-foreground "
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onClick={playVideo}
       >
         <CardOverflow>
           <AspectRatio ratio="2">
@@ -87,55 +105,59 @@ export default function VideoCard({ _id, key }: any) {
               isLoading ? (
                 <Skeleton className=" w-full rounded" />
               ) : (
-                <div className='aspect-video bg-red-800 p-0'>
+                <div className='aspect-video  p-0 relative flex justify-center items-center'>
                   {
-                    isHovered ? (<>
-                      <ReactPlayer
-                        ref={playerRef}
-                        className="react-player rounded-lg p-0 hover:scale-110"
-                        width="100%"
-                        height="100%"
-                        url={`https://www.youtube.com/watch?v=${videoData?.videoId}`}
-                        playing={isPlaying}
-                        controls={false}
-                        loop={true}
-                        muted={isMuted}
-                        onReady={() => {
-                          console.log("onReady")
-                        }}
-                        onStart={() => {
-                          console.log("onStart")
-                        }}
-                        onPlay={() => {
-                          setIsPlaying(true)
-                        }}
-                        onBuffer={() => console.log("onBuffer")}
-                        onSeek={(e) => console.log("onSeek", e)}
-                        onError={(e) => console.log("onError", e)}
-                        // onProgress={handleProgress}
-                        // onDuration={handleDuration}
-                        onPlaybackQualityChange={(e: any) =>
-                          console.log("onPlaybackQualityChange", e)
-                        }
+                    // isHovered ? (<>
+                    //   <ReactPlayer
+                    //     ref={playerRef}
+                    //     className="react-player rounded-lg p-0 hover:scale-110"
+                    //     width="100%"
+                    //     height="100%"
+                    //     url={`https://www.youtube.com/watch?v=${videoData?.videoId}`}
+                    //     playing={isPlaying}
+                    //     controls={false}
+                    //     loop={true}
+                    //     muted={isMuted}
+                    //     onReady={() => {
+                    //       console.log("onReady")
+                    //     }}
+                    //     onStart={() => {
+                    //       console.log("onStart")
+                    //     }}
+                    //     onPlay={() => {
+                    //       setIsPlaying(true)
+                    //     }}
+                    //     onBuffer={() => console.log("onBuffer")}
+                    //     onSeek={(e) => console.log("onSeek", e)}
+                    //     onError={(e) => console.log("onError", e)}
+                    //     // onProgress={handleProgress}
+                    //     // onDuration={handleDuration}
+                    //     onPlaybackQualityChange={(e: any) =>
+                    //       console.log("onPlaybackQualityChange", e)
+                    //     }
 
-                      />
-                      <div className='w-full h-full absolute top-0 left-0 p-0 m-0'>
-                        <div
-                          onClick={toggleMute}
-                          className='text-md w-6 h-6 bg-background text-foreground p-1 float-right top-2 right-2 rounded m-2'
-                        >
-                          {isMuted ? <BsVolumeOff /> : <BsVolumeUp />}
-                        </div>
-                      </div>
-                    </>) :
-                      <ValidatedImage
-                        src={videoData?.thumbnail?.secure_url}
-                        loading="lazy"
-                        width={500}
-                        height={500}
-                        alt=""
-                      />
+                    //   />
+                    //   <div className='w-full h-full absolute top-0 left-0 p-0 m-0'>
+                    //     <div
+                    //       onClick={toggleMute}
+                    //       className='text-md w-6 h-6 bg-background text-foreground p-1 float-right top-2 right-2 rounded m-2'
+                    //     >
+                    //       {isMuted ? <BsVolumeOff /> : <BsVolumeUp />}
+                    //     </div>
+                    //   </div>
+                    // </>) :
                   }
+                  <ValidatedImage
+                    src={videoData?.thumbnail?.secure_url}
+                    loading="lazy"
+                    width={500}
+                    height={500}
+                    alt=""
+                  />
+                  <PlayCircle className='text-4xl absolute' />
+
+
+
                 </div>
 
               )
@@ -158,8 +180,8 @@ export default function VideoCard({ _id, key }: any) {
                 <div className='flex flex-row gap-2 h-14 items-center'>
                   <AvatarLayout src={videoData?.author?.avatar?.url} name={videoData?.author?.name} username={videoData?.author?.username} />
                   <div className="card-content h-16 flex justify-center flex-col">
-                    <p  className="line-clamp-2 break-words break-all text-xs sm:text-md lg:text-lg">{videoData?.title}</p>
-                    <p  className="line-clamp-1 text-xs sm:text-md">@{videoData?.author?.username}</p>
+                    <p className="line-clamp-2 break-words break-all text-xs sm:text-sm lg:text-md">{videoData?.title}</p>
+                    <p className="line-clamp-1 text-xs sm:text-md">@{videoData?.author?.username}</p>
                   </div>
                 </div>
               )
@@ -198,6 +220,6 @@ export default function VideoCard({ _id, key }: any) {
           }
         </CardOverflow>
       </Card>
-    </Link>
+    </div>
   );
 }

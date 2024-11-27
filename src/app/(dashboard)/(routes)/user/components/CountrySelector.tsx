@@ -7,7 +7,7 @@ import FormControl, { FormControlProps } from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import Typography from '@mui/joy/Typography';
-import Image from 'next/image';
+import ValidatedImage from '@/components/ValidatedImage';
 
 export default function ContrySelector(props: FormControlProps) {
   const { sx, ...other } = props;
@@ -28,7 +28,7 @@ export default function ContrySelector(props: FormControlProps) {
           <AutocompleteOption {...optionProps}>
             <ListItemDecorator>
               <AspectRatio ratio="1" sx={{ minWidth: 20, borderRadius: '50%' }}>
-                <Image
+                <ValidatedImage
                   loading="lazy"
                   width={500}
                   height={500}

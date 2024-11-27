@@ -124,9 +124,9 @@ export default function SignUpForm() {
 
       //>> Here  I am providing the server google oauth url directlu then it's working
 
-      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI}/v1/users/google`: 'http://localhost:8000/api/v1/users/google';
+      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI}/v1/users/google` : 'http://localhost:8000/api/v1/users/google';
 
-      window.location.href= `${redirectUrl}`
+      window.location.href = `${redirectUrl}`
 
 
     } catch (error) {
@@ -147,9 +147,9 @@ export default function SignUpForm() {
       // });
       // console.log(result);
 
-      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI}/v1/users/github`: 'http://localhost:8000/api/v1/users/github';
+      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI}/v1/users/github` : 'http://localhost:8000/api/v1/users/github';
 
-      window.location.href= `${redirectUrl}`
+      window.location.href = `${redirectUrl}`
       // Handle the result from Google OAuth
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
@@ -170,14 +170,14 @@ export default function SignUpForm() {
         <div className="text-center flex justify-center flex-col items-center">
           <div className='w-20 h-20 rounded-full border-2 flex justify-center items-center'>
             <Image
-              src='/brightveilDark.jpeg'
+              src='/brightveilDark.jpg'
               alt="brightveil logo"
               width={120}
               height={120}
               className=" w-full h-full rounded-full p-2 hidden dark:block"
             />
             <Image
-              src='/brightveilLight.jpeg'
+              src='/brightveilLight.jpg'
               alt="brightveil logo"
               width={120}
               height={120}
@@ -190,7 +190,7 @@ export default function SignUpForm() {
           <p className="mb-4 text-foreground">Sign up to start your anonymous adventure</p>
         </div>
         <div className="flex flex-row gap-2 ">
-        <button
+          <button
             className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full bg-background rounded-md h-10 font-medium shadow-input  dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             onClick={loginWithGithub}
           >
@@ -205,7 +205,7 @@ export default function SignUpForm() {
           </button>
           <button
             className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full  rounded-md h-10 font-medium shadow-input bg-background dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-            
+
             onClick={loginWithGoogle}
           >
 
@@ -324,6 +324,16 @@ export default function SignUpForm() {
               Sign in
             </Link>
           </p>
+        </div>
+        <div className="text-center mt-2 flex justify-evenly ">
+
+          <Link href="/privacy-policy" className="text-blue-600 hover:text-blue-800">
+            Privacy Policy
+          </Link>
+          <Link href="/terms-services" className="text-blue-600 hover:text-blue-800">
+            Terms & Services
+          </Link>
+
         </div>
       </div>
     </div>

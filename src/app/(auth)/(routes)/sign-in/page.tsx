@@ -25,6 +25,7 @@ import { AxiosError } from 'axios';
 import { useAppDispatch } from '@/store/hooks';
 import { loginUser } from '@/store/user/userSlice';
 import { BsGithub, BsGoogle } from 'react-icons/bs';
+import ValidatedImage from '@/components/ValidatedImage';
 import Image from 'next/image';
 
 export default function SignInForm() {
@@ -153,14 +154,14 @@ export default function SignInForm() {
         <div className="text-center flex justify-center flex-col items-center">
           <div className='w-20 h-20 rounded-full border-2 flex justify-center items-center'>
             <Image
-              src='/brightveilDark.jpeg'
+              src='/brightveilDark.jpg'
               alt="brightveil logo"
               width={120}
               height={120}
               className=" w-full h-full rounded-full p-2 hidden dark:block"
             />
             <Image
-              src='/brightveilLight.jpeg'
+              src='/brightveilLight.jpg'
               alt="brightveil logo"
               width={120}
               height={120}
@@ -257,6 +258,16 @@ export default function SignInForm() {
               Sign up
             </Link>
           </p>
+        </div>
+        <div className="text-center mt-2 flex justify-evenly ">
+          
+            <Link href="/privacy-policy" className="text-blue-600 hover:text-blue-800">
+              Privacy Policy
+            </Link>
+            <Link href="/terms-services" className="text-blue-600 hover:text-blue-800">
+              Terms & Services
+            </Link>
+          
         </div>
       </div>
     </div>

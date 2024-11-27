@@ -39,7 +39,7 @@ import { useRouter } from 'next/navigation';
 import User from './User';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { logoutUser } from '@/store/user/userSlice';
-import Image from 'next/image';
+import ValidatedImage from '@/components/ValidatedImage';
 import SidebarTop from './SidebarTop';
 import { BiSolidBookContent } from 'react-icons/bi';
 import { SiApostrophe } from 'react-icons/si';

@@ -1,5 +1,7 @@
-import { useState } from 'react';
+'use client'
+import { useEffect, useState } from 'react';
 import Image, { ImageProps } from 'next/image';
+import { Skeleton } from './ui/skeleton';
 
 // Spinner Component
 const Spinner = ({ size = 8, color = 'blue-500' }: { size?: number; color?: string }) => {
@@ -25,29 +27,31 @@ function ValidatedImage({
   ...rest
 }: ValidatedImageProps) {
   const [isLoading, setIsLoading] = useState(true);
-
+  const [isSrcValid, setIsSrcValid] = useState(false);
   // Validate if the src exists
-  const isSrcValid = !!src;
+
+  useEffect(() => {
+    setIsSrcValid(!!src)
+  }, [src])
 
   return (
-    <div className="relative flex items-center justify-center">
+    <div className="relative flex items-center justify-center w-full h-full">
       {/* Show Loader if src is invalid or image is loading */}
-      {(!isSrcValid || isLoading) && (
-        <div className="absolute">
-          <Spinner size={loaderSize} color={loaderColor} />
-        </div>
-      )}
 
       {/* Render Image only if src is valid */}
-      {isSrcValid && (
+      {isSrcValid ? (
         <Image
           src={src}
           alt={alt}
-          onLoad={() => setIsLoading(false)}
-          className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+          className={`transition-opacity duration-300 opacity-100 h-full w-full`}
           {...rest} // Pass all additional props to the Image component
         />
-      )}
+      )
+        :
+        
+          <Skeleton className="h-full w-full "/>
+       
+      }
     </div>
   );
 }

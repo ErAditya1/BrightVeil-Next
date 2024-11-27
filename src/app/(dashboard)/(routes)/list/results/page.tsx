@@ -6,6 +6,7 @@ import {
   resultsData,
   role,
 } from "@/lib/data";
+import ValidatedImage from '@/components/ValidatedImage';
 import Image from "next/image";
 
 type Result = {

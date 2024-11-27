@@ -1,4 +1,4 @@
-import Image from "next/image";
+import ValidatedImage from '@/components/Image';
 import styles from "./transactions.module.css";
 
 const Transactions = () => {
@@ -18,7 +18,7 @@ const Transactions = () => {
           <tr>
             <td>
               <div className={styles.user}>
-                <Image
+                <ValidatedImage
                   src="/noavatar.png"
                   alt=""
                   width={40}
@@ -39,7 +39,7 @@ const Transactions = () => {
           <tr>
             <td>
               <div className={styles.user}>
-                <Image
+                <ValidatedImage
                   src="/noavatar.png"
                   alt=""
                   width={40}
@@ -58,7 +58,7 @@ const Transactions = () => {
           <tr>
             <td>
               <div className={styles.user}>
-                <Image
+                <ValidatedImage
                   src="/noavatar.png"
                   alt=""
                   width={40}
@@ -79,7 +79,7 @@ const Transactions = () => {
           <tr>
             <td>
               <div className={styles.user}>
-                <Image
+                <ValidatedImage
                   src="/noavatar.png"
                   alt=""
                   width={40}

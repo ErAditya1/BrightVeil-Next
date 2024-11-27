@@ -3,8 +3,9 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { role, teachersData } from "@/lib/data";
-import Image from "next/image";
+import ValidatedImage from '@/components/ValidatedImage';
 import Link from "next/link";
+import Image from "next/image";
 
 type Teacher = {
   id: number;
@@ -61,7 +62,7 @@ const TeacherListPage = () => {
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight"
     >
       <td className="flex items-center gap-4 p-4">
-        <Image
+        <ValidatedImage
           src={item.photo}
           alt=""
           width={40}
@@ -87,7 +88,7 @@ const TeacherListPage = () => {
           </Link>
           {role === "admin" && (
             // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple">
-            //   <Image src="/delete.png" alt="" width={16} height={16} />
+            //   <ValidatedImage src="/delete.png" alt="" width={16} height={16} />
             // </button>
             <FormModal table="teacher" type="delete" id={item.id}/>
           )}

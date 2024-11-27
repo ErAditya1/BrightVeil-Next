@@ -1,6 +1,7 @@
 import Announcements from "@/components/Announcements";
 import BigCalendar from "@/components/BigCalender";
 import Performance from "@/components/Performance";
+import ValidatedImage from '@/components/ValidatedImage';
 import Image from "next/image";
 import Link from "next/link";
 
@@ -14,7 +15,7 @@ const SingleStudentPage = () => {
           {/* USER INFO CARD */}
           <div className="bg-lamaSky py-6 px-4 rounded-md flex-1 flex gap-4">
             <div className="w-1/3">
-              <Image
+              <ValidatedImage
                 src="https://images.pexels.com/photos/5414817/pexels-photo-5414817.jpeg?auto=compress&cs=tinysrgb&w=1200"
                 alt=""
                 width={144}

@@ -2,7 +2,7 @@
 
 import { Delete, Edit, PlusCircle } from "lucide-react";
 import dynamic from "next/dynamic";
-import Image from "next/image";
+import ValidatedImage from '@/components/ValidatedImage';
 import { useState } from "react";
 import { MdDelete } from "react-icons/md";
 
@@ -92,7 +92,7 @@ const FormModal = ({
         {type === "create"  && <PlusCircle size={24}/>}
         {type === "update" && <Edit size={18}/>}
         {type === "delete" && <MdDelete size={24}/>}
-        {/* <Image src={`/${type}.png`} alt="" width={16} height={16} /> */}
+        {/* <ValidatedImage src={`/${type}.png`} alt="" width={16} height={16} /> */}
       </button>
       {open && (
         <div className="w-screen h-dvh absolute left-0 top-0  bg-opacity-60 z-50 flex items-center justify-center">
@@ -102,7 +102,7 @@ const FormModal = ({
               className="absolute top-4 right-4 cursor-pointer"
               onClick={() => setOpen(false)}
             >
-              <Image src="/close.png" alt="" width={14} height={14} />
+              <ValidatedImage src="/close.png" alt="" width={14} height={14} />
             </div>
           </div>
         </div>

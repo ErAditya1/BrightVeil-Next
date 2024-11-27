@@ -15,7 +15,7 @@ import { MdDelete } from 'react-icons/md';
 import api from '@/api';
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import Image from 'next/image';
+import ValidatedImage from '@/components/ValidatedImage';
 
 type ChatBubbleProps = ChatMessage & {
   variant: 'sent' | 'received';
@@ -86,7 +86,7 @@ export default function ChatBubble(props: ChatBubbleProps) {
           key={index}
         >
           { attachment.type === 'image'&&
-            <Image
+            <ValidatedImage
               alt="Attachment"
               src={attachment.url}
               loading="lazy"

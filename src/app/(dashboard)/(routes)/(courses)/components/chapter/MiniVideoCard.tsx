@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { timeAgo } from '@/utils/agoTime';
-import Image from 'next/image';
+import ValidatedImage from '@/components/ValidatedImage';
 import { SiCashapp } from "react-icons/si";
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -38,7 +38,7 @@ export default function MiniVideoCard({ videoId, thumbnail, title, _id, views, u
 
                         >
                             <div className="h-full aspect-video rounded-lg " >
-                                <Image
+                                <ValidatedImage
                                     src={thumbnail}
                                     loading="lazy"
                                     width={500}

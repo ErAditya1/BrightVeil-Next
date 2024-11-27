@@ -10,7 +10,7 @@ import { ApiResponse } from '@/types/ApiResponse';
 import { AxiosError } from 'axios';
 
 import { useParams } from 'next/navigation';
-import Image from 'next/image';
+import ValidatedImage from '@/components/ValidatedImage';
 import { FaCamera } from 'react-icons/fa6';
 import { MdOutlineCancel } from 'react-icons/md';
 
@@ -105,7 +105,7 @@ export default function QuizThumbnailForm({ thumbnail }: any) {
                                 {
                                     fileUrl ? (
                                         <div className="w-full h-full relative">
-                                            <Image
+                                            <ValidatedImage
                                                 src={fileUrl}
                                                 alt="Profile"
                                                 height={500}

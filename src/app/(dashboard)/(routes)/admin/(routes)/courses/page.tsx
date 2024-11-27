@@ -8,7 +8,7 @@ import { classesData, role } from "@/lib/data";
 import { useAppSelector } from "@/store/hooks";
 import { formatUploadDateTime } from "@/utils/agoTime";
 import { SlidersHorizontal, SortDesc } from "lucide-react";
-import Image from "next/image";
+import ValidatedImage from '@/components/ValidatedImage';
 import Link from "next/link";
 
 import { useEffect, useState } from "react";
@@ -142,7 +142,7 @@ const handleChange = (text:String)=>{
         <div className="aspect-video h-12 border rounded">
         {
           item?.thumbnail?.secure_url && (
-            <Image
+            <ValidatedImage
               src={item.thumbnail.secure_url}
               alt={item.title}
               width={100}

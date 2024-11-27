@@ -20,9 +20,9 @@ export const metadata = {
   description: "A website built with Next.js, MUI, and Socket.io",
 
   icons: {
-    icon: "/brightveilLight.jpeg",
-    apple: "/brightveilLight.jpeg",
-    shortcut: "/brightveilLight.jpeg",
+    icon: "/brightveilLight.jpg",
+    apple: "/brightveilLight.jpg",
+    shortcut: "/brightveilLight.jpg",
   },
 };
 

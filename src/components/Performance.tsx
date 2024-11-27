@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+import ValidatedImage from '@/components/ValidatedImage';
 
 const data = [
   { name: "Group A", value: 92, fill: "#C3EBFA" },

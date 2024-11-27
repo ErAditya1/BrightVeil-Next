@@ -8,11 +8,12 @@ import { BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import { AspectRatio, Card, CardOverflow, Divider, Typography } from '@mui/joy';
 import api from '@/api';
-import Image from 'next/image';
 import AvatarLayout from '@/components/AvatarLayout';
 import { BiMoney } from 'react-icons/bi';
 import { toast } from '@/components/ui/use-toast';
 import { MdEventAvailable } from 'react-icons/md';
+import ValidatedImage from '@/components/ValidatedImage';
+import Image from 'next/image';
 
 type CourseData = {
   thumbnail: {
@@ -77,7 +78,7 @@ export default function CourseCard({ _id }: Props) {
               <Skeleton className="w-full rounded animate-pulse" />
             ) : (
               <Image
-                src={courseData?.thumbnail?.secure_url || '/placeholder-image.png'}
+                src={courseData?.thumbnail?.secure_url }
                 loading="lazy"
                 width={500}
                 height={500}

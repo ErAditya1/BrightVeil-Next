@@ -10,7 +10,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { BookOpen, MoreVertical } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
+import ValidatedImage from '@/components/ValidatedImage';
 import api from '@/api';
 import { toast } from './ui/use-toast';
 import { AxiosError } from 'axios';
@@ -67,9 +67,8 @@ export default function PostCard({ _id }: any) {
           isLoading ? (
             <Skeleton className=" w-full rounded" />
           ) : (
-            <Image
+            <ValidatedImage
               src={post?.image?.url}
-              loading="lazy"
               width={500}
               height={500}
               className='rounded w-full aspect-square'

@@ -1,5 +1,6 @@
 "use client";
-import Image from "next/image";
+import ValidatedImage from '@/components/ValidatedImage';
+import Image from 'next/image';
 
 const TableSearch = ({handleChange}:any) => {
   return (

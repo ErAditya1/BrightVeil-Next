@@ -3,7 +3,7 @@ import * as React from 'react';
 import Stack from '@mui/joy/Stack';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
-import { Box,Input, ListItemButton } from '@mui/joy';
+import { Box, IconButton, Input, ListItemButton } from '@mui/joy';
 import List from '@mui/joy/List';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ChatListItem from './ChatListItem';
@@ -17,8 +17,10 @@ import GroupListItem from './GroupListItem';
 import { FaCamera } from 'react-icons/fa6';
 import { toast } from '@/components/ui/use-toast';
 import { addNewChat } from '@/store/chat/chatSlice';
-import Image from 'next/image';
+import ValidatedImage from '@/components/ValidatedImage';
 import SidebarTop from '@/components/SidebarTop';
+import { IoLogoWechat } from 'react-icons/io5';
+import { MdDisabledByDefault } from 'react-icons/md';
 
 
 
@@ -32,12 +34,13 @@ export default function ChatsPane({ handleSlide }: any) {
   const [filteredChats, setFilteredChat] = React.useState(chats);
 
   const [filterNewChats, setFilterNewChat] = React.useState(users);
-  const [isAddNew, setIsAddNew] = React.useState(false);
+  const [isAddNew, setIsAddNew] = React.useState(true);
   const [isGroupCreating, setIsGroupCreating] = React.useState(false)
   const [selectedUsers, setSelectedUsers] = React.useState([]);
   const [groupName, setGroupName] = React.useState('')
   const [groupAvatar, setGroupAvatar] = React.useState<File>()
   const [groupAvatarUrl, setGroupAvatarUrl] = React.useState('')
+  const [isCreating, setIsCreating] = React.useState(false)
 
   React.useEffect(() => {
     setFilteredChat(chats)
@@ -80,7 +83,10 @@ export default function ChatsPane({ handleSlide }: any) {
   };
   //  create group with selected user
   const handleCreateGroup = () => {
+
+    if(isCreating) return
     if (selectedUsers.length > 1) {
+
       if (groupName.length < 3) {
         toast({
           title: 'Error',
@@ -89,6 +95,8 @@ export default function ChatsPane({ handleSlide }: any) {
         })
         return
       }
+
+      setIsCreating(true)
 
       const formData = new FormData();
       if (groupAvatar) {
@@ -100,10 +108,15 @@ export default function ChatsPane({ handleSlide }: any) {
         formData.append(`participants`, selectedUser);
       });
 
-      // console.log(formData.get("avatar"));
+      console.log(formData.get("avatar"));
 
 
-      api.post(`/v1/chat-app/chats/group`, formData)
+      api.post(`/v1/chat-app/chats/group`, formData,{
+        headers: {
+          'Content-Type':'multipart/form-data'
+        }
+
+      })
         .then((res) => {
           console.log(res.data.data)
           toast({
@@ -119,9 +132,14 @@ export default function ChatsPane({ handleSlide }: any) {
           URL.revokeObjectURL(groupAvatarUrl)
           setGroupAvatarUrl('')
           setGroupAvatar(undefined)
+          
+          
         })
         .catch((error) => {
           console.error(error)
+        })
+        .finally(() => {
+          setIsCreating(false)
         })
 
 
@@ -137,7 +155,7 @@ export default function ChatsPane({ handleSlide }: any) {
 
   const chatFilter = (e: any) => {
     const searchValue = e.target.value.toLowerCase()
-    console.log(searchValue)
+   
 
     const value = chats?.filter((chat) => {
       return chat.name?.toLocaleLowerCase().includes(searchValue)
@@ -183,11 +201,26 @@ export default function ChatsPane({ handleSlide }: any) {
               p={2}
               pb={1.5}
             >
-              
 
-              <SidebarTop/>
 
-             
+              <SidebarTop />
+              <IconButton variant="soft" color="primary" size="sm" className='flex justify-center items-center gap-2'>
+                {
+                  isAddNew || isGroupCreating ? <MdDisabledByDefault size={23} className='cursor-pointer' onClick={() => {
+                    setIsAddNew(!isAddNew)
+                    setIsGroupCreating(false)
+
+                  }} />
+                    :
+                    <IoLogoWechat size={23} className='cursor-pointer' onClick={() => {
+                      setIsAddNew(!isAddNew)
+                      setIsGroupCreating(false)
+
+                    }} />
+                }
+              </IconButton>
+
+
 
               {/* <Dropdown>
                 <MenuButton><MoreVertRoundedIcon /></MenuButton>
@@ -232,7 +265,7 @@ export default function ChatsPane({ handleSlide }: any) {
                                       groupAvatarUrl ?
                                         <label htmlFor="group-icon" className='flex  items-center gap-4 cursor-pointer'>
                                           <div className='h-10 w-10 rounded-full relative'>
-                                            <Image
+                                            <ValidatedImage
                                               loading="lazy"
                                               width={500}
                                               height={500}
@@ -270,7 +303,7 @@ export default function ChatsPane({ handleSlide }: any) {
                                     />
                                   </div>
                                   <div className="flex flex-row gap-4 mb-4">
-                                    <button type='button' onClick={handleCreateGroup}
+                                    <button disabled={isCreating} type='button' onClick={handleCreateGroup}
                                       className="   bg-green-700 py-2 w-full border  rounded text-center">
                                       <Typography level="title-sm" className="text-md my-auto">Create Group</Typography>
                                     </button>

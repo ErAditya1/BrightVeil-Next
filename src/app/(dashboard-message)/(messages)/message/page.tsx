@@ -14,6 +14,7 @@ import { addChatLastMessage, addChats, addMessages, addNewChat, addReceivedMessa
 import { useSearchParams } from 'next/navigation';
 import { AxiosError } from 'axios';
 import { ApiResponse } from '@/types/ApiResponse';
+import ValidatedImage from '@/components/ValidatedImage';
 import Image from 'next/image';
 
 const CONNECTED_EVENT = "connected";

@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import InputField from "../InputField";
-import Image from "next/image";
+import ValidatedImage from '@/components/ValidatedImage';
 import { studentSchema } from "@/schemas/studentSchema";
 
 
@@ -128,7 +128,7 @@ const StudentForm = ({
             className="text-xs aaa flex items-center gap-2 cursor-pointer"
             htmlFor="img"
           >
-            <Image src="/upload.png" alt="" width={28} height={28} />
+            <ValidatedImage src="/upload.png" alt="" width={28} height={28} />
             <span>Upload a photo</span>
           </label>
           <input type="file" id="img" {...register("img")} className="hidden" />

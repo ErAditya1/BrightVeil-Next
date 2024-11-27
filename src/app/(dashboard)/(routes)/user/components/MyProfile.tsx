@@ -6,6 +6,7 @@ import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
+import ValidatedImage from '@/components/ValidatedImage';
 import Image from 'next/image';
 
 export default function MyProfile() {

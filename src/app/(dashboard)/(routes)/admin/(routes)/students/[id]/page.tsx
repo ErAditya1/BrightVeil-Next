@@ -2,7 +2,7 @@ import Announcements from "@/components/Announcements";
 import BigCalendar from "@/components/BigCalender";
 import Performance from "@/components/Performance";
 import { CalendarDaysIcon, PhoneCall } from "lucide-react";
-import Image from "next/image";
+import ValidatedImage from '@/components/ValidatedImage';
 import Link from "next/link";
 import { MdBloodtype, MdEmail } from "react-icons/md";
 
@@ -16,7 +16,7 @@ const SingleStudentPage = () => {
           {/* USER INFO CARD */}
           <div className="bg-card text-card-foreground py-6 px-4 rounded-md flex-1 flex gap-4">
             <div className="w-1/3">
-              <Image
+              <ValidatedImage
                 src="https://images.pexels.com/photos/5414817/pexels-photo-5414817.jpeg?auto=compress&cs=tinysrgb&w=1200"
                 alt=""
                 width={144}
@@ -53,7 +53,7 @@ const SingleStudentPage = () => {
           <div className="flex-1 flex gap-4 justify-between flex-wrap">
             {/* CARD */}
             <div className="bg-card text-card-foreground p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]">
-              <Image
+              <ValidatedImage
                 src="/singleAttendance.png"
                 alt=""
                 width={24}
@@ -67,7 +67,7 @@ const SingleStudentPage = () => {
             </div>
             {/* CARD */}
             <div className="bg-card text-card-foreground p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]">
-              <Image
+              <ValidatedImage
                 src="/singleBranch.png"
                 alt=""
                 width={24}
@@ -81,7 +81,7 @@ const SingleStudentPage = () => {
             </div>
             {/* CARD */}
             <div className="bg-card text-card-foreground p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]">
-              <Image
+              <ValidatedImage
                 src="/singleLesson.png"
                 alt=""
                 width={24}
@@ -95,7 +95,7 @@ const SingleStudentPage = () => {
             </div>
             {/* CARD */}
             <div className="bg-card text-card-foreground p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]">
-              <Image
+              <ValidatedImage
                 src="/singleClass.png"
                 alt=""
                 width={24}

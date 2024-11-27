@@ -33,7 +33,7 @@ import BottomGradient from '@/components/BottomGradient';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import Image from 'next/image';
+import ValidatedImage from '@/components/ValidatedImage';
 import { updateUser } from '@/store/user/userSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { FaCamera } from 'react-icons/fa6';
@@ -246,7 +246,7 @@ export default function EditProfile() {
             {
               coverUrl ? (
                 <div className="w-full h-full relative">
-                  <Image
+                  <ValidatedImage
                     src={coverUrl}
                     alt="Profile"
                     height={500}
@@ -304,7 +304,7 @@ export default function EditProfile() {
               {
                 avatarUrl ? (
                   <div className="w-full h-full relative">
-                    <Image
+                    <ValidatedImage
                       src={avatarUrl}
                       alt="Profile"
                       height={500}

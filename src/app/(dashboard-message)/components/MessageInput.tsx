@@ -15,7 +15,7 @@ import api from '@/api';
 import { MdOutlineLinkedCamera } from 'react-icons/md';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { toast } from '@/components/ui/use-toast';
-import Image from 'next/image';
+import ValidatedImage from '@/components/ValidatedImage';
 import EmojiPicker from 'emoji-picker-react';
 import {
   Popover,
@@ -115,7 +115,7 @@ export default function MessageInput() {
         <div className='flex overflow-auto'>
           {imageUrls?.map((url, index) => (
 
-            <Image src={url} alt="" className='m-1 w-12 h-12'
+            <ValidatedImage src={url} alt="" className='m-1 w-12 h-12'
               loading="lazy"
               key={index}
               width={500}

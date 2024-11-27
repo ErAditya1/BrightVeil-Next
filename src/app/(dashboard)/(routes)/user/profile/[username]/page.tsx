@@ -18,7 +18,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import api from '@/api';
-import Image from 'next/image';
+import ValidatedImage from '@/components/ValidatedImage';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import VideoCard from '../../../(courses)/components/VideoCard';
@@ -129,7 +129,7 @@ const UserProfile = () => {
 
                   {
                     profile?.coverImage?.url ?
-                      <Image
+                      <ValidatedImage
                         src={profile?.coverImage?.url}
                         alt="Cover Image"
                         height={500}
@@ -149,7 +149,7 @@ const UserProfile = () => {
                   <>
                     {
                       profile?.avatar?.url ?
-                        <Image
+                        <ValidatedImage
                           src={profile?.avatar?.url}
                           alt="Profile Avatar"
                           className="rounded-full w-24 h-24"

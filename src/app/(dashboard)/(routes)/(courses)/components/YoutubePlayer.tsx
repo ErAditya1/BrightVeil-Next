@@ -7,9 +7,10 @@ import { IoSettings } from 'react-icons/io5';
 
 import Duration from './Duration';
 import { MdForward10, MdOutlineClose, MdOutlineLoop, MdOutlinePictureInPicture, MdOutlinePictureInPictureAlt, MdOutlineReplay10 } from 'react-icons/md';
-import Image from 'next/image';
+import ValidatedImage from '@/components/ValidatedImage';
 import { BsFillPipFill, BsFullscreen, BsFullscreenExit, BsPip } from 'react-icons/bs';
 import { Divider } from '@mui/joy';
+import Image from 'next/image';
 
 interface CustomVideoPlayerProps {
   videoId: string | string[];

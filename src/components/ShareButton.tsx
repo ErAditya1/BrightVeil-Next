@@ -25,7 +25,7 @@ function ShareButton({ className, textToShare }: any) {
 
   const chats = useAppSelector((state) => state.chat.chats)
   const user = useAppSelector((state) => state.auth.user)
-  console.log(chats)
+
   const [copied, setCopied] = useState(false);
   const [url, setUrl] = useState('')
   const dispatch = useAppDispatch()
@@ -37,7 +37,7 @@ function ShareButton({ className, textToShare }: any) {
     api.get(`/v1/chat-app/chats`)
       .then((res) => {
         const chats = res.data.data
-        console.log(chats)
+       
 
         dispatch(addChats(chats || []))
       })
