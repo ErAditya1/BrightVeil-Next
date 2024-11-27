@@ -13,7 +13,7 @@ const getSocket = (token?: string) => {
   }
 
   const SOCKET_URI = process.env.NODE_ENV === 'production' 
-    ? process.env.NEXT_PUBLIC_SOCKET_URI
+    ? process.env.NEXT_PUBLIC_SOCKET_URI! || 'https://lms-backend-mh2d.onrender.com'
     : 'http://localhost:8000';
 
     console.log(SOCKET_URI)
