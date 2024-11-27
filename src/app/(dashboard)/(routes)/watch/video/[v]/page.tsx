@@ -263,29 +263,6 @@ function Page() {
         <Card className='grow dark:bg-background text-card-foreground '>
 
 
-
-          <div className='p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl m-2'>
-            <h1 className='text-2xl font-bold'>File :</h1>
-          </div>
-          {
-            loading ?
-              <Skeleton className='h-32 w-56' />
-              :
-              <div className='w-full flex flex-row flex-wrap  gap-4 m-2'>
-                {playingVideoData?.files?.length > 0 &&
-                  playingVideoData?.files?.map((file: any) => {
-                    return (
-                      <FileCard key={file._id} />
-                    )
-                  })
-                }
-              </div>
-          }
-          <div className='p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl m-2'>
-            <h1 className='text-2xl font-bold'>Test :</h1>
-          </div>
-         
-
           <CardContent className="">
             <div className='p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl m-0 '>
               <h1 className='text-2xl font-bold'>Description :</h1>

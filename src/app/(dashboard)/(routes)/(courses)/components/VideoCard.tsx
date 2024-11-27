@@ -154,7 +154,7 @@ export default function VideoCard({ _id, key }: any) {
                     height={500}
                     alt=""
                   />
-                  <PlayCircle className='text-4xl absolute' />
+                  <PlayCircle size={30}  className='text-4xl  absolute cursor-pointer' />
 
 
 
