@@ -11,6 +11,8 @@ class MyDocument extends Document {
             async
             src="https://www.googletagmanager.com/gtag/js?id=G-KFBC9X698J"
           ></script>
+          <meta name="google-site-verification" content="Bvx3h17BfA-g1xTam6S2n0v6-sc1GTKNDoA6Uo2EyTU" />
+
           <script
             dangerouslySetInnerHTML={{
               __html: `
