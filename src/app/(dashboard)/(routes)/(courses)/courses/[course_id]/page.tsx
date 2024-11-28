@@ -182,8 +182,8 @@ function ExploreCourse() {
                   {
                     loading ?
                       <>
-                        <Skeleton className='h-4  my-1 gap-2 w-40' />
-                        <Skeleton className='h-4  my-1 gap-2 w-24' />
+                       <Skeleton className='h-4 w-32 sm:w-52 my-2' />
+                       <Skeleton className='h-3 w-16 sm:w-32' />
                       </> :
                       <>
                         <p className="line-clamp-1 text-sm sm:text-md">{courseData?.author.name}</p>
@@ -197,7 +197,7 @@ function ExploreCourse() {
               {
                 loading ? <React.Fragment>
                   <div className='flex  flex-row items-center fjustify-self-end  ml-4 '>
-                    <Skeleton className="rounded-full w-28 h-10" />
+                    <Skeleton className="rounded-full w-24 h-10" />
                   </div>
                   <div className='m-2 rounded  p-1'>
                     <Skeleton className="rounded-full text-4xl w-16  h-10" />
@@ -212,7 +212,7 @@ function ExploreCourse() {
                     <Skeleton className="rounded-full text-4xl w-10  h-10" />
                   </div>
                   <div className='m-2 '>
-                    <Skeleton className="rounded-full text-4xl w-28  h-12" />
+                    <Skeleton className="rounded-full text-4xl w-24  h-10" />
                   </div>
                 </React.Fragment>
                   :
@@ -245,7 +245,7 @@ function ExploreCourse() {
                       <Chip>{courseData?.commentCount}</Chip>
                     </div>
                     <div className='m-2 '>
-                      <ShareButton className="rounded-full text-xl" />
+                      <ShareButton className="rounded-full text-xl" textToShare={courseData?.title}/>
                     </div>
                     <div className='m-2 '>
                       <SaveButton className="rounded-full text-xl" type="course" saved={false} _id={courseData?._id} />
@@ -288,9 +288,9 @@ function ExploreCourse() {
               </TabsList>
 
               <TabsContent value="videos" className='p-0'>
-                <Card className='max-h-dvh overflow-auto m-0 p-0 w-full border-none'>
+                <Card className='max-h-dvh overflow-auto m-0 p-0 w-full border-none dark:bg-background' style={{padding:0}}>
                   
-                  <CardContent className="p-0 border-none">
+                  <CardContent className="p-0 border-none w-full">
                     {
                       mapVideos && videos.length !== 0 &&
                       videos?.map((video) => {
@@ -305,8 +305,8 @@ function ExploreCourse() {
 
               </TabsContent>
 
-              <TabsContent value="quizes" className=''>
-                <Card className='max-h-dvh overflow-auto m-0 w-full p-0'>
+              <TabsContent value="quizes" className='' >
+                <Card className='max-h-dvh overflow-auto m-0 w-full p-0 dark:bg-background' style={{padding:0}}>
                  
                  
                   <CardContent className="p-0">

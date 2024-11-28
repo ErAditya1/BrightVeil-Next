@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import ReactPlayer from 'react-player/youtube';
 import { Play, Pause, Volume2, VolumeX, PlayCircle, PauseCircle, ChevronRightIcon } from 'lucide-react';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
-import { IoSettings } from 'react-icons/io5';
+import { IoPlaySkipForward, IoSettings } from 'react-icons/io5';
 
 import Duration from './Duration';
 import { MdForward10, MdOutlineClose, MdOutlineLoop, MdOutlinePictureInPicture, MdOutlinePictureInPictureAlt, MdOutlineReplay10 } from 'react-icons/md';
@@ -11,14 +11,16 @@ import ValidatedImage from '@/components/ValidatedImage';
 import { BsFillPipFill, BsFullscreen, BsFullscreenExit, BsPip } from 'react-icons/bs';
 import { Divider } from '@mui/joy';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface CustomVideoPlayerProps {
   videoId: string | string[];
   thumbnailUrl: string;
   title: string;
+  nextVideo: string;
 }
 
-export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: CustomVideoPlayerProps) {
+export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, nextVideo }: CustomVideoPlayerProps) {
   useEffect(() => {
     if (videoId) load(`https://www.youtube.com/watch?v=${videoId}`);
     setThumbnail(thumbnailUrl);
@@ -27,6 +29,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
 
     setThumbnail(thumbnailUrl);
   }, [videoId, thumbnailUrl]);
+  const router = useRouter()
 
   const [url, setUrl] = useState('');
   const [start, setStart] = useState(false);
@@ -41,7 +44,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
   const [loaded, setLoaded] = useState(0);
   const [duration, setDuration] = useState(0);
   const [playbackRate, setPlaybackRate] = useState(1.0);
-  const [loop, setLoop] = useState(true);
+  const [loop, setLoop] = useState(false);
   const [seeking, setSeeking] = useState(false);
   const [isSetting, setIsSetting] = useState(false);
   const [isQuality, setIsQuality] = useState(false);
@@ -68,7 +71,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
 
     setControls(true);
     resetHideTimeout();
-    
+
 
   }, []);
 
@@ -93,27 +96,43 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
       if (hideTimeout.current) clearTimeout(hideTimeout.current);
     };
   }, [resetHideTimeout]);
-  
+
   const handleClickOutside = (event: any) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsSetting(false)
     }
   };
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
-  const handleReady = () => {
-    setReady(true);
+  const handleVideoMetadata = () => {
     if (playerRef.current) {
       const iframe = playerRef.current.getInternalPlayer(); // Access YouTube iframe
       const availableQualities = iframe.getAvailableQualityLevels(); // Fetch quality levels
       setQualityLevels(availableQualities);
       console.log(availableQualities)
     }
+  };
+  useEffect(() => {
+    if (playerRef.current) {
+      const player = playerRef.current.getInternalPlayer();
+      if (player) {
+        player.addEventListener('loadedmetadata', handleVideoMetadata);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      if (playerRef.current) {
+        const player = playerRef.current.getInternalPlayer();
+        if (player) {
+          player.removeEventListener('loadedmetadata', handleVideoMetadata);
+        }
+      }
+    };
+  }, []);
+
+
+  const handleReady = () => {
+    setReady(true);
   };
   const handlePlayPause = () => {
     handleReady()
@@ -139,6 +158,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
     setDuration(duration);
   };
   const handleFullscreen = () => {
+    console.log(navigator)
     setFullScreen(!fullscreen)
     handle.active ? handle.exit() : handle.enter()
   };
@@ -171,7 +191,19 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
     }
   };
 
-  const handleEnded = () => setPlaying(loop);
+
+  const handleEnded = () => {
+
+    console.log("Ended");
+    if (nextVideo) {
+      console.log(nextVideo)
+      router.push(`/watch/video/${nextVideo}`)
+      load(`https://www.youtube.com/watch?v=${nextVideo}`)
+    } else {
+      setStart(false)
+      setPlaying(false)
+    }
+  };
 
 
 
@@ -215,14 +247,14 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
   }, []);
 
   return (
-    <FullScreen handle={handle} className={`h-full w-full relative select-none ${fullscreen && "-rotate-90"} sm:rotate-0`}>
+    <FullScreen handle={handle} className={`h-full w-full relative select-none  `}>
       <div onMouseMove={showControls} onClick={showControls} className='h-full w-full'>
         <section className="section h-full w-full flex justify-center items-center relative">
           <div className="player-wrapper h-full w-full relative flex justify-center items-center">
 
             <ReactPlayer
               ref={playerRef}
-              className="react-player rounded-lg p-0"
+              className={`react-player rounded-lg p-0  `}
               width="100%"
               height="100%"
               url={url}
@@ -268,7 +300,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
               </button>
             </div>
             <div className="w-full h-17 absolute bg-card" style={{ bottom: 0 }}>
-            <div className='px-2 '>
+              <div className='px-2 '>
                 <input
                   type="range"
                   min={0}
@@ -287,7 +319,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
                   }}
                   className="w-full  h-1"
                 />
-               
+
               </div>
               <div className="w-full h-8 flex items-center justify-between px-2  relative">
                 <div className='flex flex-row items-center'>
@@ -295,6 +327,9 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
                     <Duration seconds={duration * played} /> / <Duration seconds={duration} />
                   </span>
                   <div className="relative mx-2 flex flex-row items-center gap-2">
+                    {
+                      nextVideo && <button className="" onClick={handleEnded}><IoPlaySkipForward size={22}/></button>
+                    }
                     <button onClick={handleMuteUnmute}>{!muted ? <Volume2 size={20} /> : <VolumeX size={20} />}</button>
                     <div className="  flex justify-center items-center ">
                       <input type="range" min={0} max={1} step="any" value={volume} onChange={handleVolumeChange} className="w-24 h-1 " />
@@ -322,7 +357,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
                                     onClick={() => handleSetPlaybackRate(item)}
                                     className={`text-md w-full ${playbackRate == item ? 'font-semibold border rounded' : ''}`}
                                   >
-                                    {item ===1 ? 'Normal' : `${item}x`}
+                                    {item === 1 ? 'Normal' : `${item}x`}
                                   </button>
                                 </div>
                               ))
@@ -379,19 +414,19 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title }: Cust
                     <IoSettings size={20} />
                   </button>
                   <button onClick={handleTogglePIP} className=''>
-                    
+
                     {!pip ? <BsPip size={20} /> : <BsFillPipFill size={20} />}
                   </button>
                   <button onClick={handleFullscreen} className=''>
                     {fullscreen ? <BsFullscreenExit size={20} /> : <BsFullscreen size={16} />}
                   </button>
-                  
+
 
                 </div>
 
 
               </div>
-             
+
             </div>
           </div>
         </div>

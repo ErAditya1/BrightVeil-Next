@@ -4,6 +4,7 @@ import { timeAgo } from '@/utils/agoTime';
 import ValidatedImage from '@/components/ValidatedImage';
 import { SiCashapp } from "react-icons/si";
 import { Skeleton } from '@/components/ui/skeleton';
+import { useParams } from 'next/navigation';
 
 type PropsType = {
     _id: string,
@@ -23,16 +24,28 @@ type PropsType = {
 export default function MiniVideoCard({ videoId, thumbnail, title, _id, views, uploadedDate, channelName, isFree }: PropsType) {
 
 
+    const { v } = useParams()
 
 
 
 
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div>Loading...</div>} >
 
             <Link href={`/watch/video/${videoId}`}>
                 <div className="relative w-full h-24  p-2 z-0">
+
+                    {
+                        v === videoId && 
+                        <div className='absolute right-2 top-1'>
+                            <span className="relative flex h-3 w-3">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+                        </span>
+                        </div>
+                    }
+
                     {
                         videoId !== '' ? <div className="p-0 flex flex-row w-full h-full bg-card text-card-foreground rounded"
 

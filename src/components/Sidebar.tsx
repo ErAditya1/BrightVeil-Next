@@ -273,12 +273,14 @@ export default function Sidebar() {
                             if (item.visible.includes(user?.role!)) {
                               return (
                                 <ListItem className=" " key={index}>
+                                  <Link href={subItem.href}>
                                   <ListItemButton >
                                     {subItem.icon}
                                     <ListItemContent>
-                                      <Link href={subItem.href}><Typography className=" text-xs">{subItem.label}</Typography></Link>
+                                      <Typography className=" text-xs">{subItem.label}</Typography>
                                     </ListItemContent>
                                   </ListItemButton>
+                                  </Link>
                                 </ListItem>
                               )
                             }
@@ -294,12 +296,14 @@ export default function Sidebar() {
               else {
                 return (
                   <ListItem key={index}>
+                    <Link href={item.href}>
                     <ListItemButton>
                       {item.icon}
                       <ListItemContent>
-                        <Link href={item.href}><Typography level="title-sm">{item.label}</Typography></Link>
+                        <Typography level="title-sm">{item.label}</Typography>
                       </ListItemContent>
                     </ListItemButton>
+                    </Link>
                   </ListItem>
                 )
               }
@@ -326,10 +330,12 @@ export default function Sidebar() {
           }}
         >
           <ListItem>
+            <Link href={'/support'}>
             <ListItemButton>
               <SupportRoundedIcon />
               Support
             </ListItemButton>
+            </Link>
           </ListItem>
           <ListItem>
             <ListItemButton>

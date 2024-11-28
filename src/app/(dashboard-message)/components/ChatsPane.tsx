@@ -171,7 +171,7 @@ export default function ChatsPane({ handleSlide }: any) {
   const addNewFilter = (e: any) => {
 
     const searchValue = e.target.value.toLowerCase()
-    const value = users?.filter((chat) => {
+    const value = users?.filter((chat:any) => {
       return chat.name?.toLocaleLowerCase()?.includes(searchValue) || chat.username.toLocaleLowerCase().includes(searchValue)
     })
 

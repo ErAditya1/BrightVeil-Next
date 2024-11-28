@@ -94,14 +94,14 @@ function Page() {
           setVideos(res.data.data.relatedVideo)
           setLoading(false)
           setLoadingVideo(false)
-        }else{
+        } else {
           router.push('/not-found')
         }
       }).catch((err) => {
-        
-        if(err.response.data.statusCode === 403){
+
+        if (err.response.data.statusCode === 403) {
           router.push('/not-found')
-        }else{
+        } else {
           setLoadingVideo(false)
         }
       })
@@ -123,8 +123,8 @@ function Page() {
         <Card className='grow dark:bg-background p-0 text-card-foreground rounded-lg ' style={{ padding: 0 }}>
           <div className=' aspect-video col-span-8 rounded-xl  max-h-dvh max-w-screen'>
             {
-              v && !loadingVideo ? <CustomVideoPlayer videoId={v} thumbnailUrl={playingVideoData?.thumbnail?.secure_url} title={playingVideoData?.title} />:
-              <Skeleton className='h-full w-full'/>
+              v && !loadingVideo ? <CustomVideoPlayer videoId={v} thumbnailUrl={playingVideoData?.thumbnail?.secure_url} title={playingVideoData?.title} nextVideo={videos[1].videoId} /> :
+                <Skeleton className='h-full w-full' />
             }
 
           </div>
@@ -145,19 +145,19 @@ function Page() {
 
                 {
                   loading ? <div className="card-content mx-2 ">
-                    <Skeleton className='h-4 w-52 my-2' />
-                    <Skeleton className='h-3 w-28' />
+                    <Skeleton className='h-4 w-32 sm:w-52 my-2' />
+                    <Skeleton className='h-3 w-16 sm:w-32' />
                   </div>
                     :
                     <div className="card-content mx-2">
-                      <p  className="line-clamp-1 text-sm lg:text-md">{playingVideoData?.author?.name}</p>
+                      <p className="line-clamp-1 text-sm lg:text-md">{playingVideoData?.author?.name}</p>
                       <p className='line-clamp-1 text-xs lg:text-md'>@{playingVideoData?.author?.username}</p>
                     </div>
                 }
                 {
                   loading ?
                     <div className='flex flex-row gap-2 items-center'>
-                      <Skeleton className="rounded-full w-32 h-10" />
+                      <Skeleton className="rounded-full w-24 h-8" />
                     </div>
                     : <div className='flex  flex-row items-center fjustify-self-end  ml-4 '>
                       {
@@ -204,7 +204,7 @@ function Page() {
                     {
                       playingVideoData?.isFree &&
                       <div className='m-2 '>
-                        <ShareButton className="rounded-full text-xl" />
+                        <ShareButton className="rounded-full text-xl" textToShare={playingVideoData?.title}/>
                       </div>
                     }
 
@@ -242,7 +242,7 @@ function Page() {
                 <ChevronDownCircle size={30} className={`duration-500 ${mapVideos && 'rotate-180'}`} onClick={() => { setMapVideos(!mapVideos) }} />
               </div>
             </div>
-            <div className=' w-full h-full gap-4 lg:absolute top-20'>
+            <div className=' w-full h-fit gap-4 lg:absolute top-20'>
 
               {
                 mapVideos && videos[0]?._id &&
@@ -259,7 +259,7 @@ function Page() {
       </div>
       <div className='md:my-2 w-full gap-4  flex flex-col lg:flex-row '>
 
-        {/* File Test and Description */}
+        {/* Description */}
         <Card className='grow dark:bg-background text-card-foreground '>
 
 

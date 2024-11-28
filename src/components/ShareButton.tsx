@@ -1,4 +1,3 @@
-
 import { Copy, Share2 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
@@ -14,7 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { FaFacebook, FaLinkedin, FaTwitter, FaWhatsapp } from 'react-icons/fa6'
+import { FaFacebook, FaLinkedin, FaSquareShareNodes, FaTwitter, FaWhatsapp } from 'react-icons/fa6'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import api from '@/api'
 import { addChats } from '@/store/chat/chatSlice'
@@ -22,47 +21,37 @@ import AvatarLayout from './AvatarLayout'
 import { toast } from './ui/use-toast'
 
 function ShareButton({ className, textToShare }: any) {
-
   const chats = useAppSelector((state) => state.chat.chats)
   const user = useAppSelector((state) => state.auth.user)
 
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState(false)
   const [url, setUrl] = useState('')
   const dispatch = useAppDispatch()
 
-
   const getChats = async () => {
-
-
     api.get(`/v1/chat-app/chats`)
       .then((res) => {
         const chats = res.data.data
-       
-
         dispatch(addChats(chats || []))
       })
       .catch((error) => {
         console.log(error)
       })
-
-
-  };
+  }
 
   useEffect(() => {
     getChats()
-    const url = window.location.href;
+    const url = window.location.href
     if (url) {
-      setCopied(false);
-      setUrl(url);
+      setCopied(false)
+      setUrl(url)
     }
   }, [])
 
   const sendMessage = (_id: string) => {
-
     const message = `Url: ${url}
     title: ${textToShare}
     `
-
 
     api.post(`/v1/chat-app/messages/${_id}`, { content: message })
       .then(() => {
@@ -79,26 +68,44 @@ function ShareButton({ className, textToShare }: any) {
           variant: 'destructive'
         })
         console.log('Failed to send message')
-      });
+      })
   }
 
   const copyToClipboard = () => {
-    // Get the current page URL
     navigator.clipboard.writeText(url)
       .then(() => {
-        setCopied(true);
-        // Optionally, you can reset the 'copied' state after a few seconds
-        setTimeout(() => setCopied(false), 2000);
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
       })
-      .catch(err => console.error('Failed to copy text: ', err));
-  };
+      .catch((err) => console.error('Failed to copy text: ', err))
+  }
+
+  // Function to handle Web Share
+  const handleWebShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: textToShare,
+        text: textToShare,
+        url: url
+      }).then(() => {
+        console.log("Shared successfully")
+      }).catch((err) => {
+        console.error("Error sharing:", err)
+      })
+    } else {
+      toast({
+        title: 'Web Share API not supported',
+        description: 'Your browser does not support native sharing.',
+        variant: 'destructive'
+      })
+    }
+  }
 
   return (
     <Dialog>
       <DialogTrigger asChild className={className}>
-        <Button className='bg-transparent text-foreground hover:bg-transparent p-0 m-0 text-center '>
-
-          <Share2 className='text-md'/>
+        <Button className="bg-transparent text-foreground hover:bg-transparent p-0 m-0 text-center">
+          <Share2 className="text-md" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
@@ -126,6 +133,13 @@ function ShareButton({ className, textToShare }: any) {
             </Button>
           </div>
           <div className="flex space-x-4 my-4">
+            {/* Native Web Share Button */}
+            <button
+              onClick={handleWebShare}
+              className="text-purple-500 hover:text-purple-600"
+            >
+              <FaSquareShareNodes size={36}/>
+            </button>
             {/* Facebook */}
             <a
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`}
@@ -133,9 +147,8 @@ function ShareButton({ className, textToShare }: any) {
               rel="noopener noreferrer"
               className="text-blue-600 hover:text-blue-700"
             >
-              <FaFacebook size={24} />
+              <FaFacebook size={36} />
             </a>
-
             {/* Twitter */}
             <a
               href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(textToShare)}`}
@@ -143,9 +156,8 @@ function ShareButton({ className, textToShare }: any) {
               rel="noopener noreferrer"
               className="text-blue-400 hover:text-blue-500"
             >
-              <FaTwitter size={24} />
+              <FaTwitter size={36} />
             </a>
-
             {/* WhatsApp */}
             <a
               href={`https://wa.me/?text=${encodeURIComponent(textToShare)} ${encodeURIComponent(url)}`}
@@ -153,9 +165,8 @@ function ShareButton({ className, textToShare }: any) {
               rel="noopener noreferrer"
               className="text-green-500 hover:text-green-600"
             >
-              <FaWhatsapp size={24} />
+              <FaWhatsapp size={36} />
             </a>
-
             {/* LinkedIn */}
             <a
               href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent('Bright Veil: A learning plateform')}&summary=${encodeURIComponent(textToShare)}`}
@@ -163,39 +174,35 @@ function ShareButton({ className, textToShare }: any) {
               rel="noopener noreferrer"
               className="text-blue-700 hover:text-blue-800"
             >
-              <FaLinkedin size={24} />
+              <FaLinkedin size={36} />
             </a>
           </div>
-          <div className='w-full flex flex-wrap justify-evenly '>
+          <div className="w-full flex flex-wrap items-center gap-y-4">
             {
               chats?.length ? chats.map((chat, index) => {
                 if (chat.isGroupChat) {
                   return (
-                    <div key={index} className='flex flex-col items-center gap-2 w-1/4' onClick={() => sendMessage(chat?._id)}>
-                      <AvatarLayout src={chat?.avatar?.url} alt={chat?.name} className='w-10 h-10 rounded-full' name={chat?.name} />
+                    <div key={index} className="flex flex-col items-center justify-center gap-y-2 w-1/4" onClick={() => sendMessage(chat?._id)}>
+                      <AvatarLayout src={chat?.avatar?.url} alt={chat?.name} className="w-10 h-10 rounded-full" name={chat?.name} />
                       <div>
-                        <span className='text-sm font-medium text-center'>{chat?.name}</span>
+                        <span className="text-sm font-medium text-center">{chat?.name}</span>
                       </div>
                     </div>
                   )
                 } else {
                   const chatUser = chat.participants.find((participant) => participant._id !== user?._id)
                   return (
-                    <div key={index} className='flex flex-col items-center gap-2 w-1/4' onClick={() => sendMessage(chat?._id)}>
-                      <AvatarLayout src={chatUser?.avatar?.url} alt={chatUser?.name} className='w-10 h-10 rounded-full' />
-                      <div>
-                        <span className='text-sm font-medium text-center'>{chatUser?.username}</span>
-                        {/* <span className='text-xs'>{'jjj'}</span> */}
+                    <div key={index} className="flex flex-col items-center justify-center gap-y-2 w-1/4" onClick={() => sendMessage(chat?._id)}>
+                      <AvatarLayout src={chatUser?.avatar?.url} alt={chatUser?.name} className="w-14 h-14 rounded-full" />
+                      <div className='w-full text-center flex justify-center'>
+                        <span className="text-sm font-medium text-center line-clamp-1 break-words break-all">{chatUser?.username}</span>
                       </div>
                     </div>
                   )
                 }
               })
-
-                // Render a message if there are no chats yet
-                : <div className='text-center text-sm'>No chats found</div>
+                : <div className="text-center text-sm">No chats found</div>
             }
-
           </div>
         </div>
         <DialogFooter className="sm:justify-start">

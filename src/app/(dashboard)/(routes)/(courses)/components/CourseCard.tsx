@@ -57,7 +57,7 @@ export default function CourseCard({ _id }: Props) {
         setCourseData(res.data.data[0]);
       } catch (error) {
 
-        console.error("Failed to fetch course data", error);
+        console.log("Failed to fetch course data", error);
         
       } finally {
         setIsLoading(false);

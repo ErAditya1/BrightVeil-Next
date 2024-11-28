@@ -9,6 +9,9 @@ import { loginUser, logoutUser } from '@/store/user/userSlice';
 import { AxiosError } from 'axios';
 import api from '@/api';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+// import { messagingInstance, onMessage, requestPermissionAndGetToken } from '../lib/firebase-config';
+import { Router } from 'next/router';
+
 
 // Loading Screen Component
 export function LoadingScreen({ message }: { message: string }) {
@@ -46,6 +49,7 @@ function Page({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [isOnline, setIsOnline] = useState(true);
   const [showOffline, setShowOffline] = useState(false);
+  const [token, setToken] = useState('')
 
   const isPublicPath = useMemo(
     () =>
@@ -62,7 +66,23 @@ function Page({ children }: { children: React.ReactNode }) {
     [pathname],
   );
 
-  
+  useEffect(() => {
+    const handleRouteChange = (url: any) => {
+      // Page view event tracking for each route change
+      window.gtag('config', 'G-KFBC9X698J', {
+        page_path: url,
+      });
+    };
+
+    // Track route changes (page views)
+    Router.events.on('routeChangeComplete', handleRouteChange);
+
+    // Cleanup the event listener
+    return () => {
+      Router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, []);
+
 
   // Monitor online/offline status
   useEffect(() => {
@@ -91,10 +111,8 @@ function Page({ children }: { children: React.ReactNode }) {
     return () => clearTimeout(timeout);
   }, [isOnline]);
 
-  // Authentication logic
-  useEffect(() => {
 
-
+  const getCurrentUser = () => {
     api
       .get('/v1/users/current-user', {
         headers: {
@@ -104,7 +122,6 @@ function Page({ children }: { children: React.ReactNode }) {
       .then((response) => {
         const user = response.data.data;
         if (accessToken) {
-
 
           localStorage.setItem('BrightVeilUser', JSON.stringify(user));
         }
@@ -124,6 +141,52 @@ function Page({ children }: { children: React.ReactNode }) {
         dispatch(logoutUser());
       })
       .finally(() => setLoading(false));
+  }
+
+
+
+  // Authentication logic
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUser = localStorage.getItem('BrightVeilUser');
+      const user = storedUser ? JSON.parse(storedUser) : null;
+      console.log(user);
+
+      if (accessToken) {
+        getCurrentUser()
+      }
+      else if (user) {
+        if (user.accessTokenExpires > Date.now()) {
+          dispatch(loginUser(user));
+          setLoading(false)
+          if (isPublicPath) router.push('/');
+        } else {
+          getCurrentUser()
+        }
+      } else {
+        router.push('/sign-in')
+        setLoading(false)
+        dispatch(logoutUser())
+      }
+      if (user) {
+        if (pathname.startsWith('/admin') && user.role !== 'admin') {
+          handleAccessDenied();
+        } else if (pathname.startsWith('/teacher') && user.role !== 'teacher') {
+          handleAccessDenied();
+        } else if (pathname.startsWith('/student') && user.role !== 'student') {
+          handleAccessDenied();
+        }
+      }
+      function handleAccessDenied() {
+        toast({
+          title: 'Access Denied',
+          description: 'You are not authorized to access this page.',
+          variant: 'destructive',
+        });
+        router.push('/');
+      }
+    }
+
 
     if (!isOnline) {
       toast({
@@ -136,10 +199,28 @@ function Page({ children }: { children: React.ReactNode }) {
 
   // Redirect logged-in users from public paths
   useEffect(() => {
-    if (isLoggedIn && isPublicPath ) {
+    if (isLoggedIn && isPublicPath) {
       router.replace('/');
     }
   }, [isLoggedIn, isPublicPath, router]);
+
+
+  useEffect(() => {
+    if (isLoggedIn && isOnline) {
+      if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+        // requestPermissionAndGetToken()
+      };
+    }
+
+    // const unsubscribe = onMessage(messagingInstance, (payload: any) => {
+    //   console.log('Message received: ', payload);
+    //   new Notification(payload.notification?.title || 'Bright Veil', {
+    //     body: payload.notification?.body,
+    //   });
+    // });
+
+    // return () => unsubscribe();
+  }, [isLoggedIn, isOnline]);
 
   // Render loading, offline, or children
   if (loading) return <LoadingScreen message="Verifying..." />;
