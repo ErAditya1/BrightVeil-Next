@@ -31,6 +31,9 @@ const UPDATE_GROUP_NAME_EVENT = "updateGroupName";
 const MESSAGE_DELETE_EVENT = "messageDeleted";
 
 
+
+
+
 function Page() {
   const [isSlideIn, setIsSlideIn] = useState(true);
   const { socket } = useSocket()
@@ -135,12 +138,10 @@ function Page() {
     if (!socket) return;
 
 
-    console.log("Getting messages...");
 
     // Make an async request to fetch chat messages for the current chat
     api.get(`/v1/chat-app/messages/${selectedChat?._id}`)
       .then((res) => {
-        console.log(res)
         const data = res.data.data
         dispatch(clearMessages())
         dispatch(addMessages(data || []))
@@ -403,7 +404,6 @@ function Page() {
   }, [socket, chats]);
 
   const handleSlide = () => { setIsSlideIn(!isSlideIn) }
-
 
   return (
     <Suspense fallback={<div>Loading...</div>}>

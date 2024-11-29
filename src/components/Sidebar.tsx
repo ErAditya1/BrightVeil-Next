@@ -116,7 +116,7 @@ export default function Sidebar() {
     },
     {
       label: 'Messages',
-      href: '/message',
+      href: '/chat',
       icon: <QuestionAnswerRoundedIcon />,
       visible: ['', 'admin', 'student', 'teacher', 'parent']
     },
@@ -273,7 +273,7 @@ export default function Sidebar() {
                             if (item.visible.includes(user?.role!)) {
                               return (
                                 <ListItem className=" " key={index}>
-                                  <Link href={subItem.href}>
+                                  <Link href={subItem.href} className='w-full'>
                                   <ListItemButton >
                                     {subItem.icon}
                                     <ListItemContent>
@@ -296,7 +296,7 @@ export default function Sidebar() {
               else {
                 return (
                   <ListItem key={index}>
-                    <Link href={item.href}>
+                    <Link href={item.href} className='w-full'>
                     <ListItemButton>
                       {item.icon}
                       <ListItemContent>
@@ -330,7 +330,7 @@ export default function Sidebar() {
           }}
         >
           <ListItem>
-            <Link href={'/support'}>
+            <Link href={'/support'} className='w-full'>
             <ListItemButton>
               <SupportRoundedIcon />
               Support

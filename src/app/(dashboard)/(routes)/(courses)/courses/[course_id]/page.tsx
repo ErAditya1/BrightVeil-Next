@@ -252,7 +252,7 @@ function ExploreCourse() {
                     </div>
                     {
                       courseData?.isEnrolled && <div className='m-2 '>
-                        <Link href={`/message?g=${courseData?.chat?._id}`}>
+                        <Link href={`/chat?g=${courseData?.chat?._id}`}>
                           <Button className="bg-background text-foreground  rounded-full h-8 w-20 border hover:text-background text-xs">
 
                             <span>Message</span>

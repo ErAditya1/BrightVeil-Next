@@ -41,7 +41,7 @@ const QuizResults = ({
       {/* Score and Message Section */}
       <div className="flex justify-between items-center">
         <p className="text-xl">
-          Score: <span className="font-semibold text-blue-600">{score}</span> /{" "}
+          Score: <span className="font-semibold text-blue-600">{score}</span> /
           {totalQuestions}
         </p>
         <p className="text-xl">

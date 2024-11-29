@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import ReactPlayer from 'react-player/youtube';
 import { Play, Pause, Volume2, VolumeX, PlayCircle, PauseCircle, ChevronRightIcon } from 'lucide-react';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
-import { IoPlaySkipForward, IoSettings } from 'react-icons/io5';
+import { IoPlay, IoPlaySkipBack, IoPlaySkipForward, IoSettings } from 'react-icons/io5';
 
 import Duration from './Duration';
 import { MdForward10, MdOutlineClose, MdOutlineLoop, MdOutlinePictureInPicture, MdOutlinePictureInPictureAlt, MdOutlineReplay10 } from 'react-icons/md';
@@ -17,18 +17,14 @@ interface CustomVideoPlayerProps {
   videoId: string | string[];
   thumbnailUrl: string;
   title: string;
-  nextVideo: string;
+  videoQue: string[];
 }
 
-export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, nextVideo }: CustomVideoPlayerProps) {
-  useEffect(() => {
-    if (videoId) load(`https://www.youtube.com/watch?v=${videoId}`);
-    setThumbnail(thumbnailUrl);
-  }, [videoId]);
-  useEffect(() => {
+export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, videoQue }: CustomVideoPlayerProps) {
 
-    setThumbnail(thumbnailUrl);
-  }, [videoId, thumbnailUrl]);
+
+
+
   const router = useRouter()
 
   const [url, setUrl] = useState('');
@@ -52,11 +48,29 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, nextVi
   const [ready, setReady] = useState(false);
   const [selectedQuality, setSelectedQuality] = useState('')
   const [qualityLevels, setQualityLevels] = useState([''])
-
   const playerRef = useRef<ReactPlayer>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const handle = useFullScreenHandle();
   const hideTimeout = useRef<NodeJS.Timeout | null>(null);
+  const [prevVideo, setPreviousVideo] = useState('')
+  const [nextVideo, setNextVideo] = useState('')
+
+  useEffect(() => {
+    if (videoId) load(`https://www.youtube.com/watch?v=${videoId}`);
+    setThumbnail(thumbnailUrl);
+
+
+    videoQue.map((v, index) => {
+      if (v === videoId) {
+        setPreviousVideo(index === 0 ? videoQue[videoQue.length - 1] : videoQue[index - 1])
+        setNextVideo(index === videoQue.length - index ? videoQue[0] : videoQue[index + 1])
+      }
+    })
+  }, [videoId]);
+
+  useEffect(() => {
+    setThumbnail(thumbnailUrl);
+  }, [videoId, thumbnailUrl]);
 
   const load = (url: string) => {
     setUrl(url);
@@ -71,6 +85,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, nextVi
 
     setControls(true);
     resetHideTimeout();
+
 
 
   }, []);
@@ -198,10 +213,10 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, nextVi
     if (nextVideo) {
       console.log(nextVideo)
       router.push(`/watch/video/${nextVideo}`)
-      load(`https://www.youtube.com/watch?v=${nextVideo}`)
     } else {
       setStart(false)
       setPlaying(false)
+      setLoop(true)
     }
   };
 
@@ -326,9 +341,15 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, nextVi
                   <span className="mr-2 text-xs">
                     <Duration seconds={duration * played} /> / <Duration seconds={duration} />
                   </span>
-                  <div className="relative mx-2 flex flex-row items-center gap-2">
+                  <div className="relative mx-1 flex flex-row items-center gap-1">
                     {
-                      nextVideo && <button className="" onClick={handleEnded}><IoPlaySkipForward size={22}/></button>
+                      prevVideo && <button className="" onClick={()=>router.push(`/watch/video/${prevVideo}`)}><IoPlaySkipBack size={22} /></button>
+                    }
+                    <button className="text-2xl mx-1 cursor-pointer" onClick={handlePlayPause}>
+                      {playing ? <PauseCircle size={22} /> : <PlayCircle size={22} />}
+                    </button>
+                    {
+                      nextVideo && <button className="" onClick={handleEnded}><IoPlaySkipForward size={22} /></button>
                     }
                     <button onClick={handleMuteUnmute}>{!muted ? <Volume2 size={20} /> : <VolumeX size={20} />}</button>
                     <div className="  flex justify-center items-center ">
@@ -413,10 +434,10 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, nextVi
                   <button onClick={handleSetting} className=''>
                     <IoSettings size={20} />
                   </button>
-                  <button onClick={handleTogglePIP} className=''>
+                  {/* <button onClick={handleTogglePIP} className=''>
 
                     {!pip ? <BsPip size={20} /> : <BsFillPipFill size={20} />}
-                  </button>
+                  </button> */}
                   <button onClick={handleFullscreen} className=''>
                     {fullscreen ? <BsFullscreenExit size={20} /> : <BsFullscreen size={16} />}
                   </button>
@@ -434,3 +455,4 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, nextVi
     </FullScreen>
   );
 }
+

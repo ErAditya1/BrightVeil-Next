@@ -55,7 +55,7 @@ export default function ChatListItem(props: ChatListItemProps) {
         >
           <Stack direction="row" spacing={1.5}>
             <AvatarWithStatus online={chat?.isOnline} src={chat?.avatar?.url || ''} name={chat?.name || ''} username={chat?.username || ""} />
-            <Link href={`/message?${chat?.isGroupChat ? `g=${chat?._id}` : `u=${chat?.username}`}`} className='w-full' >
+            <Link href={`/chat?${chat?.isGroupChat ? `g=${chat?._id}` : `u=${chat?.username}`}`} className='w-full' >
               <div className="flex flex-col w-full" onClick={props.handleSlide}>
                 <p className='line-clamp-1 text-sm sm:text-md'>{chat?.name}</p>
                 <p className='line-clamp-1 text-xs sm:text-sm'>@{chat?.username}</p>

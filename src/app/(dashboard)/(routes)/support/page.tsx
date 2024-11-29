@@ -6,6 +6,27 @@ import { FaInstagramSquare } from 'react-icons/fa';
 import { FaFacebook, FaLinkedin } from 'react-icons/fa6';
 import { ImProfile } from "react-icons/im";
 
+
+export const metadata = {
+    title: "Support - Bright Veil Learning Platform",
+    description: "Need assistance? Contact Bright Veil support for any questions, course help, or platform-related inquiries. We're here to help!",
+    keywords: "support, help, contact, customer service, Bright Veil, learning platform, technical support, contact us, React, online learning, help center",
+    author: "Aditya Kumar",
+    robots: "index, follow", // Direct search engines to index this page
+    og: {
+      title: "Support - Bright Veil Learning Platform",
+      description: "Need assistance? Contact Bright Veil support for any questions, course help, or platform-related inquiries. We're here to help!",
+      image: "/brightveilLight.jpg", // Optional image for social sharing (e.g., Facebook, Twitter)
+      url: "https://brightveil.vercel.app/support", // The URL of your support page
+      type: "website", // Open Graph type
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Support - Bright Veil Learning Platform",
+      description: "Need assistance? Contact Bright Veil support for any questions, course help, or platform-related inquiries. We're here to help!",
+      image: "/brightveilLight.jpg", // Optional image for Twitter
+    },
+  };
 const SupportPage = () => {
     return (
         <div className="bg-gradient-to-r bg-background text-foreground">
@@ -75,12 +96,12 @@ const SupportPage = () => {
                 </div>
 
                 {/* Social Media Links */}
-                <div className="flex justify-center  sm:space-x-8 mb-16 bg-card text-card-foreground rounded sm:p-2">
+                <div className="flex justify-center space-x-4  sm:space-x-8 mb-16 bg-card text-card-foreground rounded sm:p-2 py-4">
                     <a
                         href="https://facebook.com"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800 transition"
+                        className="text-blue-700 hover:text-blue-800 transition"
                     >
                         <span className="text-3xl"><FaFacebook /></span>
                     </a>
@@ -88,7 +109,7 @@ const SupportPage = () => {
                         href="https://twitter.com"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-400 hover:text-blue-500 transition"
+                        className="text-blue-600 hover:text-blue-800 transition"
                     >
                         <span className="text-3xl"><AiFillTwitterCircle /></span>
                     </a>
@@ -126,10 +147,13 @@ const SupportPage = () => {
                             <ImProfile />
                             <a href='https://eraditya.great-site.net' target='_blank' className='text-blue-600'>https://eraditya.great-site.net</a>
 
-                        <Link href={'/message?u=aditya'}>
-                            <Button>Message</Button>
-                        </Link>
+
                         </div>
+                        <p className="text-gray-600 space-x-3">Message Us:
+                            <Link href={'/chat?u=aditya'}>
+                                <Button>Message</Button>
+                            </Link>
+                        </p>
                     </div>
                     <div>
                         <p className="text-lg font-semibold">Platform Owner: Mr. Owner</p>

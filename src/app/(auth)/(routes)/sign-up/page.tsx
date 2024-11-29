@@ -124,7 +124,7 @@ export default function SignUpForm() {
 
       //>> Here  I am providing the server google oauth url directlu then it's working
 
-      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI ||'https://lms-backend-mh2d.onrender.com'}/v1/users/google` : 'http://localhost:8000/api/v1/users/google';
+      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI ||'https://lms-backend-mh2d.onrender.com/api'}/v1/users/google` : 'http://localhost:8000/api/v1/users/google';
 
       window.location.href = `${redirectUrl}`
 
@@ -319,7 +319,7 @@ export default function SignUpForm() {
         </Form>
         <div className="text-center mt-4">
           <p>
-            Already a member?{' '}
+            Already a member?
             <Link href="/sign-in" className="text-blue-600 hover:text-blue-800">
               Sign in
             </Link>

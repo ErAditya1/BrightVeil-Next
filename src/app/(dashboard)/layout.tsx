@@ -1,4 +1,4 @@
-'use client'
+
 import React from 'react'
 
 import Box from '@mui/joy/Box';
@@ -8,12 +8,16 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 
 
+export const metadata = {
+  title: "React Fundamentals Course - Bright Veil",
+  description: "Learn the fundamentals of React and build amazing apps.",
+  keywords: "React, Fundamentals, JavaScript, Frontend Development",
+};
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
 
   
   return (
-
 
 
     <Box sx={{ display: 'flex' }} >

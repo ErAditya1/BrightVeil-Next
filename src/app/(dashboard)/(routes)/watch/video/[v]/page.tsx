@@ -123,7 +123,7 @@ function Page() {
         <Card className='grow dark:bg-background p-0 text-card-foreground rounded-lg ' style={{ padding: 0 }}>
           <div className=' aspect-video col-span-8 rounded-xl  max-h-dvh max-w-screen'>
             {
-              v && !loadingVideo ? <CustomVideoPlayer videoId={v} thumbnailUrl={playingVideoData?.thumbnail?.secure_url} title={playingVideoData?.title} nextVideo={videos[1].videoId} /> :
+              v && !loadingVideo ? <CustomVideoPlayer videoId={v} thumbnailUrl={playingVideoData?.thumbnail?.secure_url} title={playingVideoData?.title} videoQue={videos.map((item)=>(item.videoId))} /> :
                 <Skeleton className='h-full w-full' />
             }
 

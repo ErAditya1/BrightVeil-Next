@@ -107,7 +107,7 @@ export default function SignInForm() {
 
       //>> Here  I am providing the server google oauth url directlu then it's working
 
-      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI ||'https://lms-backend-mh2d.onrender.com'}/v1/users/google` : 'http://localhost:8000/api/v1/users/google';
+      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI ||'https://lms-backend-mh2d.onrender.com/api'}/v1/users/google` : 'http://localhost:8000/api/v1/users/google';
 
       window.location.href = `${redirectUrl}`
 
@@ -130,7 +130,7 @@ export default function SignInForm() {
       // });
       // console.log(result);
 
-      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI ||'https://lms-backend-mh2d.onrender.com'}/v1/users/github` : 'http://localhost:8000/api/v1/users/github';
+      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI ||'https://lms-backend-mh2d.onrender.com/api'}/v1/users/github` : 'http://localhost:8000/api/v1/users/github';
 
       window.location.href = `${redirectUrl}`
   
@@ -253,7 +253,7 @@ export default function SignInForm() {
         </div>
         <div className="text-center mt-4">
           <p>
-            Not a member yet?{' '}
+            Not a member yet?
             <Link href="/sign-up" className="text-blue-600 hover:text-blue-800">
               Sign up
             </Link>

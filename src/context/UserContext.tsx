@@ -26,7 +26,7 @@ export function LoadingScreen({ message }: { message: string }) {
 // No Network Screen Component
 function NoNetworkScreen() {
   return (
-    <div className="bg-background text-foreground h-dvh w-screen flex justify-center items-center m-0 p-0 text-sm sm:text-md">
+    <div className="bg-background text-foreground h-dvh w-full flex justify-center items-center m-0 p-0 text-sm sm:text-md">
       <MdOutlineCloudOff className="mx-4" size={50} />
       No Network Connection...
     </div>
@@ -77,7 +77,6 @@ function Page({ children }: { children: React.ReactNode }) {
     // Track route changes (page views)
     Router.events.on('routeChangeComplete', handleRouteChange);
 
-    // Cleanup the event listener
     return () => {
       Router.events.off('routeChangeComplete', handleRouteChange);
     };
@@ -151,6 +150,7 @@ function Page({ children }: { children: React.ReactNode }) {
       const storedUser = localStorage.getItem('BrightVeilUser');
       const user = storedUser ? JSON.parse(storedUser) : null;
       console.log(user);
+      console.log("")
 
       if (accessToken) {
         getCurrentUser()
@@ -222,7 +222,6 @@ function Page({ children }: { children: React.ReactNode }) {
     // return () => unsubscribe();
   }, [isLoggedIn, isOnline]);
 
-  // Render loading, offline, or children
   if (loading) return <LoadingScreen message="Verifying..." />;
   if (!isOnline && showOffline) return <NoNetworkScreen />;
   return <>{children}</>;

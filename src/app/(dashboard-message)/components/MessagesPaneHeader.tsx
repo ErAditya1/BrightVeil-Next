@@ -43,7 +43,7 @@ export default function MessagesPaneHeader({handleSlide}:any) {
             description: res.data.message,
             variant: 'success'
           })
-          router.push("/message")
+          router.push("/chat")
           handleSlide()
           dispatch(deleteChat(selectedChat))
           // redirect to chats page

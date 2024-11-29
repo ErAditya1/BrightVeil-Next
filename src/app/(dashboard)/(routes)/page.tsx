@@ -14,8 +14,27 @@ function Home() {
     }
   ]);
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1); // Track the current page
+  const [page, setPage] = useState(1);
+  const [enrolledCourse, setEnrolledCourse] = useState([
+    {
+      course_Id:''
+    }
+  ])
 
+
+  useEffect(() => {
+    api.patch(`/v1/courses/course/getEnrolledCourses`)
+    .then((res) => {
+      console.log(res);
+      const data = res.data.data;
+      if (data) {
+        setEnrolledCourse(data);
+      }
+      setLoading(false); // Set loading to false after data is fetched
+    }).catch((error) => {
+      console.log(error);
+    });
+  }, [])
   // Fetching recommended data with pagination
   useEffect(() => {
     console.log("Getting more content...");
@@ -23,7 +42,7 @@ function Home() {
     api.get(`/v1/videos/recomended?page=${page}`).then((res) => {
       console.log(res);
       const data = res.data.data;
-      if(data){
+      if (data) {
         setRecomendedData((prev) => [...prev, ...data]);
       }
       setLoading(false); // Set loading to false after data is fetched
@@ -33,10 +52,11 @@ function Home() {
     });
   }, [page]); // The page is the dependency, so this effect will run when the page changes
 
-  // Scroll event handler
+  
   const handleScroll = () => {
+    console.log("scrolling...");
     // Check if we're at the bottom of the page and not currently loading
-    if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.scrollHeight && !loading) {
+    if (window.innerHeight + document.documentElement.scrollTop-100 === document.documentElement.scrollHeight && !loading) {
       setPage((prevPage) => prevPage + 1); // Load next page of recommendations
     }
   };
@@ -52,6 +72,11 @@ function Home() {
     <div className="text-foreground mt-2">
       <div className="grid xs:grid-cols-2 md:grid-cols-3 m-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {
+
+          enrolledCourse.map((course, index) =><CourseCard key={index} _id={course?.course_Id} />)
+        }
+        {
+
           recomendedData?.map((item, index) => {
             if (item?.type === 'video') {
               return <VideoCard key={index} _id={item?.contentId} />

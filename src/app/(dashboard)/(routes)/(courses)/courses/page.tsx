@@ -2,10 +2,19 @@
 import React, { useEffect, useState } from 'react'
 import CourseCard from '../components/CourseCard'
 import api from '@/api'
+import Cookies from 'js-cookie';
 
 
 function Page() {
   const [courseData, setCourseData] = useState([{_id:""}]) 
+  useEffect(() => {
+    // Access the cookies directly on the client-side
+    const accessToken = Cookies.get('accessToken');
+    const refreshToken = Cookies.get('refreshToken');
+
+    console.log('Access Token:', accessToken);
+    console.log('Refresh Token:', refreshToken);
+  }, []);
   useEffect( () => {
         api.patch("/v1/courses/course/getAllCourses")
       .then((res) => {

@@ -102,7 +102,7 @@ export default function AdminSidebar() {
     },
     {
       label: 'Messages',
-      href: '/message',
+      href: '/chat',
       icon: <QuestionAnswerRoundedIcon />,
     },
 

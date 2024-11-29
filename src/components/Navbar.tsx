@@ -23,7 +23,7 @@ const Navbar = () => {
 
         <div className='flex items-center gap-6 justify-end w-full'>
           <IconButton variant="soft" color="primary" size="sm">
-            <Link href="/message" className=' rounded-full w-7 h-7 flex items-center justify-center cursor-pointer'>
+            <Link href="/chat" className=' rounded-full w-7 h-7 flex items-center justify-center cursor-pointer'>
               <MessageCircleMoreIcon />
             </Link>
           </IconButton>

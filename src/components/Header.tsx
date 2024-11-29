@@ -1,13 +1,16 @@
 "use client"  
 import * as React from 'react';
 import GlobalStyles from '@mui/joy/GlobalStyles';
-import IconButton from '@mui/joy/IconButton';
 import Sheet from '@mui/joy/Sheet';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { toggleSidebar } from '@/lib/utils';
+import { SiGooglemessages } from 'react-icons/si';
+import { IconButton } from '@mui/joy';
+import { useRouter } from 'next/navigation';
 
 
 export default function Header() {
+  const router = useRouter()
   return (
     <Sheet
       sx={{
@@ -25,7 +28,7 @@ export default function Header() {
         borderColor: 'background.level1',
         boxShadow: 'sm',
       }}
-      className= "dark:bg-slate-900"
+      className= "dark:bg-slate-900 flex justify-between items-center"
     >
       <GlobalStyles
         styles={(theme) => ({
@@ -39,12 +42,20 @@ export default function Header() {
       />
       <IconButton
         onClick={() => toggleSidebar()}
-        variant="outlined"
-        color="neutral"
+        variant="soft"
+        color="primary"
         size="sm"
       >
         <MenuRoundedIcon />
       </IconButton>
+      <div>
+      <IconButton
+        onClick={() => router.push("/chat")}
+        variant="soft" color="primary" size="md"
+      >
+        <SiGooglemessages size={26}/>
+      </IconButton>
+      </div>
     </Sheet>
   );
 }

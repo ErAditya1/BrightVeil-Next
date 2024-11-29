@@ -111,7 +111,7 @@ const UserProfile = () => {
   const handleMessage = () => {
     // TODO: Implement sending a message to the user
 
-    router.push(`/message?u=${profile?.username}`)
+    router.push(`/chat?u=${profile?.username}`)
   }
 
 
