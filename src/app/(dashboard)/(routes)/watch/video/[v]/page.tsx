@@ -98,7 +98,6 @@ function Page() {
           router.push('/not-found')
         }
       }).catch((err) => {
-
         if (err.response.data.statusCode === 403) {
           router.push('/not-found')
         } else {
