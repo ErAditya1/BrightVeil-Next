@@ -60,10 +60,10 @@ export default function MessagesPane({handleSlide}:any) {
             return (
               <div
                 key={index}
-                className={` flex   ${isYou ? 'flex-row-reverse' : 'flex-row'} `}
+                className={` flex w-full  ${isYou ? 'flex-row-reverse' : 'flex-row'} `}
                 
               >
-                <div className=''>
+                <>
                   
                   {!isYou && !whoPrevious  && (
                     <AvatarWithStatus
@@ -75,7 +75,7 @@ export default function MessagesPane({handleSlide}:any) {
                     />
                   )}
                   <ChatBubble whoPrevious={whoPrevious} variant={isYou ? 'sent' : 'received'} {...message} />
-                </div>
+                </>
               </div>
             );
           })

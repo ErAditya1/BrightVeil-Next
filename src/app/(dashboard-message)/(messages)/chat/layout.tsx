@@ -1,7 +1,5 @@
 
 import { ReactNode } from "react";
-import Cookies from 'js-cookie';
-import { cookies } from "next/headers";
 
 // SEO Metadata for Chat Page
 export const metadata = {
@@ -30,8 +28,8 @@ export const metadata = {
   };
 
  export default async function ChatLayout({ children }: { children: ReactNode }){
-  const accessToken = Cookies.get('accessToken');
-  console.log("cookies")
+  
+  
     return (
       <div className="chat-layout">
         {children}

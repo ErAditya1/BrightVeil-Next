@@ -31,7 +31,7 @@ import ScoreIcon from '@mui/icons-material/Score';
 import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-import { closeSidebar } from '@/lib/utils';
+import { closeSidebar, toggleSidebar } from '@/lib/utils';
 import Link from 'next/link';
 
 import api from '@/api';
@@ -273,7 +273,7 @@ export default function Sidebar() {
                             if (item.visible.includes(user?.role!)) {
                               return (
                                 <ListItem className=" " key={index}>
-                                  <Link href={subItem.href} className='w-full'>
+                                  <Link href={subItem.href} className='w-full' onClick={()=>toggleSidebar()}>
                                   <ListItemButton >
                                     {subItem.icon}
                                     <ListItemContent>
@@ -296,7 +296,7 @@ export default function Sidebar() {
               else {
                 return (
                   <ListItem key={index}>
-                    <Link href={item.href} className='w-full'>
+                    <Link href={item.href} className='w-full' onClick={()=>toggleSidebar()}>
                     <ListItemButton>
                       {item.icon}
                       <ListItemContent>

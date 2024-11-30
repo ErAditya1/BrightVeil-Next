@@ -16,16 +16,29 @@ import api from '@/api';
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import ValidatedImage from '@/components/ValidatedImage';
+import { FaLink } from 'react-icons/fa6';
 
 type ChatBubbleProps = ChatMessage & {
   variant: 'sent' | 'received';
-  whoPrevious: boolean 
+  whoPrevious: boolean
 };
 
 export default function ChatBubble(props: ChatBubbleProps) {
-  
-  const chats = useAppSelector((state)=> state.chat.chats)
-  const { _id, content, status, chat, variant, createdAt, attachments, sender,whoPrevious } = props;
+
+  const convertTextToLinks = (text: string) => {
+    // Regular expression to match URLs (basic version)
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+    // Replace the URLs in the text with <a> tags
+    const convertedText = text?.replace(urlRegex, (url) => {
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer" className="text-blue-700 underline-offset-4 " style='color:#007bff;' >${url}</a>`;
+    });
+
+    return convertedText;
+  };
+
+  const chats = useAppSelector((state) => state.chat.chats)
+  const { _id, content, status, chat, variant, createdAt, attachments, urlpreviews, sender, whoPrevious } = props;
   const { socket } = useSocket()
   const isSent = variant === 'sent';
 
@@ -50,72 +63,109 @@ export default function ChatBubble(props: ChatBubbleProps) {
   const handleDelete = () => {
     setIsHovered(false);
     api.delete(`/v1/chat-app/messages/${chat}/${_id}`)
-    .then((response) => {
-      console.log(response)
-      console.log("nessage deleted")
-      const message = response.data.data
-      dispatch(removeDeletedMessage(message))
-      const lastMessage = chats.find((c) => c._id === chat)?.lastMessage
-      if(lastMessage?._id === message._id){
-        api.get(`/v1/chat-app/chats`).then((res)=>{
-          const chats = res.data.data
-          dispatch(addChats(chats))
-        })
-      }
-      
+      .then((response) => {
+        console.log(response)
+        console.log("nessage deleted")
+        const message = response.data.data
+        dispatch(removeDeletedMessage(message))
+        const lastMessage = chats.find((c) => c._id === chat)?.lastMessage
+        if (lastMessage?._id === message._id) {
+          api.get(`/v1/chat-app/chats`).then((res) => {
+            const chats = res.data.data
+            dispatch(addChats(chats))
+          })
+        }
 
-    })
-    .catch((error) => {console.log(error);});
-  
+
+      })
+      .catch((error) => { console.log(error); });
+
   };
 
 
   return (
-    <Box 
-    
-    onMouseEnter={() => setIsHovered(true)}
-    onMouseLeave={() => setIsHovered(false)}
-    className={`relative max-w-[200px]  sm:max-w-84 md:max-w-96  break-words whitespace-pre-wrap  p-1 m-0 rounded-lg  ${isSent ? `bg-[#075e54] text-card-foreground ${!whoPrevious && 'rounded-tr-none ml-12'}` : `bg-card text-card-foreground  ml-4  ${!whoPrevious && 'rounded-tl-none '}` } ${!whoPrevious && "mt-4 "}`}
+    <Box
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`relative chat-bubble  max-w-[80%]  md:max-w-96 lg:max-w-[34rem] break-words break-all whitespace-pre-wrap  p-1 m-0 rounded-lg  ${isSent ? `bg-[#075e54] text-card-foreground text-white ${!whoPrevious && 'rounded-tr-none ml-12'}` : `bg-card text-card-foreground  ml-4  ${!whoPrevious && 'rounded-tl-none mt-4 '}`}`}
     >
-      {!whoPrevious  && <p className={`${isSent && ' text-white'} text-xs sm:text-sm`}>@{sender.username}</p>}
+      {!whoPrevious && <p className={`text-xs sm:text-sm`}>@{sender.username}</p>}
 
       {attachments?.length > 0 &&
-        attachments?.map((attachment,index) =>(
+        attachments?.map((attachment, index) => (
           <Sheet
-          variant="outlined"
-          key={index}
-        >
-          { attachment.type === 'image'&&
-            <ValidatedImage
-              alt="Attachment"
-              src={attachment.url}
-              loading="lazy"
-              width={500}
-              height={500}
-              className='object-cover rounded w-full h-auto'
+            variant="outlined"
+            key={index}
+          >
+            {attachment.type === 'image' &&
+              <ValidatedImage
+                alt="Attachment"
+                src={attachment.url}
+                loading="lazy"
+                width={500}
+                height={500}
+                className='object-cover rounded w-full h-auto'
 
-            />
-          }
-          { attachment.type==='video' && 
-
-            <video
-              controls
-              width="100%"
-              height="auto"
-              src={attachment.url}
-              className='object-cover rounded'
               />
-          }
-        </Sheet>
+            }
+            {attachment.type === 'video' &&
+
+              <video
+                controls
+                width="100%"
+                height="auto"
+                src={attachment.url}
+                className='object-cover rounded'
+              />
+            }
+          </Sheet>
+        ))
+      }
+      {
+        urlpreviews?.length > 0 && urlpreviews[0] &&
+        urlpreviews?.map((preview: any, index: number) => (
+          <div className='w-full' key={index}>
+            <a
+            href={preview?.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className=""
+          >
+            <div className='grid grid-cols-8'>
+                <div className='col-span-2  p-2 max-w-24'>
+                  {preview?.image ? <img src={preview?.image} alt={preview?.title}  className='w-full aspect-square rounded-md'/>
+                  :
+                  <div className='h-full flex justify-center items-center aspect-square rounded-md text-center text-gray-100 animate-pulse bg-slate-400'>
+                    <FaLink size={20} />
+                  </div>
+                }
+                </div>
+                <div className='col-span-6 p-2'>
+                  <span className='text-sm line-clamp-1'>
+                    {preview?.title}
+                  </span>
+                  <span className='text-xs text-gray-200 line-clamp-3'>
+                    {preview?.description}
+                  </span>
+                  <span className="text-xs text-gray-400 line-clamp-1">
+                    {preview?.domain}
+                  </span>
+                </div>
+    
+            </div>
+          </a>
+          </div>
         ))
       }
       <div
       >
-        <div className={`m-1 relative`}>
+        <div className={`mx-1 relative`}>
 
           <p className={`${isSent && ' text-white'} text-xs sm:text-sm`}>
-            {content}
 
+            <span className='m-0 p-0 h-fit'
+              dangerouslySetInnerHTML={{ __html: convertTextToLinks(content) }}
+            />
           </p>
 
           <div className='float-right flex justify-center items-center my-1 '>
@@ -172,7 +222,7 @@ export default function ChatBubble(props: ChatBubbleProps) {
               size="sm"
               onClick={handleDelete}
             >
-               <MdDelete size={24}/>
+              <MdDelete size={24} />
             </IconButton>}
           </Stack>
         )}
@@ -182,5 +232,4 @@ export default function ChatBubble(props: ChatBubbleProps) {
   );
 }
 
-            
-           
+

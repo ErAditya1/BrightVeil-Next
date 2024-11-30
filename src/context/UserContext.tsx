@@ -14,10 +14,10 @@ import { Router } from 'next/router';
 
 
 // Loading Screen Component
-export function LoadingScreen({ message }: { message: string }) {
+export function LoadingScreen({ message, className = 'h-dvh w-full ', size=50 }: any) {
   return (
-    <div className="bg-background text-foreground h-dvh w-screen flex justify-center items-center m-0 p-0">
-      <FaSpinner className="animate-spin mx-4" size={50} />
+    <div className={`bg-background text-foreground  flex justify-center items-center m-0 p-0 ${className}`}>
+      <FaSpinner className="animate-spin mx-4"  size={size}/>
       {message}
     </div>
   );
@@ -68,7 +68,6 @@ function Page({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const handleRouteChange = (url: any) => {
-      // Page view event tracking for each route change
       window.gtag('config', 'G-KFBC9X698J', {
         page_path: url,
       });
@@ -155,18 +154,14 @@ function Page({ children }: { children: React.ReactNode }) {
       if (accessToken) {
         getCurrentUser()
       }
-      else if (user) {
-        if (user.accessTokenExpires > Date.now()) {
+      else if (user && user.accessTokenExpires > Date.now()) {
+        
           dispatch(loginUser(user));
-          setLoading(false)
+          setLoading(false);
           if (isPublicPath) router.push('/');
-        } else {
-          getCurrentUser()
-        }
+        
       } else {
-        router.push('/sign-in')
-        setLoading(false)
-        dispatch(logoutUser())
+        getCurrentUser()
       }
       if (user) {
         if (pathname.startsWith('/admin') && user.role !== 'admin') {
@@ -222,7 +217,7 @@ function Page({ children }: { children: React.ReactNode }) {
     // return () => unsubscribe();
   }, [isLoggedIn, isOnline]);
 
-  if (loading) return <LoadingScreen message="Verifying..." />;
+  if (loading) return <LoadingScreen message="Verifying..." className="h-dvh w-screen" />;
   if (!isOnline && showOffline) return <NoNetworkScreen />;
   return <>{children}</>;
 }

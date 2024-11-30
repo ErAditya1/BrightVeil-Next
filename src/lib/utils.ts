@@ -29,6 +29,8 @@ export function openSidebar() {
       }
     }
   }
+  
+
   export function openMessagesPane() {
     if (isClient) {
       document.body.style.overflow = 'hidden';

@@ -168,7 +168,7 @@ export default function SignInForm() {
               className=" w-full h-full rounded-full p-2 block dark:hidden"
             />
           </div>
-          <h1 className="text-4xl font-extrabold text-foreground tracking-tight lg:text-5xl mb-6">
+          <h1 className=" font-extrabold text-foreground tracking-tight text-2xl sm:text-4xl lg:text-5xl mb-6">
             Welcome Back to BrightVeil
           </h1>
           <p className="mb-4">Sign in to continue your secret conversations</p>

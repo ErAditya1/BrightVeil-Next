@@ -49,14 +49,12 @@ function ShareButton({ className, textToShare }: any) {
   }, [])
 
   const sendMessage = (_id: string) => {
-    const message = `Url: ${url}
-    title: ${textToShare}
-    `
+    const message = `${url}<br/>${textToShare}`
 
     api.post(`/v1/chat-app/messages/${_id}`, { content: message })
       .then(() => {
         toast({
-          title: 'Message sent successfully',
+          title:'Message sent successfully',
           description: 'Your message has been sent.',
           variant: 'success'
         })
@@ -84,7 +82,7 @@ function ShareButton({ className, textToShare }: any) {
   const handleWebShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: textToShare,
+        title: "Bright Veil",
         text: textToShare,
         url: url
       }).then(() => {
@@ -182,7 +180,7 @@ function ShareButton({ className, textToShare }: any) {
               chats?.length ? chats.map((chat, index) => {
                 if (chat.isGroupChat) {
                   return (
-                    <div key={index} className="flex flex-col items-center justify-center gap-y-2 w-1/4" onClick={() => sendMessage(chat?._id)}>
+                    <div key={index} className="flex flex-col items-center justify-center gap-y-2 w-1/4 cursor-pointer" onClick={() => sendMessage(chat?._id)}>
                       <AvatarLayout src={chat?.avatar?.url} alt={chat?.name} className="w-10 h-10 rounded-full" name={chat?.name} />
                       <div>
                         <span className="text-sm font-medium text-center">{chat?.name}</span>
@@ -192,7 +190,7 @@ function ShareButton({ className, textToShare }: any) {
                 } else {
                   const chatUser = chat.participants.find((participant) => participant._id !== user?._id)
                   return (
-                    <div key={index} className="flex flex-col items-center justify-center gap-y-2 w-1/4" onClick={() => sendMessage(chat?._id)}>
+                    <div key={index} className="flex flex-col items-center justify-center gap-y-2 w-1/4 cursor-pointer" onClick={() => sendMessage(chat?._id)}>
                       <AvatarLayout src={chatUser?.avatar?.url} alt={chatUser?.name} className="w-14 h-14 rounded-full" />
                       <div className='w-full text-center flex justify-center'>
                         <span className="text-sm font-medium text-center line-clamp-1 break-words break-all">{chatUser?.username}</span>

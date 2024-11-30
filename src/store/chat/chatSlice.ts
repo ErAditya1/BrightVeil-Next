@@ -68,6 +68,11 @@ export interface ChatMessage {
     size: number;
     _id: string;
   }[];
+  urlpreviews:{
+    title: string;
+    description: string;
+    image: string;
+  }[];
   sender: UserInterface;
   createdAt: string;
   updatedAt: string;

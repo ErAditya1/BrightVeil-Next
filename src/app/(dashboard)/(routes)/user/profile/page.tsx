@@ -19,7 +19,6 @@ import ValidatedImage from '@/components/ValidatedImage';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import AvatarLayout from '@/components/AvatarLayout';
 import { FaUserCircle } from 'react-icons/fa';
 import {
   DropdownMenu,
