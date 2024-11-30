@@ -169,9 +169,10 @@ export default function MessagesPaneHeader({handleSlide}:any) {
           color="neutral"
           variant="outlined"
           sx={{
-            display: 'inline-flex' ,
+            display: { xs: 'none', md: 'inline-flex' },
           }}
           className='text-xs sm:text-sm'
+          
         >
           {selectedChat?.isGroupChat ? <span>View Group</span> : <Link href={`/user/profile/${selectedChat?.username}`}>View Profile</Link>}
         </Button>
