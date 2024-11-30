@@ -94,7 +94,7 @@ export default function Sidebar() {
       label: 'Dashboard',
       href: `/${user?.role}`,
       icon: user?.role && <DashboardRoundedIcon />,
-      visible: ['admin', 'student', 'teacher', 'parent']
+      visible: ['role']
     },
     {
       label: 'Home',

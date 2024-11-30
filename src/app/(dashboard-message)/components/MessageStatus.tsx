@@ -6,7 +6,7 @@ function MessageStatus({messageStatus}:any) {
     
   return (
     <>
-        {messageStatus === 'sent' && <IoCheckmark className='text-white'/> }
+        {messageStatus === 'sent' && <IoCheckmark /> }
         {messageStatus === 'delivered' && <IoCheckmarkDoneSharp />}
         {messageStatus === 'read' && <IoCheckmarkDoneSharp className='text-blue-400'/>}
     </>

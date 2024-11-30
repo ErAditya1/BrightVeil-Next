@@ -49,7 +49,8 @@ function ShareButton({ className, textToShare }: any) {
   }, [])
 
   const sendMessage = (_id: string) => {
-    const message = `${url}<br/>${textToShare}`
+    const message = `${url} 
+     ${textToShare}`
 
     api.post(`/v1/chat-app/messages/${_id}`, { content: message })
       .then(() => {

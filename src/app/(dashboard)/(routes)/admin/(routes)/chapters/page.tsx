@@ -63,7 +63,7 @@ function page() {
         },
     });
     const onSubmit = async (data: z.infer<typeof videoSchema>) => {
-        console.log("hjee")
+        
         try {
             const formData = new FormData();
             formData.append('videoId', data.videoId)

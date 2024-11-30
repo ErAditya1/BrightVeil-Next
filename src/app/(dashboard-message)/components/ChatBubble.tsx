@@ -174,7 +174,7 @@ export default function ChatBubble(props: ChatBubbleProps) {
             </span>
             {
               isSent &&
-              <span className=' text-sm my-auto'>
+              <span className=' text-sm my-auto text-foreground '>
                 <MessageStatus messageStatus={status} />
               </span>
             }
