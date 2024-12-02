@@ -47,7 +47,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, videoQ
   const [isSpeed, setIsSpeed] = useState(false);
   const [ready, setReady] = useState(false);
   const [selectedQuality, setSelectedQuality] = useState('')
-  const [qualityLevels, setQualityLevels] = useState([''])
+  const [qualityLevels, setQualityLevels] = useState(['auto'])
   const playerRef = useRef<ReactPlayer>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const handle = useFullScreenHandle();
@@ -123,7 +123,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, videoQ
     if (playerRef.current) {
       const iframe = playerRef.current.getInternalPlayer(); // Access YouTube iframe
       const availableQualities = iframe.getAvailableQualityLevels(); // Fetch quality levels
-      setQualityLevels(availableQualities);
+      setQualityLevels(availableQualities|| ['auto']);
       console.log(availableQualities)
     }
   };
