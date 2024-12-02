@@ -119,6 +119,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, videoQ
   };
 
   const handleVideoMetadata = () => {
+    
     if (playerRef.current) {
       const iframe = playerRef.current.getInternalPlayer(); // Access YouTube iframe
       const availableQualities = iframe.getAvailableQualityLevels(); // Fetch quality levels
@@ -415,7 +416,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, videoQ
                           </div>
                           {
                             qualityLevels.length > 0 &&
-                            <div className="flex justify-between items-center w-full relative py-1 " onClick={() => setIsQuality(!isQuality)}>
+                            <div className="flex justify-between items-center w-full relative py-1 " onClick={() =>( setIsQuality(!isQuality),handleVideoMetadata())}>
                               <p>Quality</p>
                               <button className="text-2xl right-0">
                                 <ChevronRightIcon size={20} className='right-2 absolute' />

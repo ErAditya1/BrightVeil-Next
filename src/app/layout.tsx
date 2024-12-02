@@ -98,6 +98,7 @@ export default function RootLayout({
             >
               <UserContext>
                 <SocketProvider>
+                
                   {children}
                 </SocketProvider>
               </UserContext>
