@@ -150,7 +150,7 @@ function ExploreCourse() {
 
   return (
     <div className='sm:p-2 w-full'>
-      <div className='md:my-2 w-full gap-4  flex flex-col lg:flex-row '>
+      <div className='md:mb-2 w-full gap-4  flex flex-col lg:flex-row '>
 
         <Card className='dark:bg-background w-full dark:bg-backgroun  text-card-foreground rounded-lg p-0 m-0 ' >
           <div className=' aspect-video col-span-8 rounded-xl border p-0'>
@@ -334,7 +334,7 @@ function ExploreCourse() {
         </div>
 
       </div>
-      <div className='md:my-2 w-full gap-4  flex flex-col lg:flex-row '>
+      <div className='md:mb-2 w-full gap-4  flex flex-col lg:flex-row '>
 
         {/* File Test and Description */}
         <Card className='grow dark:bg-background text-card-foreground '>

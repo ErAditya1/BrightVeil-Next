@@ -34,6 +34,7 @@ import { AxiosError } from 'axios';
 import { toast } from '@/components/ui/use-toast';
 import UserFollowCard from '@/components/UserFollowCard';
 import PostCard from '@/components/PostCard';
+import { HoverEffect } from '@/components/ui/card-hover-effect';
 const UserProfile = () => {
   const [loading, setLoading] = useState(true)
 
@@ -262,11 +263,13 @@ const UserProfile = () => {
               </CardHeader>
               <CardContent className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {
-                  profile?.watchedVideos?.map((video: any) => {
+                  profile?.watchedVideos?.map((video: any, index) => {
                     if (video?.video_Id) {
                       return (
                         <div key={video?.video_Id}>
+                          <HoverEffect index={index}> 
                           <VideoCard _id={video?.video_Id} />
+                          </HoverEffect>
                         </div>
                       )
                     }
@@ -282,11 +285,13 @@ const UserProfile = () => {
               </CardHeader>
               <CardContent className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {
-                  profile?.watchedPosts?.map((post: any) => {
+                  profile?.watchedPosts?.map((post: any, index) => {
                     if (post?.post_Id) {
                       return (
                         <div key={post?.post_Id}>
+                          <HoverEffect index={index}> 
                           <PostCard _id={post?.post_Id} />
+                          </HoverEffect>
                         </div>
                       )
                     }
@@ -302,11 +307,13 @@ const UserProfile = () => {
               </CardHeader>
               <CardContent className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {
-                  profile?.watchedCourses?.map((course: any) => {
+                  profile?.watchedCourses?.map((course: any, index:number) => {
                     if (course?.course_Id) {
                       return (
                         <div key={course?.course_Id} >
+                          <HoverEffect index={index}> 
                           <CourseCard _id={course?.course_Id} />
+                          </HoverEffect>
                         </div>
                       )
                     }
@@ -324,11 +331,13 @@ const UserProfile = () => {
               </CardHeader>
               <CardContent className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {
-                  profile?.likedVideos?.map((video: any) => {
+                  profile?.likedVideos?.map((video: any, index) => {
                     if (video?.video_Id) {
                       return (
                         <div key={video?.video_Id}>
+                          <HoverEffect index={index}> 
                           <VideoCard _id={video?.video_Id} />
+                          </HoverEffect>
                         </div>
                       )
                     }
@@ -344,11 +353,13 @@ const UserProfile = () => {
               </CardHeader>
               <CardContent className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {
-                  profile?.likedPosts?.map((post: any) => {
+                  profile?.likedPosts?.map((post: any, index) => {
                     if (post?.post_Id) {
                       return (
                         <div key={post?.post_Id}>
+                          <HoverEffect index={index}> 
                           <PostCard _id={post?.post_Id} />
+                          </HoverEffect>
                         </div>
                       )
                     }
@@ -364,11 +375,13 @@ const UserProfile = () => {
               </CardHeader>
               <CardContent className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {
-                  profile?.likedCourses?.map((course: any) => {
+                  profile?.likedCourses?.map((course: any ,index) => {
                     if (course?.course_Id) {
                       return (
                         <div key={course?.course_Id} >
+                          <HoverEffect index={index}> 
                           <CourseCard _id={course?.course_Id} />
+                          </HoverEffect>
                         </div>
                       )
                     }
@@ -387,11 +400,13 @@ const UserProfile = () => {
               </CardHeader>
               <CardContent className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {
-                  profile?.savedVideos?.map((video: any) => {
+                  profile?.savedVideos?.map((video: any, index) => {
                     if (video?.video_Id) {
                       return (
                         <div key={video?.video_Id}>
+                          <HoverEffect index={index}> 
                           <VideoCard _id={video?.video_Id} />
+                          </HoverEffect>
                         </div>
                       )
                     }
@@ -407,11 +422,13 @@ const UserProfile = () => {
               </CardHeader>
               <CardContent className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {
-                  profile?.savedPosts?.map((post: any) => {
+                  profile?.savedPosts?.map((post: any, index) => {
                     if (post?.post_Id) {
                       return (
                         <div key={post?.post_Id}>
+                          <HoverEffect index={index}> 
                           <PostCard _id={post?.post_Id} />
+                          </HoverEffect>
                         </div>
                       )
                     }
@@ -427,11 +444,13 @@ const UserProfile = () => {
               </CardHeader>
               <CardContent className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {
-                  profile?.savedCourses?.map((course: any) => {
+                  profile?.savedCourses?.map((course: any, index) => {
                     if (course?.course_Id) {
                       return (
                         <div key={course?.course_Id} >
+                          <HoverEffect index={index}> 
                           <CourseCard _id={course?.course_Id} />
+                          </HoverEffect>
                         </div>
                       )
                     }

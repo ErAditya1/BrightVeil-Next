@@ -40,6 +40,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import UserFollowCard from '@/components/UserFollowCard';
 import PostCard from '@/components/PostCard';
+import { HoverEffect } from '@/components/ui/card-hover-effect';
 
 
 const UserProfile = () => {
@@ -187,7 +188,7 @@ const UserProfile = () => {
 
 
               {/* Follow / Unfollow Button */}
-             
+
 
               {
                 loading ? <Skeleton className='w-32 h-12' /> : <>
@@ -202,55 +203,55 @@ const UserProfile = () => {
 
             {/* Followers and Following */}
             {
-                loading ?
-                  <div className="flex space-x-6 mt-4">
-                    <Skeleton className='h-12 w-24' />
-                    <Skeleton className='h-12 w-24' />
-                    <Skeleton className='h-12 w-36' />
+              loading ?
+                <div className="flex space-x-6 mt-4">
+                  <Skeleton className='h-12 w-24' />
+                  <Skeleton className='h-12 w-24' />
+                  <Skeleton className='h-12 w-36' />
 
 
-                  </div>
-                  : <div className="flex space-x-6 mt-4">
+                </div>
+                : <div className="flex space-x-6 mt-4">
 
 
-                    <DropdownMenu >
-                      <DropdownMenuTrigger className='border-none  focus-within:border-none '>
-                        <div className='cursor-pointer'>
-                          <span className="font-bold">{profile?.followersCount}</span>
-                          <p className="text-gray-600">Followers</p>
-                        </div>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className='p-2 '>
-                        <DropdownMenuLabel>Followers</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                       
-
-                        <UserFollowCard users={profile?.followers}/>
-                        
-
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger>
-                        <div className='cursor-pointer'>
-                          <span className="font-bold">{profile?.followingsCount}</span>
-                          <p className="text-gray-600">Following</p>
-                        </div>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuLabel>Fallowings</DropdownMenuLabel>
-                        {
-                          !loading &&
-
-                          <UserFollowCard users={profile?.followings}/>
-                        }
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                  <DropdownMenu >
+                    <DropdownMenuTrigger className='border-none  focus-within:border-none '>
+                      <div className='cursor-pointer'>
+                        <span className="font-bold">{profile?.followersCount}</span>
+                        <p className="text-gray-600">Followers</p>
+                      </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className='p-2 '>
+                      <DropdownMenuLabel>Followers</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
 
 
+                      <UserFollowCard users={profile?.followers} />
 
-                  </div>
-              }
+
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <div className='cursor-pointer'>
+                        <span className="font-bold">{profile?.followingsCount}</span>
+                        <p className="text-gray-600">Following</p>
+                      </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuLabel>Fallowings</DropdownMenuLabel>
+                      {
+                        !loading &&
+
+                        <UserFollowCard users={profile?.followings} />
+                      }
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+
+
+
+                </div>
+            }
           </div>
 
 
@@ -279,14 +280,16 @@ const UserProfile = () => {
                   </CardHeader>
                   <CardContent className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {
-                      profile?.posts?.map((post: any) => {
-                        
-                          return (
-                            <div key={post?._id}>
-                              <PostCard _id={post?._id} />
-                            </div>
-                          )
-                        
+                      profile?.posts?.map((post: any, index) => {
+
+                        return (
+                          <div key={post?._id}>
+                            <HoverEffect index={index}> 
+                            <PostCard _id={post?._id} />
+                            </HoverEffect>
+                          </div>
+                        )
+
                       })
                     }
                   </CardContent>
@@ -305,10 +308,12 @@ const UserProfile = () => {
                   </CardHeader>
                   <CardContent className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {
-                      profile?.courses?.map((course: any) => {
+                      profile?.courses?.map((course: any, index) => {
                         return (
                           <div key={course?._id}>
-                            <CourseCard _id={course?._id} />
+                            <HoverEffect index={index}>
+                              <CourseCard _id={course?._id} />
+                            </HoverEffect>
                           </div>
                         )
                       })
@@ -329,11 +334,13 @@ const UserProfile = () => {
                   </CardHeader>
                   <CardContent className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {
-                      profile?.videos?.map((video: any) => {
+                      profile?.videos?.map((video: any, index) => {
 
                         return (
                           <div key={video?._id}>
+                            <HoverEffect index={index}> 
                             <VideoCard _id={video?._id} />
+                            </HoverEffect>
                           </div>
                         )
 

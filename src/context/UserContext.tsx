@@ -11,6 +11,7 @@ import api from '@/api';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 // import { messagingInstance, onMessage, requestPermissionAndGetToken } from '../lib/firebase-config';
 import { Router } from 'next/router';
+import { handleSidebar } from '@/store/setting/settingSlice';
 
 
 // Loading Screen Component
@@ -80,6 +81,7 @@ function Page({ children }: { children: React.ReactNode }) {
       Router.events.off('routeChangeComplete', handleRouteChange);
     };
   }, []);
+
 
 
   // Monitor online/offline status
@@ -200,6 +202,12 @@ function Page({ children }: { children: React.ReactNode }) {
   }, [isLoggedIn, isPublicPath, router]);
 
 
+  useEffect(() => {
+    // This code will only run on the client-side (browser)
+    if (typeof window !== 'undefined') {
+      dispatch(handleSidebar(window.screen.width >= 900));
+    }
+  }, []);
   useEffect(() => {
     if (isLoggedIn && isOnline) {
       if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {

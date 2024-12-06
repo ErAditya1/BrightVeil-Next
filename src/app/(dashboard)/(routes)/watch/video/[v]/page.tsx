@@ -80,7 +80,7 @@ function Page() {
   });
   const [mapVideos, setMapVideos] = useState(true);
 
-  console.log(playingVideoData)
+ 
 
 
 
@@ -88,7 +88,7 @@ function Page() {
   useEffect(() => {
     if (v) {
       api.get(`/v1/videos/video/get-video-data/${v}`).then((res) => {
-        console.log(res?.data?.data)
+        
         if (res.status === 200) {
           setPlayingVideoData(res?.data?.data)
           setVideos(res.data.data.relatedVideo)
@@ -117,7 +117,7 @@ function Page() {
 
   return (
     <div className=''>
-      <div className='md:my-2 w-full gap-4  flex flex-col lg:flex-row '>
+      <div className='md:mb-2 w-full gap-4  flex flex-col lg:flex-row '>
 
         <Card className='grow dark:bg-background p-0 text-card-foreground rounded-lg ' style={{ padding: 0 }}>
           <div className=' aspect-video col-span-8 rounded-xl  max-h-dvh max-w-screen'>
@@ -256,7 +256,7 @@ function Page() {
         }
 
       </div>
-      <div className='md:my-2 w-full gap-4  flex flex-col lg:flex-row '>
+      <div className='md:mb-2 w-full gap-4  flex flex-col lg:flex-row '>
 
         {/* Description */}
         <Card className='grow dark:bg-background text-card-foreground '>

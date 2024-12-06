@@ -55,6 +55,12 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, videoQ
   const [prevVideo, setPreviousVideo] = useState('')
   const [nextVideo, setNextVideo] = useState('')
 
+  const isMobile = () => {
+    return /Mobi|Android/i.test(navigator.userAgent);
+  };
+
+
+
   useEffect(() => {
     if (videoId) load(`https://www.youtube.com/watch?v=${videoId}`);
     setThumbnail(thumbnailUrl);
@@ -67,6 +73,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, videoQ
       }
     })
   }, [videoId]);
+  
 
   useEffect(() => {
     setThumbnail(thumbnailUrl);
@@ -149,20 +156,26 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, videoQ
 
   const handleReady = () => {
     setReady(true);
+    console.log('ready');
+
   };
   const handlePlayPause = () => {
     handleReady()
     setStart(true)
     setPlaying((prev) => !prev)
   };
+
   const handleToggleLoop = () => setLoop((prev) => !prev);
   const handleMuteUnmute = () => setMuted((prev) => !prev);
   const handleTogglePIP = () => setPip((prev) => !prev);
   const handleQualityChange = (quality: string) => {
     if (playerRef.current) {
       const iframe = playerRef.current.getInternalPlayer(); // Access YouTube iframe
+      const qu = iframe.getPlaybackQuality()
+      console.log(qu)
       iframe.setPlaybackQuality(quality); // Set selected quality
       setSelectedQuality(quality);
+      localStorage.setItem('playerQuality', JSON.stringify(quality));
     }
   };
 
@@ -173,11 +186,49 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, videoQ
     console.log("onDuration", duration);
     setDuration(duration);
   };
-  const handleFullscreen = () => {
-    console.log(navigator)
-    setFullScreen(!fullscreen)
-    handle.active ? handle.exit() : handle.enter()
+  const enterFullscreen = () => {
+    handle.enter();
+    setFullScreen(true);
+  
+    if (isMobile() && screen.orientation) {
+      // Cast screen.orientation to a custom type with lock/unlock methods
+      const orientation = screen.orientation as unknown as { lock: (orientation: string) => Promise<void>, unlock: () => void };
+  
+      if (orientation && typeof orientation.lock === "function") {
+        orientation.lock("landscape").catch((err) => {
+          console.error("Failed to lock screen orientation:", err);
+        });
+      }
+    }
   };
+  
+  // Exit fullscreen and unlock screen orientation
+  const exitFullscreen = () => {
+    handle.exit();
+    setFullScreen(false);
+  
+    if (isMobile() && screen.orientation) {
+      const orientation = screen.orientation as unknown as { unlock: () => void };
+  
+      if (orientation && typeof orientation.unlock === "function") {
+        orientation.unlock();
+      }
+    }
+  };
+  
+  
+
+  const handleFullscreen = () => {
+    
+    handle.active ? exitFullscreen() : enterFullscreen()
+  };
+
+
+  useEffect(()=>{
+    
+      setFullScreen(handle.active);
+   
+  },[handle.active])
 
   const handleSeekFarword = () => playerRef.current?.seekTo(playerRef.current.getCurrentTime() + 10);
   const handleSeekReverse = () => playerRef.current?.seekTo(playerRef.current.getCurrentTime() - 10);
@@ -267,7 +318,6 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, videoQ
       <div onMouseMove={showControls} onClick={showControls} className='h-full w-full'>
         <section className="section h-full w-full flex justify-center items-center relative">
           <div className="player-wrapper h-full w-full relative flex justify-center items-center">
-
             <ReactPlayer
               ref={playerRef}
               className={`react-player rounded-lg p-0  `}
@@ -287,6 +337,7 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, videoQ
               onProgress={handleProgress}
               onDuration={handleDuration}
               onEnded={handleEnded}
+              
             />
             {thumbnail && !start &&
               <Image
@@ -305,14 +356,14 @@ export default function CustomVideoPlayer({ videoId, thumbnailUrl, title, videoQ
         <div className={`${!ready && 'hidden'} absolute top-0 w-full h-full select-none`} onMouseMove={showControls} onClick={showControls}>
           <div className={`w-full h-full ${!controls && 'hidden duration-1000'}`}>
             <div className="w-full h-full flex justify-evenly  items-center">
-              <button className="text-2xl mx-2 cursor-pointer" onClick={handleSeekReverse}>
-                <MdOutlineReplay10 size={40} />
+              <button className="text-xl mx-2 cursor-pointer rounded-full p-1 bg-white dark:bg-gray-800  bg-opacity-30 " onClick={handleSeekReverse}>
+                <MdOutlineReplay10 size={35} />
               </button>
-              <button className="text-2xl mx-2 cursor-pointer" onClick={handlePlayPause}>
-                {playing ? <PauseCircle size={45} /> : <PlayCircle size={45} />}
+              <button className="text-xl mx-2 cursor-pointer rounded-full p-1 bg-white dark:bg-gray-800  bg-opacity-30 " onClick={handlePlayPause}>
+                {playing ? <PauseCircle size={35} /> : <PlayCircle size={35} />}
               </button>
-              <button className="text-2xl mx-2 cursor-pointer" onClick={handleSeekFarword}>
-                <MdForward10 size={40} />
+              <button className="text-xl mx-2 cursor-pointer rounded-full p-1 bg-white dark:bg-gray-800  bg-opacity-30 " onClick={handleSeekFarword}>
+                <MdForward10 size={35} />
               </button>
             </div>
             <div className="w-full h-17 absolute bg-card" style={{ bottom: 0 }}>

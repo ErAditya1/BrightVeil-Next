@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import VideoCard from '../../(courses)/components/VideoCard';
+import { HoverEffect } from '@/components/ui/card-hover-effect';
 
 function Saved() {
   
@@ -12,7 +13,9 @@ function Saved() {
                { 
                videos?.map((data, index) => {
                 return (
+                    <HoverEffect index={index}> 
                     <VideoCard key={index}/>
+                    </HoverEffect>
                 )
               })
               }

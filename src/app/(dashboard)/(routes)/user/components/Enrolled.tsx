@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import CourseCard from '../../(courses)/components/CourseCard';
+import { HoverEffect } from '@/components/ui/card-hover-effect';
 
 function Enrolled() {
   
@@ -12,7 +13,9 @@ function Enrolled() {
                { 
                videos?.map((data,index) => {
                 return (
+                    <HoverEffect index={index}> 
                     <CourseCard _id={''} key={index}/>
+                    </HoverEffect>
                 )
               })
               }

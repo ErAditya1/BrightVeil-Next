@@ -23,6 +23,7 @@ import { BookMarkedIcon } from 'lucide-react'
 import { videoSchema } from '@/schemas/videoSchema';
 import ValidatedImage from '@/components/ValidatedImage';
 import { toast } from '@/components/ui/use-toast';
+import { HoverEffect } from '@/components/ui/card-hover-effect'
 
 
 function page() {
@@ -204,7 +205,9 @@ function page() {
                 <div className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {
                         videos[0]?._id && videos?.map((video, index) => (
+                            <HoverEffect index={index}> 
                             <VideoCard key={video?._id} _id={video?._id} />
+                            </HoverEffect>
                         ))
                     }
                 </div>

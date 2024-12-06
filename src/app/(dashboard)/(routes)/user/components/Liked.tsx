@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import VideoCard from '../../(courses)/components/VideoCard';
+import { HoverEffect } from '@/components/ui/card-hover-effect';
 
 function Liked() {
   
@@ -12,7 +13,9 @@ function Liked() {
                { 
                videos?.map((data:any,index) => {
                 return (
+                    <HoverEffect index={index}> 
                     <VideoCard key={index} _id={data?._id}/>
+                    </HoverEffect>
                 )
               })
               }

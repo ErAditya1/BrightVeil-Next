@@ -23,6 +23,7 @@ export function openSidebar() {
         .getComputedStyle(document.documentElement)
         .getPropertyValue('--SideNavigation-slideIn');
       if (slideIn) {
+        
         closeSidebar();
       } else {
         openSidebar();

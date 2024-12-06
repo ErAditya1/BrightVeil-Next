@@ -2,6 +2,7 @@
 import api from '@/api'
 import BlogPostForm from '@/app/(dashboard)/(routes)/(Post)/components/PostForm'
 import PostCard from '@/components/PostCard'
+import { HoverEffect } from '@/components/ui/card-hover-effect'
 import { AxiosError } from 'axios'
 import React, { useEffect, useState } from 'react'
 
@@ -36,7 +37,9 @@ function page() {
       <div className="grid xs:grid-cols-2 md:grid-cols-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
      {
        posts?.map((post , index) => (
+        <HoverEffect index={index}> 
         <PostCard  key = {post?._id} _id = {post?._id}/>
+        </HoverEffect>
        ))
      }
       </div>

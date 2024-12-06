@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import VideoCard from '../../(courses)/components/VideoCard';
+import { HoverEffect } from '@/components/ui/card-hover-effect';
 
 function WatchHistory() {
     const [videos, setVideos] = useState([{}, {}, {},{}, {}, {},{}, {}, {}]);
@@ -10,7 +11,9 @@ function WatchHistory() {
                { 
                videos?.map((data, index) => {
                 return (
+                    <HoverEffect index={index}> 
                     <VideoCard key={index}/>
+                    </HoverEffect>
                 )
               })
               }

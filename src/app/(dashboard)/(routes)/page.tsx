@@ -5,6 +5,7 @@ import CourseCard from "./(courses)/components/CourseCard";
 import VideoCard from "./(courses)/components/VideoCard";
 import PostCard from "@/components/PostCard";
 import { LoadingScreen } from "@/context/UserContext";
+import { HoverEffect } from "@/components/ui/card-hover-effect";
 
 function Home() {
   const [recomendedData, setRecomendedData] = useState([
@@ -43,7 +44,7 @@ function Home() {
     console.log("Getting more content...");
     setLoading(true);
     api
-      .get(`/v1/videos/recomended?page=${page}`)
+      .get(`/v1/comman/recomended?page=${page}`)
       .then((res) => {
         console.log(res);
         const data = res.data.data;
@@ -92,16 +93,18 @@ function Home() {
       <div className="grid xs:grid-cols-2 md:grid-cols-3 m-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {enrolledCourse[0]?.course_Id &&
           enrolledCourse.map((course, index) => (
-            <CourseCard key={index} _id={course?.course_Id} />
+            <HoverEffect index={index}>
+              <CourseCard key={index} _id={course?.course_Id} />
+            </HoverEffect>
           ))}
 
         {recomendedData?.map((item, index) => {
           if (item?.type === "video") {
-            return <VideoCard key={index} _id={item?.contentId} />;
+            return <HoverEffect index={index}> <VideoCard key={index} _id={item?.contentId} /></HoverEffect>;
           } else if (item?.type === "course") {
-            return <CourseCard key={index} _id={item?.contentId} />;
+            return <HoverEffect index={index}> <CourseCard key={index} _id={item?.contentId} /></HoverEffect>;
           } else if (item?.type === "post") {
-            return <PostCard key={index} _id={item?.contentId} />;
+            return <HoverEffect index={index}> <PostCard key={index} _id={item?.contentId} /></HoverEffect>;
           }
         })}
       </div>

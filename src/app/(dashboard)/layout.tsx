@@ -38,8 +38,8 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
 
 
     <Box sx={{ display: 'flex' }} >
-      <Sidebar />
       <Header />
+      <Sidebar />
       
       <Box
         component="main"
@@ -53,7 +53,7 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
           gap: 1,
           overflow: 'auto',
         }}
-        className="mt-[60px]  br:m-0 MainContent " 
+        className=" pt-14 br:m-0 MainContent " 
       >
         <Navbar />
         {children}
