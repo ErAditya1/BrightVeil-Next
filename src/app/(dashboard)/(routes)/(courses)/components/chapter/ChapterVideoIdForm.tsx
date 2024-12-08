@@ -31,7 +31,7 @@ export default function ChapterVideoIdForm({ videoId }: any) {
     const form = useForm<z.infer<typeof ChapterVideoIdSchema>>({
         resolver: zodResolver(ChapterVideoIdSchema),
         defaultValues: {
-            videoId: videoId,
+            videoUrl: videoId,
         },
     });
 
@@ -91,12 +91,12 @@ return (
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 
                     <FormField
-                        name="videoId"
+                        name="videoUrl"
                         control={form.control}
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className='flex justify-between'><span>VideoId:</span>{!edit && (<span className='text-sm gap-1 flex flex-row' onClick={() => setEdit(true)}><Edit size={15} />Edit</span>)}</FormLabel>
-                                <Input type="text" {...field} disabled={!edit} />
+                                <FormLabel className='flex justify-between'><span>Video Id:</span>{!edit && (<span className='text-sm gap-1 flex flex-row' onClick={() => setEdit(true)}><Edit size={15} />Edit</span>)}</FormLabel>
+                                <Input type="text" {...field} disabled={true} />
                                 <FormMessage />
                             </FormItem>
                         )}

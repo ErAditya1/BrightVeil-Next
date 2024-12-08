@@ -67,22 +67,22 @@ export default function RootLayout({
           content="Join Bright Veil, the leading online learning platform offering diverse courses in technology, business, and personal development. Enhance your skills, advance your career, and learn at your own pace."
         />
         <script
-            async
-            src="https://www.googletagmanager.com/gtag/js?id=G-KFBC9X698J"
-          ></script>
-          <meta name="google-site-verification" content="Bvx3h17BfA-g1xTam6S2n0v6-sc1GTKNDoA6Uo2EyTU" />
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-KFBC9X698J"
+        ></script>
+        <meta name="google-site-verification" content="Bvx3h17BfA-g1xTam6S2n0v6-sc1GTKNDoA6Uo2EyTU" />
 
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
                 gtag('config', 'G-KFBC9X698J');
               `,
-            }}
-          />
-          
+          }}
+        />
+
         <meta name="twitter:image" content="/brightveilLight.jpg" /> {/* Optional image for Twitter */}
       </head>
       <Providers>
@@ -96,12 +96,12 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <UserContext>
-                <SocketProvider>
-                
+              <SocketProvider>
+                <UserContext>
+
                   {children}
-                </SocketProvider>
-              </UserContext>
+                </UserContext>
+              </SocketProvider>
 
             </ThemeProvider>
           </CssVarsProvider>

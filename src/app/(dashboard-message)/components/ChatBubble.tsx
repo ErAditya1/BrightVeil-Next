@@ -26,13 +26,20 @@ type ChatBubbleProps = ChatMessage & {
 export default function ChatBubble(props: ChatBubbleProps) {
 
   const convertTextToLinks = (text: string) => {
-    // Regular expression to match URLs (basic version)
+    // Regular expression to match any URL (basic version)
     const urlRegex = /(https?:\/\/[^\s]+)/g;
-
-    // Replace the URLs in the text with <a> tags
-    const convertedText = text?.replace(urlRegex, (url) => {
-      return `<a href="${url}" target="_blank" rel="noopener noreferrer" className="text-blue-700 underline-offset-4 " style='color:#007bff;' >${url}</a>`;
+    const youtubeRegex = /(https?:\/\/(www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+))/g;
+  
+    // let convertedText = text?.replace(youtubeRegex, (url, _, __, videoId) => {
+    //   // YouTube embed URL format
+    //   console.log(videoId)
+    //   return `<iframe src="https://www.youtube.com/embed/${videoId}" width="560" height="315" frameborder="0" allowfullscreen></iframe>`;
+    // });
+  
+    let convertedText = text?.replace(urlRegex, (url) => {
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer" className="text-blue-700 underline-offset-4">${url}</a>`;
     });
+  
 
     return convertedText;
   };
@@ -126,19 +133,19 @@ export default function ChatBubble(props: ChatBubbleProps) {
         urlpreviews?.map((preview: any, index: number) => (
           <div className='w-full' key={index}>
             <a
-            href={preview?.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className=""
-          >
-            <div className='grid grid-cols-8'>
+              href={preview?.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className=""
+            >
+              <div className='grid grid-cols-8'>
                 <div className='col-span-2  p-2 max-w-24'>
-                  {preview?.image ? <img src={preview?.image} alt={preview?.title}  className='w-full aspect-square rounded-md'/>
-                  :
-                  <div className='h-full flex justify-center items-center aspect-square rounded-md text-center text-gray-100 animate-pulse bg-slate-400'>
-                    <FaLink size={20} />
-                  </div>
-                }
+                  {preview?.image ? <img src={preview?.image} alt={preview?.title} className='w-full aspect-square rounded-md' />
+                    :
+                    <div className='h-full flex justify-center items-center aspect-square rounded-md text-center text-gray-100 animate-pulse bg-slate-400'>
+                      <FaLink size={20} />
+                    </div>
+                  }
                 </div>
                 <div className='col-span-6 p-2'>
                   <span className='text-sm line-clamp-1'>
@@ -151,9 +158,9 @@ export default function ChatBubble(props: ChatBubbleProps) {
                     {preview?.domain}
                   </span>
                 </div>
-    
-            </div>
-          </a>
+
+              </div>
+            </a>
           </div>
         ))
       }

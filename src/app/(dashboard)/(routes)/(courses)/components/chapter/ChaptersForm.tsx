@@ -29,7 +29,7 @@ export default function ChapterForm({ setCourseData, setAddChapter }: any) {
     const form = useForm<z.infer<typeof createVideoSchema>>({
         resolver: zodResolver(createVideoSchema),
         defaultValues: {
-            videoId: '',
+            videoUrl: '',
             title: '',
             description: '',
 
@@ -95,11 +95,11 @@ export default function ChapterForm({ setCourseData, setAddChapter }: any) {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 
                         <FormField
-                            name="videoId"
+                            name="videoUrl"
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className='flex justify-between'><span>Video Id:</span></FormLabel>
+                                    <FormLabel className='flex justify-between'><span>Youtube Video Url:</span></FormLabel>
                                     <Input type="text" {...field} />
                                     <FormMessage />
                                 </FormItem>

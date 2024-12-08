@@ -51,12 +51,12 @@ export function openSidebar() {
       const slideIn = window
         .getComputedStyle(document.documentElement)
         .getPropertyValue('--MessagesPane-slideIn');
-        console.log(slideIn);
+        
         if (slideIn) {
           closeMessagesPane();
         } else {
           openMessagesPane();
-          console.log('No messages pane')
+          
       }
     }
   }

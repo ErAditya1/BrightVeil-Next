@@ -68,7 +68,7 @@ export interface ChatMessage {
     size: number;
     _id: string;
   }[];
-  urlpreviews:{
+  urlpreviews: {
     title: string;
     description: string;
     image: string;
@@ -90,6 +90,7 @@ export interface LastMessageInterface {
 }
 
 interface ChatState {
+  unreadMessageCount: number;
   isConnected: boolean;
   users: UserInterface[];
   chats: ChatInterface[];
@@ -101,6 +102,7 @@ interface ChatState {
 }
 
 const initialState: ChatState = {
+  unreadMessageCount: 0,
   isConnected: false,
   users: [],
   chats: [],
@@ -175,7 +177,7 @@ const chatSlice = createSlice({
         state.isOtherTyping = false;
     },
     selectChat: (state, action) => {
-      if(state.selectedChat._id !== action.payload._id){
+      if (state.selectedChat._id !== action.payload._id) {
         state.messages = [];
       }
       state.isTyping = false;
@@ -214,15 +216,17 @@ const chatSlice = createSlice({
         state.messages = state.messages.filter(
           (message) => message._id !== action.payload._id
         );
-        
-      }else{
+      } else {
         // update unread count
-        
+
         if (chatIndex !== -1) {
           if (state.chats[chatIndex]?._id === state.selectedChat._id) {
+            state.unreadMessageCount =
+              state.unreadMessageCount - state.chats[chatIndex].unreadCount;
+
             state.chats[chatIndex].unreadCount = 0;
           } else {
-            if(state.chats[chatIndex].unreadCount>0){
+            if (state.chats[chatIndex].unreadCount > 0) {
               state.chats[chatIndex].unreadCount =
                 state.chats[chatIndex].unreadCount - 1;
             }
@@ -253,20 +257,23 @@ const chatSlice = createSlice({
     },
     addChats: (state, action) => {
       state.chats = [...action.payload];
+      let unread =0;
+       action.payload.map((ch:ChatInterface) => unread = unread+ch.unreadCount)
+       state.unreadMessageCount = unread;
     },
     addNewChat: (state, action) => {
       state.chats = [action.payload, ...state.chats];
     },
-    deleteChat:(state,action)=>{
-      console.log(action)
-      state.chats = state.chats.filter((chat) => chat._id!== action.payload._id);
-      const chat = state.chats[0]
+    deleteChat: (state, action) => {
+      console.log(action);
+      state.chats = state.chats.filter(
+        (chat) => chat._id !== action.payload._id
+      );
+      const chat = state.chats[0];
       state.selectedChat._id = "";
       state.messages = [];
       state.isTyping = false;
       state.isOtherTyping = false;
-
-      
     },
     addChatLastMessage: (state, action) => {
       const chatIndex = state.chats.findIndex(
@@ -284,6 +291,7 @@ const chatSlice = createSlice({
         if (state.chats[chatIndex]?._id === state.selectedChat._id) {
           state.chats[chatIndex].unreadCount = 0;
         } else {
+          state.unreadMessageCount++;
           state.chats[chatIndex].unreadCount =
             state.chats[chatIndex].unreadCount + 1;
         }

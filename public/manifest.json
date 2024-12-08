@@ -1,0 +1,8 @@
+{
+    "name": "Web Push Demo",
+    "short_name": "PushDemo",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "description": "A demo for Web Push Notifications."
+  }

@@ -5,7 +5,7 @@ import Sheet from '@mui/joy/Sheet';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { toggleSidebar } from '@/lib/utils';
 import { SiGooglemessages } from 'react-icons/si';
-import { Box, IconButton, Typography } from '@mui/joy';
+import { Box, Chip, IconButton, Typography } from '@mui/joy';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { handleSidebar } from '@/store/setting/settingSlice';
@@ -20,6 +20,7 @@ import { MdMenuOpen } from 'react-icons/md';
 
 export default function Header() {
   const { isSideBar } = useAppSelector((state) => state.setting)
+  const { unreadMessageCount } = useAppSelector((state) => state.chat)
   const dispatch = useAppDispatch()
   const router = useRouter()
   const handleSearch = (search: string) => {
@@ -49,7 +50,7 @@ export default function Header() {
         borderColor: 'background.level1',
         boxShadow: 'sm',
       }}
-      className="dark:bg-slate-900 flex justify-between items-center"
+      className="dark:bg-slate-900 flex justify-between items-center w-full"
     >
       <GlobalStyles
         styles={(theme) => ({
@@ -69,7 +70,7 @@ export default function Header() {
           size="sm"
           className='z-[50] text-xl'
         >
-          <MenuRoundedIcon  />
+          <MenuRoundedIcon />
         </IconButton> :
           <IconButton
             onClick={() => dispatch(handleSidebar(false))}
@@ -78,34 +79,37 @@ export default function Header() {
             size="sm"
             className='z-[50] text-xl'
           >
-            <MdMenuOpen size={20}/>
+            <MdMenuOpen size={20} />
           </IconButton>}
 
-        <GoBackButton />
-        <Link href='/' className='w-full h-full flex flex-row gap-2 items-center'>
-          <IconButton variant="soft" color="primary" size="sm" className='max-h-10 max-w-10 relative'>
-            {/* <BrightnessAutoRoundedIcon /> */}
-            <Image src='/brightveilDark.jpg'
-              height={500}
-              width={500}
-              alt="Bright Veil Logo"
-              className='h-full w-full rounded-full hidden dark:block absolute top-0'
-            />
-            <Image src='/brightveilLight.jpg'
-              height={500}
-              width={500}
-              alt="Bright Veil Logo"
-              className='h-full w-full rounded-full block dark:hidden absolute top-0'
-            />
-          </IconButton>
-          <Typography level="title-lg">
-            BrightVeil
-          </Typography>
-        </Link>
+        <div className='hidden br:flex gap-2'>
+          <GoBackButton />
+          <Link href='/' className='w-full h-full flex flex-row gap-2 items-center'>
+            <IconButton variant="soft" color="primary" size="sm" className='max-h-10 max-w-10 relative'>
+              {/* <BrightnessAutoRoundedIcon /> */}
+              <Image src='/brightveilDark.jpg'
+                height={500}
+                width={500}
+                alt="Bright Veil Logo"
+                className='h-full w-full rounded-full hidden dark:block absolute top-0'
+              />
+              <Image src='/brightveilLight.jpg'
+                height={500}
+                width={500}
+                alt="Bright Veil Logo"
+                className='h-full w-full rounded-full block dark:hidden absolute top-0'
+              />
+            </IconButton>
+            <Typography level="title-lg">
+              BrightVeil
+            </Typography>
+          </Link>
+
+        </div>
 
 
       </div>
-      <div className='flex gap-2 items-center'>
+      <div className='flex gap-2 items-center '>
         <IconButton
           variant="soft" color="primary" size="sm"
         >
@@ -115,7 +119,9 @@ export default function Header() {
           onClick={() => router.push("/chat")}
           variant="soft" color="primary" size="sm"
         >
-          <SiGooglemessages size={26} />
+          <SiGooglemessages size={20} />
+          {unreadMessageCount > 0 && <Chip className="bg-transparent" sx={{ backgroundColor: 'error.500'}}>{unreadMessageCount+10 >99 ? '99+' : unreadMessageCount}</Chip>}
+          
         </IconButton>
         <ColorSchemeToggle sx={{ m: 'auto' }} />
       </div>

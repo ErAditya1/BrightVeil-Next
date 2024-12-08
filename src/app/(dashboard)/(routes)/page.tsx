@@ -51,7 +51,6 @@ function Home() {
         if (data.length > 0) {
           setRecomendedData((prev) => [...prev, ...data]);
         }else{
-          console.log("No more content to load.");
           setNoMoreContent(true);
         }
         setLoading(false); // Set loading to false after data is fetched
@@ -65,7 +64,6 @@ function Home() {
   // Use IntersectionObserver to detect when the user reaches the end of the page
   const loadMoreContent = useCallback((entries: IntersectionObserverEntry[]) => {
     const [entry] = entries;
-    console.log("Loading more content")
     if (entry.isIntersecting && !loading && !noMoreContent) {
       setPage((prevPage) => prevPage + 1); // Load next page of recommendations
     }

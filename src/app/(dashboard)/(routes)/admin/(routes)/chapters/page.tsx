@@ -57,7 +57,7 @@ function page() {
     const form = useForm<z.infer<typeof videoSchema>>({
         resolver: zodResolver(videoSchema),
         defaultValues: {
-            videoId: '',
+            videoUrl: '',
             title: '',
             description: '',
 
@@ -67,7 +67,7 @@ function page() {
         
         try {
             const formData = new FormData();
-            formData.append('videoId', data.videoId)
+            formData.append('videoUrl', data.videoUrl)
             formData.append('title', data.title)
             formData.append('description', data.description)
             formData.append('thumbnail', data.thumbnail)
@@ -115,11 +115,11 @@ function page() {
                                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 
                                                 <FormField
-                                                    name="videoId"
+                                                    name="videoUrl"
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel className='flex justify-between'><span>VideoId:</span></FormLabel>
+                                                            <FormLabel className='flex justify-between'><span>Youtube Video Url:</span></FormLabel>
                                                             <Input type="text" {...field} />
                                                             <FormMessage />
                                                         </FormItem>

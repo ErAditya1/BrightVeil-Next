@@ -1,9 +1,27 @@
 import { z } from "zod";
 
+// Regular expressions for youtube.com/watch?v= and youtu.be/
+const youtubeRegex = /(?:https?:\/\/(?:www\.)?youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/;
+const youtuBeRegex = /(?:https?:\/\/youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+const shortsRegex = /^(?:https?:\/\/(?:www\.)?youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})(?:[?&][^#]*)?$/;
+
+// Create the video schema
 export const createVideoSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
-  videoId: z.string().regex(/^[a-zA-Z0-9_-]{11}$/, "Invalid YouTube video ID"),
+  title: z
+    .string()
+    .min(1, "Title is required") // Title must not be empty
+    .max(100, "Title must be at most 100 characters"), // Optional: Max title length for constraint
+
+  description: z
+    .string()
+    .min(1, "Description is required") // Description must not be empty
+    .max(500, "Description must be at most 500 characters"), // Optional: Max description length for constraint
+
+  videoUrl: z
+    .string()
+    .refine((url) => youtubeRegex.test(url) || youtuBeRegex.test(url) || shortsRegex.test(url), {
+      message: "Invalid YouTube URL", // If it does not match any valid YouTube URL format
+    }),
 });
 export const VideoFileSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -16,7 +34,11 @@ export const VideoFileSchema = z.object({
 });
 
 export const ChapterVideoIdSchema = z.object({
-  videoId: z.string().regex(/^[a-zA-Z0-9_-]{11}$/, "Invalid YouTube video ID"),
+  videoUrl: z
+    .string()
+    .refine((url) => youtubeRegex.test(url) || youtuBeRegex.test(url) || shortsRegex.test(url), {
+      message: "Invalid YouTube URL", // If it does not match any valid YouTube URL format
+    }),
 });
 
 export const ChapterDescriptionSchema = z.object({
@@ -40,9 +62,22 @@ export const ChapterVisibilitySchema = z.object({
 
 
 export const videoSchema = z.object({
-videoId: z.string().min(5, "Invalid YouTube video ID"),
-title: z.string().min(1, "Title is required"),
-description: z.string().min(1, "Description is required"),
+  videoUrl: z
+  .string()
+  .refine((url) => youtubeRegex.test(url) || youtuBeRegex.test(url) || shortsRegex.test(url), {
+    message: "Invalid YouTube URL", // If it does not match any valid YouTube URL format
+  }),
+  
+  title: z
+  .string()
+  .min(1, "Title is required") // Title must not be empty
+  .max(100, "Title must be at most 100 characters"), // Optional: Max title length for constraint
+
+description: z
+  .string()
+  .min(1, "Description is required") // Description must not be empty
+  .max(500, "Description must be at most 500 characters"), // Optional: Max description length for constraint
+
 thumbnail: z
   .instanceof(File)
   .refine((file) => file.size > 0, { message: "File is required" })

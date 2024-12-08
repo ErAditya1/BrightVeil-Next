@@ -62,7 +62,7 @@ export default function VideoCard({ _id }: any) {
 
 
   const handleClickOutside = (event: any) => {
-    console.log("handle")
+   
     if (playerRef.current && !playerRef.current.contains(event.target)) {
       setIsPlaying(false);
       setIsMuted(true)
