@@ -587,17 +587,6 @@ function Page({ children }: { children: React.ReactNode }) {
                 registration.pushManager.getSubscription().then((subscription) => {
                   if (subscription) {
                     console.log('Already subscribed');
-                    subscription.unsubscribe();
-                    registration.pushManager.subscribe({
-                      userVisibleOnly: true,
-                      applicationServerKey: 'BOj4llN4WfhksTyrnYQl4so0KroAfkj6OkdxKYNIVBQKKLWj7nQrfKqZj9kaXpPz5iwJMZZqDedLTcE0r3Edf8M'
-                    }).then((subscription) => {
-                      console.log('User is subscribed', subscription);
-                      // Send subscription to the backend
-                      api.post("/v1/notification/save-subscription", { subscription: subscription })
-                        .then((data) => console.log('Subscription sent', data))
-                        .catch((error) => console.error('Subscription error', error));
-                    });
                   } else {
                     registration.pushManager.subscribe({
                       userVisibleOnly: true,
