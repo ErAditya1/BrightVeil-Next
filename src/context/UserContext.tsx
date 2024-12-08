@@ -393,17 +393,7 @@ function Page({ children }: { children: React.ReactNode }) {
     //Listener for when a message is deleted
     socket.on(MESSAGE_DELETE_EVENT, onMessageDelete);
     // When the component using this hook unmounts or if `socket` or `chats` change:
-    socket.on('pushNotification', (data) => {
-      console.log('Received push notification', data);
-      // You can trigger notifications via the browser's Notification API here
-      if (Notification.permission === 'granted') {
-        const ntf = new Notification(data.title, {
-          body: data.body,
-          icon: 'https://res.cloudinary.com/dcu0jjqte/image/upload/v1732335257/brightveil_light_yr7l9v.jpg',
-        });
-        console.log(ntf)
-      }
-    });
+
     return () => {
       // Remove all the event listeners we set up to avoid memory leaks and unintended behaviors.
       socket.off(CONNECTED_EVENT, onConnect);
@@ -416,7 +406,7 @@ function Page({ children }: { children: React.ReactNode }) {
       socket.off(LEAVE_CHAT_EVENT, onChatLeave);
       socket.off(UPDATE_GROUP_NAME_EVENT, onGroupNameChange);
       socket.off(MESSAGE_DELETE_EVENT, onMessageDelete);
-      socket.off('pushNotification');
+
     };
 
 
@@ -595,9 +585,19 @@ function Page({ children }: { children: React.ReactNode }) {
 
                 // Subscribe the user to Push Notifications
                 registration.pushManager.getSubscription().then((subscription) => {
-                  if (!subscription) {
-                    console.log(subscription)
+                  if (subscription) {
                     console.log('Already subscribed');
+                    subscription.unsubscribe();
+                    registration.pushManager.subscribe({
+                      userVisibleOnly: true,
+                      applicationServerKey: 'BOj4llN4WfhksTyrnYQl4so0KroAfkj6OkdxKYNIVBQKKLWj7nQrfKqZj9kaXpPz5iwJMZZqDedLTcE0r3Edf8M'
+                    }).then((subscription) => {
+                      console.log('User is subscribed', subscription);
+                      // Send subscription to the backend
+                      api.post("/v1/notification/save-subscription", { subscription: subscription })
+                        .then((data) => console.log('Subscription sent', data))
+                        .catch((error) => console.error('Subscription error', error));
+                    });
                   } else {
                     registration.pushManager.subscribe({
                       userVisibleOnly: true,
