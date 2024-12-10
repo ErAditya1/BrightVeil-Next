@@ -37,7 +37,7 @@ export default function ChatBubble(props: ChatBubbleProps) {
     // });
   
     let convertedText = text?.replace(urlRegex, (url) => {
-      return `<a href="${url}" target="_blank" rel="noopener noreferrer" className="text-blue-700 underline-offset-4">${url}</a>`;
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:blue" className="text-blue-700 underline-offset-4">${url}</a>`;
     });
   
 
@@ -151,7 +151,7 @@ export default function ChatBubble(props: ChatBubbleProps) {
                   <span className='text-sm line-clamp-1'>
                     {preview?.title}
                   </span>
-                  <span className='text-xs text-gray-200 line-clamp-3'>
+                  <span className={`text-xs   line-clamp-3 ${!isSent ? "text-gray-600 dark:text-gray-200":"text-gray-200"}`}>
                     {preview?.description}
                   </span>
                   <span className="text-xs text-gray-400 line-clamp-1">
