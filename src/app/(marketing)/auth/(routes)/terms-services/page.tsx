@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import MaxWidthWrapper from "../../../components/global/max-width-wrapper";
 import AnimationContainer from "../../../components/global/animation-container";
@@ -50,7 +49,7 @@ const TermsPage = () => {
                     <ul className="list-disc ml-8 text-muted-foreground">
                         <li>You must provide accurate and complete information during the registration process.</li>
                         <li>You are responsible for maintaining the confidentiality of your account information and for all activities that occur under your account.</li>
-                        <li>You agree to notify us immediately of any unantuhorized use of your account.</li>
+                        <li>You agree to notify us immediately of any unauthorized use of your account.</li>
                     </ul>
                 </div>
 
@@ -84,13 +83,7 @@ const TermsPage = () => {
                     Bright Veil offers analytics for your shortened URLs. You agree to use this data responsibly and comply with all applicable privacy laws.
                 </p>
 
-                <h3 className="text-lg mt-8">
-                    QR Code Generation
-                </h3>
-                <p className="mt-8 text-muted-foreground">
-                    You may generate QR codes for your shortened URLs. You agree not to use QR codes for any malicious purposes.
-                </p>
-
+                
                 <h3 className="text-lg mt-8">
                     Business Transfers
                 </h3>
@@ -161,7 +154,7 @@ const TermsPage = () => {
                     Contact Us
                 </h2>
                 <p className="mt-8 text-muted-foreground">
-                    If you have any questions or concerns about this Privacy Policy, please contact us at support@Bright Veil.io.
+                    If you have any questions or concerns about these Terms and Conditions, please contact us at <strong>support@brightveil.io</strong>.
                 </p>
 
                 <p className="mt-8 font-medium">
