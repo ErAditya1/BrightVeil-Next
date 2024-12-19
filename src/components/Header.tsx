@@ -54,7 +54,7 @@ export default function Header() {
         boxShadow: 'sm',
       }}
       className={cn(
-        "sticky flex flex-row justify-between top-0 inset-x-0 h-14 w-full border-b  z-[99999] select-none border-background/80 bg-background/40 backdrop-blur-md",
+        "sticky flex flex-row justify-between top-0 inset-x-0 h-14 w-full border-b  z-[99] select-none border-background/80 bg-background/40 backdrop-blur-md",
         
     )}
     >

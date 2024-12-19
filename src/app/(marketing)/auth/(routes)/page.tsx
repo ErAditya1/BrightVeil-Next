@@ -25,14 +25,14 @@ interface ProcessItem {
     icon: React.ComponentType<{ strokeWidth: number; className: string }>;
     title: string;
     description: string;
-  }
+}
 
-  interface Feature {
+interface Feature {
     title: string;
     description: string;
-  }
+}
 
- const PROCESS = [
+const PROCESS = [
     {
         title: "Register and Get Started",
         description: "Sign up to unlock full access to all courses and features, no credit card required.",
@@ -71,7 +71,7 @@ interface ProcessItem {
 ] as const;
 
 
- const CARDS = [
+const CARDS = [
     {
         Icon: Link2Icon,
         name: "Easiest & Friendly",
@@ -109,23 +109,23 @@ interface ProcessItem {
         className: "col-span-3 lg:col-span-2",
         background: (
             <Card className="absolute top-10 left-10 origin-top rounded-none rounded-tl-md transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_0%,#000_100%)] group-hover:scale-105 border border-border border-r-0">
-            <Image
-                src={`/assets/dark/video.png`}
-                alt="Dashboard"
-                width={1200}
-                height={1200}
-                quality={100}
-                className="rounded-md lg:rounded-xl bg-foreground/10 ring-1 ring-border hidden dark:block"
-            />
-            <Image
-                src={`/assets/light/video.png`}
-                alt="Dashboard"
-                width={1200}
-                height={1200}
-                quality={100}
-                className="rounded-md lg:rounded-xl bg-foreground/10 ring-1 ring-border dark:hidden"
-            />
-        </Card>
+                <Image
+                    src={`/assets/dark/video.png`}
+                    alt="Dashboard"
+                    width={1200}
+                    height={1200}
+                    quality={100}
+                    className="rounded-md lg:rounded-xl bg-foreground/10 ring-1 ring-border hidden dark:block"
+                />
+                <Image
+                    src={`/assets/light/video.png`}
+                    alt="Dashboard"
+                    width={1200}
+                    height={1200}
+                    quality={100}
+                    className="rounded-md lg:rounded-xl bg-foreground/10 ring-1 ring-border dark:hidden"
+                />
+            </Card>
         ),
     },
     {
@@ -156,7 +156,7 @@ interface ProcessItem {
     },
 ];
 
- const REVIEWS = [
+const REVIEWS = [
     {
         name: "Michael Smith",
         username: "@michaelsmith",
@@ -235,17 +235,20 @@ const HomePage = async () => {
             <MaxWidthWrapper>
                 <div className="flex flex-col items-center justify-center w-full text-center bg-gradient-to-t from-background">
                     <AnimationContainer className="flex flex-col items-center justify-center w-full text-center">
-                        <button className="group relative grid overflow-hidden rounded-full px-4 py-1 shadow-[0_1000px_0_0_hsl(0_0%_20%)_inset] transition-colors duration-200">
-                            <span>
-                                <span className="spark mask-gradient absolute inset-0 h-[100%] w-[100%] animate-flip overflow-hidden rounded-full [mask:linear-gradient(white,_transparent_50%)] before:absolute before:aspect-square before:w-[200%] before:rotate-[-90deg] before:animate-rotate before:bg-[conic-gradient(from_0deg,transparent_0_340deg,white_360deg)] before:content-[''] before:[inset:0_auto_auto_50%] before:[translate:-50%_-15%]" />
-                            </span>
-                            <span className="backdrop absolute inset-[1px] rounded-full bg-neutral-950 transition-colors duration-200 group-hover:bg-neutral-900" />
-                            <span className="h-full w-full blur-md absolute bottom-0 inset-x-0 bg-gradient-to-tr from-primary/20"></span>
-                            <span className="z-10 py-0.5 text-sm text-neutral-100 flex items-center justify-center gap-1">
-                                ✨ Manage links smarter
-                                <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
-                            </span>
-                        </button>
+                        <Link href='/auth/sign-in'>
+                            <button className="group relative grid overflow-hidden rounded-full px-4 py-1 shadow-[0_1000px_0_0_hsl(0_0%_20%)_inset] transition-colors duration-200">
+                                <span>
+                                    <span className="spark mask-gradient absolute inset-0 h-[100%] w-[100%] animate-flip overflow-hidden rounded-full [mask:linear-gradient(white,_transparent_50%)] before:absolute before:aspect-square before:w-[200%] before:rotate-[-90deg] before:animate-rotate before:bg-[conic-gradient(from_0deg,transparent_0_340deg,white_360deg)] before:content-[''] before:[inset:0_auto_auto_50%] before:[translate:-50%_-15%]" />
+                                </span>
+                                <span className="backdrop absolute inset-[1px] rounded-full bg-neutral-950 transition-colors duration-200 group-hover:bg-neutral-900" />
+                                <span className="h-full w-full blur-md absolute bottom-0 inset-x-0 bg-gradient-to-tr from-primary/20"></span>
+                                <span className="z-10 py-0.5 text-sm text-neutral-100 flex items-center justify-center gap-1">
+                                    ✨ Integrated Learning
+                                    <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
+                                </span>
+                            </button>
+                        </Link>
+
                         <h1 className="text-foreground text-center py-6 text-xl sm:text-5xl font-medium tracking-normal text-balance  md:text-7xl lg:text-8xl !leading-[1.15] w-full font-heading">
                             Smart Education with <span className="text-transparent bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text inline-bloc">
                                 Bright Veil
@@ -500,10 +503,12 @@ const HomePage = async () => {
                                 Experience the cutting-edge solution that transforms how you learn and grow. Elevate your educational journey with our next-gen platform. Access courses, track progress, and engage with experts—all in one place. Start learning today and be part of the future of online education.
                             </p>
                             <div className="mt-6">
-                                <Button>
-                                    Get started
-                                    <ArrowRightIcon className="w-4 h-4 ml-2" />
-                                </Button>
+                                <Link href="/auth/sign-up">
+                                    <Button>
+                                        Get started
+                                        <ArrowRightIcon className="w-4 h-4 ml-2" />
+                                    </Button>
+                                </Link>
                             </div>
                         </div>
                     </LampContainer>
