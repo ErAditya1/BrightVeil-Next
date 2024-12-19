@@ -69,14 +69,101 @@ const PROCESS = [
         icon: FaPen,
     },
 ] as const;
-
+const DEVELOPERS_CARDS = [
+    {
+        Icon: Link2Icon,
+        name: "Aditya Kumar",
+        description: "Team Lead: Developer, Leading Innovation, Problem-Solver, & Collaboration",
+        href: "https://eraditya.great-site.net",
+        cta: "Developer Profile",
+        className: "col-span-4 sm:col-span-2 lg:col-span-1",
+        background: (
+            <Card className="absolute top-5 left-5 origin-top rounded-none rounded-tl-md transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_0%,#000_100%)] group-hover:scale-105 border border-border border-r-0">
+                <Image
+                    src={`/assets/developer.jpg`}
+                    alt="Dashboard"
+                    width={1200}
+                    height={1200}
+                    quality={100}
+                    className="rounded-md lg:rounded-xl bg-foreground/10 ring-1 ring-border"
+                />
+               
+            </Card>
+        ),
+    },
+    {
+        Icon: Link2Icon,
+        name: "Bablu Patel",
+        description: "Developer: Developer, Innovator, Problem-Solver, Social Handler",
+        href: "",
+        cta: "Developer Profile",
+        className: "col-span-4 sm:col-span-2 lg:col-span-1",
+        background: (
+            <Card className="absolute top-5 left-5 origin-top rounded-none rounded-tl-md transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_0%,#000_100%)] group-hover:scale-105 border border-border border-r-0">
+                <Image
+                    src={`/assets/developer_bablu.jpg`}
+                    alt="Dashboard"
+                    width={1200}
+                    height={1200}
+                    quality={100}
+                    className="rounded-md lg:rounded-xl bg-foreground/10 ring-1 ring-border"
+                />
+               
+            </Card>
+        ),
+    },
+    {
+        Icon: Link2Icon,
+        name: "Roshan Kumar",
+        description: "Developer: Developer, Innovator, Problem-Solver, Social Handler",
+        href: "",
+        cta: "Developer Profile",
+        className: "col-span-4 sm:col-span-2 lg:col-span-1",
+        background: (
+            <Card className="absolute top-5 left-5 origin-top rounded-none rounded-tl-md transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_0%,#000_100%)] group-hover:scale-105 border border-border border-r-0">
+                <Image
+                    src={`/assets/developer_roshan.jpg`}
+                    alt="Dashboard"
+                    width={1200}
+                    height={1200}
+                    quality={100}
+                    className="rounded-md lg:rounded-xl bg-foreground/10 ring-1 ring-border"
+                />
+               
+            </Card>
+        ),
+    },
+    {
+        Icon: Link2Icon,
+        name: "Suraj Verma",
+        description: "Developer: Developer, Innovator, Problem-Solver, Social Handler",
+        href: "",
+        cta: "Developer Profile",
+        className: "col-span-4 sm:col-span-2 lg:col-span-1",
+        background: (
+            <Card className="absolute top-5 left-5 origin-top rounded-none rounded-tl-md transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_0%,#000_100%)] group-hover:scale-105 border border-border border-r-0">
+                <Image
+                    src={`/assets/developer_suraj.jpg`}
+                    alt="Dashboard"
+                    width={1200}
+                    height={1200}
+                    quality={100}
+                    className="rounded-md lg:rounded-xl bg-foreground/10 ring-1 ring-border"
+                />
+               
+            </Card>
+        ),
+    },
+    
+    
+];
 
 const CARDS = [
     {
         Icon: Link2Icon,
         name: "Easiest & Friendly",
         description: "This plateform is easiest and simple to use.",
-        href: "#",
+        href: "",
         cta: "Learn more",
         className: "col-span-3 lg:col-span-1",
         background: (
@@ -104,7 +191,7 @@ const CARDS = [
         Icon: SearchIcon,
         name: "Video Player",
         description: "Quickly find the videos you need with AI-powered search.",
-        href: "#",
+        href: "",
         cta: "Learn more",
         className: "col-span-3 lg:col-span-2",
         background: (
@@ -132,7 +219,7 @@ const CARDS = [
         Icon: WaypointsIcon,
         name: "Centralized Resources",
         description: "Integrate with resources, apps and services.",
-        href: "#",
+        href: "",
         cta: "Learn more",
         className: "col-span-3 lg:col-span-2 max-w-full overflow-hidden",
         background: (
@@ -144,7 +231,7 @@ const CARDS = [
         name: "Calendar",
         description: "Keep track of your courses with our calendar view.",
         className: "col-span-3 lg:col-span-1",
-        href: "#",
+        href: "",
         cta: "Learn more",
         background: (
             <Calendar
@@ -300,7 +387,7 @@ const HomePage = async () => {
                 </div>
             </MaxWidthWrapper >
 
-            {/* Companies Section */}
+            {/* Developer Section */}
             <MaxWidthWrapper>
                 <AnimationContainer delay={0.4}>
                     <div className="py-14">
@@ -328,7 +415,26 @@ const HomePage = async () => {
                     </div>
                 </AnimationContainer>
             </MaxWidthWrapper>
-
+            {/* Features Section */}
+            <MaxWidthWrapper className="pt-10">
+                <AnimationContainer delay={0.1}>
+                    <div className="flex flex-col w-full items-center lg:items-center justify-center py-8">
+                        <MagicBadge title="Developers" />
+                        <h2 className="text-center lg:text-center text-3xl md:text-5xl !leading-[1.1] font-medium font-heading text-foreground mt-6">
+                        Developer’s Role in Enhancing Learning
+                        </h2>
+                        <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
+                        As developers, we create intuitive, responsive tools for seamless course creation, organization, and tracking, ensuring a smooth learning experience.</p>
+                    </div>
+                </AnimationContainer>
+                <AnimationContainer delay={0.2}>
+                    <BentoGrid className="py-8 grid-cols-4">
+                        {DEVELOPERS_CARDS.map((feature, idx) => (
+                            <BentoCard key={idx} {...feature} />
+                        ))}
+                    </BentoGrid>
+                </AnimationContainer>
+            </MaxWidthWrapper>
             {/* Features Section */}
             <MaxWidthWrapper className="pt-10">
                 <AnimationContainer delay={0.1}>

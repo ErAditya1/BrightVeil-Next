@@ -64,7 +64,8 @@ const BentoCard = ({
             <p className="max-w-lg text-neutral-400">{description}</p>
         </div>
 
-        <div
+        {
+            href && <div
             className={cn(
                 "absolute bottom-0 flex w-full translate-y-10 flex-row items-center p-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100",
             )}
@@ -74,6 +75,8 @@ const BentoCard = ({
                 <ArrowRightIcon className="ml-2 h-4 w-4" />
             </Link>
         </div>
+        }
+        
         <div className="pointer-events-none absolute inset-0 transition-all duration-300 group-hover:bg-black/[.03] group-hover:dark:bg-neutral-800/10" />
     </div>
 );
