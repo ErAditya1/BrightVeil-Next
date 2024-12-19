@@ -59,7 +59,7 @@ export default function PostCard({ _id }: any) {
 
   return (
 
-    <div className="bg-card  text-card-foreground aspect-square p-0 rounded relative ">
+    <div className="bg-card  text-card-foreground aspect-square p-0 rounded relative h-full">
 
 
       <div className='w-full h-full'>

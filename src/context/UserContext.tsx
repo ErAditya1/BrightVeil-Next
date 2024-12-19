@@ -19,7 +19,7 @@ import { ChatListItemInterface, ChatMessageInterface } from '@/interfaces/chat';
 import { addChatLastMessage, addChats, addMessages, addNewChat, addReceivedMessage, addUnreadCount, addUsers, clearMessages, deleteChat, deliveredMessage, otherStartTyping, otherStopTyping, removeDeletedMessage, selectChat, stopTyping, updateUserOnline } from '@/store/chat/chatSlice';
 
 import { ApiResponse } from '@/types/ApiResponse';
-import Image from 'next/image';
+import { v4 as uuidv4 } from 'uuid';
 
 const CONNECTED_EVENT = "connected";
 const DISCONNECT_EVENT = "disconnect";
@@ -82,7 +82,7 @@ function Page({ children }: { children: React.ReactNode }) {
   const [isChatFetched, setIsChatFetched] = useState(false)
 
 
-  const { isConnected, isTyping, isOtherTyping, users, chats, selectedChat, createdChat } = useAppSelector((state) => state.chat);
+  const { isConnected, chats, selectedChat } = useAppSelector((state) => state.chat);
 
   const user = useAppSelector(state => state.auth.user);
 
@@ -413,7 +413,7 @@ function Page({ children }: { children: React.ReactNode }) {
   }, [socket, chats]);
   const isPublicPath = useMemo(
     () =>
-      ['/sign-in', '/sign-up', '/verify', '/reset-password', '/forget-password'].some((path) =>
+      ['/sign-in', '/sign-up', '/verify', '/reset-password', '/forget-password', '/auth'].some((path) =>
         pathname.startsWith(path),
       ),
     [pathname],
@@ -481,7 +481,6 @@ function Page({ children }: { children: React.ReactNode }) {
       .then((response) => {
         const user = response.data.data;
         if (accessToken) {
-
           localStorage.setItem('BrightVeilUser', JSON.stringify(user));
         }
         dispatch(loginUser(user));
@@ -495,7 +494,7 @@ function Page({ children }: { children: React.ReactNode }) {
             description: axiosError.response?.data?.message || 'Error occurred',
             variant: 'destructive',
           });
-          router.push('/sign-in');
+          router.push('/auth/sign-in');
         }
         dispatch(logoutUser());
       })
@@ -521,8 +520,14 @@ function Page({ children }: { children: React.ReactNode }) {
         setLoading(false);
         if (isPublicPath) router.push('/');
 
-      } else {
+      } else if(user && user.accessTokenExpires <= Date.now()){
         getCurrentUser()
+      } else{
+        if (!isPublicPath && !commanPath) {
+          router.push('/auth');
+        }
+        dispatch(logoutUser());
+        setLoading(false)
       }
       if (user) {
         if (pathname.startsWith('/admin') && user.role !== 'admin') {
@@ -569,6 +574,29 @@ function Page({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // This code will only run on the client-side (browser)
     if (typeof window !== 'undefined') {
+      let uniqueId = localStorage.getItem('uniqueId');
+      if (!uniqueId) {
+        // Generate a new unique ID if it doesn't exist
+        const uniqueId = uuidv4();
+        // Store it in localStorage and/or cookies
+        localStorage.setItem('uniqueId', uniqueId);
+        document.cookie = `uniqueId=${uniqueId}; path=/; max-age=${60 * 60 * 24 * 365}`;  // 1 year expiration
+      }
+      const blockConsole = () => {
+        if (window.console) {
+          // Override console methods with an empty function
+          const methods: (keyof Console)[] = ['log', 'info', 'warn', 'debug', 'error'];
+          methods.forEach((method) => {
+            // Override with a function that matches the expected signature
+            (window.console[method] as (...args: any[]) => void) = (...args: any[]) => { };
+          });
+        }
+      };
+      // Block the console with the specified arguments and return
+      if (process.env.NODE_ENV === 'production') {
+        blockConsole();
+      }
+
       dispatch(handleSidebar(window.screen.width >= 900));
     }
   }, []);

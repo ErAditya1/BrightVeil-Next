@@ -108,14 +108,14 @@ export default function VideoCard({ _id }: any) {
 
   };
   return (
-    <div className='relative'>
+    <div className='relative h-full'>
 
       {
         videoData?.isAuthor && <div className='absolute top-1 left-1 text-4xl z-10'>
           <Edit onClick={editVideo} className='cursor-pointer' />
         </div>
       }
-      <Card className="bg-card   text-card-foreground py-0 flex items-center"
+      <Card className="bg-card   text-card-foreground py-0 flex items-center h-full"
         style={{ paddingTop: 0 }}
       >
         <div onClick={playVideo} className='w-full h-full'>

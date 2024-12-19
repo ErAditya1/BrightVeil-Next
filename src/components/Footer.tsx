@@ -84,7 +84,7 @@ function Footer() {
           </div>
           </div> */}
           {/* <div className="mx-auto py-0 text-center">
-            <p className="">© 2024 Learning School. All rights reserved.</p>
+            <p className="">© 2025 Learning School. All rights reserved.</p>
 
           </div> */}
       </footer>

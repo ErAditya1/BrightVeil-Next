@@ -39,7 +39,7 @@ export const HoverEffect = ({
               />
             )}
           </AnimatePresence>
-          <Card>
+          <Card className="h-full">
             {children}
           </Card>
         </div>
@@ -61,8 +61,8 @@ export const Card = ({
         className
       )}
     >
-      <div className="relative z-10">
-        <div className="p-0">{children}</div>
+      <div className="relative z-10 h-full">
+        <div className="p-0 h-full">{children}</div>
       </div>
     </div>
   );

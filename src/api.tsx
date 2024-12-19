@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-console.log(process.env.SERVER_URI);
+
+
+
+
 export const API_URL = process.env.NODE_ENV === 'production' ? 'https://lms-backend-mh2d.onrender.com/api' : 'http://localhost:8000/api';
 
 const api = axios.create({
@@ -14,10 +17,14 @@ api.interceptors.request.use(
     if (typeof window === 'undefined') {
       return config;
     }
+    const uniqueId = getUniqueId();
+    if (uniqueId) {
+      config.headers['X-Unique-ID'] = uniqueId;  // Add the unique ID to the request headers
+    }
 
     const storedUser = localStorage.getItem('BrightVeilUser');
     const user = storedUser ? JSON.parse(storedUser) : null;
-
+    console.log(user);
     // Check for accessToken and if it's expired
     if (user && user.accessToken && isTokenExpired(user.accessTokenExpires)) {
       const newAccessToken = await refreshAccessToken(user.refreshToken);
@@ -42,41 +49,52 @@ function isTokenExpired(expireTime: number): boolean {
 // Refresh access token using the refresh token
 // Refresh access token using the refresh token
 async function refreshAccessToken(refreshToken: string): Promise<string | null> {
-    try {
-      const response = await axios.patch(`${API_URL}/v1/users/refresh-token`, { refreshToken });
-      const refreshedTokens = response.data.data;
-      const refreshedUser = response.data.data.user;
-  
-      if (response.data.success) {
-        refreshedUser.accessToken = refreshedTokens.accessToken;
-        refreshedUser.refreshToken = refreshedTokens.refreshToken;
-  
-        // Set access token expiry to 1 hour from now
-        refreshedUser.accessTokenExpires = Date.now() + 1000 * 60 * 60;
-  
-        // Update `localStorage` with the new user data
-        localStorage.setItem('BrightVeilUser', JSON.stringify(refreshedUser));
-        console.log('Access token has been refreshed successfully');
-  
-        return refreshedUser.accessToken;
-      }
-    } catch (error) {
-      console.error('Error refreshing access token:', error);
-  
-      // Redirect to sign-in if refresh fails
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('BrightVeilUser');
-        // Prevent multiple redirects
-        if (!window.location.pathname.includes('/sign-in')) {
-          window.location.href = '/sign-in';
-        }
-      }
-      return null; // Explicit return null in the catch block
+  try {
+    const response = await axios.patch(`${API_URL}/v1/users/refresh-token`, { refreshToken });
+    const refreshedTokens = response.data.data;
+    const refreshedUser = response.data.data.user;
+
+    if (response.data.success) {
+      refreshedUser.accessToken = refreshedTokens.accessToken;
+      refreshedUser.refreshToken = refreshedTokens.refreshToken;
+
+      // Set access token expiry to 1 hour from now
+      refreshedUser.accessTokenExpires = Date.now() + 1000 * 60 * 60;
+
+      // Update `localStorage` with the new user data
+      localStorage.setItem('BrightVeilUser', JSON.stringify(refreshedUser));
+      console.log('Access token has been refreshed successfully');
+
+      return refreshedUser.accessToken;
     }
-  
-    // Add this explicit return statement
-    return null;
+  } catch (error) {
+    console.error('Error refreshing access token:', error);
+
+    // Redirect to sign-in if refresh fails
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('BrightVeilUser');
+      // Prevent multiple redirects
+      if (!window.location.pathname.startsWith('/auth')) {
+        window.location.href = '/auth/sign-in';
+      }
+    }
+    return null; // Explicit return null in the catch block
   }
-  
+
+  // Add this explicit return statement
+  return null;
+}
+
+const getUniqueId = () => {
+  // First, check if the unique ID exists in cookies
+  const cookieId = document.cookie.split('; ').find(row => row.startsWith('uniqueId='));
+
+  if (cookieId) {
+    return cookieId.split('=')[1]; // Extract the value of the uniqueId cookie
+  }
+
+  // Fallback to localStorage if cookie is not found
+  return localStorage.getItem('uniqueId');
+};
 
 export default api;

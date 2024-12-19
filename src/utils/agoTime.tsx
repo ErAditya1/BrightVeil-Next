@@ -1,4 +1,4 @@
-import { format, formatDistanceToNowStrict, parseISO } from 'date-fns';
+import { format, formatDistanceToNowStrict, parseISO ,differenceInHours} from 'date-fns';
 
 /**
  * Calculates the time ago from a given date string.
@@ -25,6 +25,14 @@ export function formatUploadDateTime(dateString: string): string {
   // Parse the date string to ISO format
   const date = parseISO(dateString);
 
-  // Format the date to "MMM dd, yyyy at hh:mm a"
-  return format(date, "MMM dd, yyyy 'at' hh:mm a");
+  // Get the difference in hours between the current date and the parsed date
+  const hoursDifference = differenceInHours(new Date(), date);
+
+  // If the difference is less than 24 hours, show the time (hh:mm a)
+  if (hoursDifference < 24) {
+    return format(date, "hh:mm a");
+  }
+
+  // If the difference is 24 hours or more, show the full date (MMM dd, yyyy)
+  return format(date, "MMM dd, yyyy");
 }

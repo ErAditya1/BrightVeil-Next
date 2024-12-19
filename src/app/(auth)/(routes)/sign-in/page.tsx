@@ -28,14 +28,60 @@ import { BsGithub, BsGoogle } from 'react-icons/bs';
 import ValidatedImage from '@/components/ValidatedImage';
 import Image from 'next/image';
 
+
+const getOSDetails = () => {
+  const userAgent = navigator.userAgent;
+  let os = 'Unknown OS';
+
+  if (userAgent.indexOf('Win') !== -1) os = 'Windows';
+  if (userAgent.indexOf('Mac') !== -1) os = 'macOS';
+  if (userAgent.indexOf('X11') !== -1) os = 'UNIX';
+  if (userAgent.indexOf('Linux') !== -1) os = 'Linux';
+  if (userAgent.indexOf('Android') !== -1) os = 'Android';
+  if (userAgent.indexOf('iPhone') !== -1 || userAgent.indexOf('iPad') !== -1) os = 'iOS';
+
+  return os;
+};
+
+const getDeviceInfo = () => {
+  const os = getOSDetails();
+  const language = navigator.language;
+  const screen = `${window.screen.width}x${window.screen.height}`;
+  return { os, language, screen };
+};
+
+const getGeoLocation = () => {
+  return new Promise((resolve, reject) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        resolve({
+          latitude: position.coords.latitude || '',
+          longitude: position.coords.longitude  || '',
+        });
+      }, reject);
+    } else {
+      reject("Geolocation not available");
+    }
+  });
+};
+
+
+
+
+
+
+
 export default function SignInForm() {
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [showPassword, setShowPassword] = useState(false)
   useEffect(() => { setCurrentTime(Date.now()) }, [])
+
+
+
+
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -48,20 +94,29 @@ export default function SignInForm() {
   const { toast } = useToast();
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+    // const geo = await getGeoLocation();
+    const deviceInfo = getDeviceInfo();
+
+   
+
     setIsSubmitting(true);
 
     try {
 
-
       const result = await api.post('/v1/users/login', {
         identifier: data.identifier,
         password: data.password,
+        deviceType: deviceInfo.os,
+        language: deviceInfo.language,
+        screen: deviceInfo.screen,
       });
 
 
-
+      console.log(result)
       const user = result.data.data.user
       user.accessTokenExpires = currentTime + (1000 * 60 * 60);
+      user.accessToken = result.data.data.accessToken;
+      user.refreshToken = result.data.data.refreshToken;
       console.log(user);
       dispatch(loginUser(user))
       localStorage.setItem('BrightVeilUser', JSON.stringify(user));
@@ -74,9 +129,6 @@ export default function SignInForm() {
         variant: 'success',
       })
       router.push('/');
-
-
-
 
     } catch (error) {
 
@@ -107,7 +159,7 @@ export default function SignInForm() {
 
       //>> Here  I am providing the server google oauth url directlu then it's working
 
-      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI ||'https://lms-backend-mh2d.onrender.com/api'}/v1/users/google` : 'http://localhost:8000/api/v1/users/google';
+      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI || 'https://lms-backend-mh2d.onrender.com/api'}/v1/users/google` : 'http://localhost:8000/api/v1/users/google';
 
       window.location.href = `${redirectUrl}`
 
@@ -130,10 +182,10 @@ export default function SignInForm() {
       // });
       // console.log(result);
 
-      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI ||'https://lms-backend-mh2d.onrender.com/api'}/v1/users/github` : 'http://localhost:8000/api/v1/users/github';
+      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI || 'https://lms-backend-mh2d.onrender.com/api'}/v1/users/github` : 'http://localhost:8000/api/v1/users/github';
 
       window.location.href = `${redirectUrl}`
-  
+
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
 
@@ -247,28 +299,19 @@ export default function SignInForm() {
           </form>
         </Form>
         <div className="float-right">
-          <Link href='/forget-password' className='text-blue-500 cursor-pointer'>
+          <Link href='/auth/forget-password' className='text-blue-500 cursor-pointer'>
             Fargot Passward!
           </Link>
         </div>
         <div className="text-center mt-4">
           <p>
             Not a member yet?
-            <Link href="/sign-up" className="text-blue-600 hover:text-blue-800">
+            <Link href="/auth/sign-up" className="text-blue-600 hover:text-blue-800">
               Sign up
             </Link>
           </p>
         </div>
-        <div className="text-center mt-2 flex justify-evenly ">
-          
-            <Link href="/privacy-policy" className="text-blue-600 hover:text-blue-800">
-              Privacy Policy
-            </Link>
-            <Link href="/terms-services" className="text-blue-600 hover:text-blue-800">
-              Terms & Services
-            </Link>
-          
-        </div>
+        
       </div>
     </div>
   );

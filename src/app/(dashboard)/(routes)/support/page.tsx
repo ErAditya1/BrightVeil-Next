@@ -98,7 +98,7 @@ const SupportPage = () => {
                 {/* Social Media Links */}
                 <div className="flex justify-center space-x-4  sm:space-x-8 mb-16 bg-card text-card-foreground rounded sm:p-2 py-4">
                     <a
-                        href="https://facebook.com"
+                        href="https://www.facebook.com/adityakumar411/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-700 hover:text-blue-800 transition"
@@ -106,7 +106,7 @@ const SupportPage = () => {
                         <span className="text-3xl"><FaFacebook /></span>
                     </a>
                     <a
-                        href="https://twitter.com"
+                        href="https://twitter.com/excited_adi"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:text-blue-800 transition"
@@ -114,7 +114,7 @@ const SupportPage = () => {
                         <span className="text-3xl"><AiFillTwitterCircle /></span>
                     </a>
                     <a
-                        href="https://linkedin.com"
+                        href="https://linkedin.com/in/adityaji1"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-700 hover:text-blue-800 transition"
@@ -122,7 +122,7 @@ const SupportPage = () => {
                         <span className="text-3xl"><FaLinkedin /></span>
                     </a>
                     <a
-                        href="https://instagram.com"
+                        href="https://www.instagram.com/excited_adi/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className=" text-pink-600 hover:text-red-600 transition"

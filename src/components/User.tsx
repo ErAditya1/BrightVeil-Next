@@ -31,7 +31,7 @@ function User({ user }: any) {
           description: response.data.message,
           variant: 'success',
         });
-        router.push('/sign-in');
+        router.push('/auth/sign-in');
       }).catch(({ response }) => {
         console.log(response)
         toast({

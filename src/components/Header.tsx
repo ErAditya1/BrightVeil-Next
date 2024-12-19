@@ -3,7 +3,7 @@ import * as React from 'react';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import Sheet from '@mui/joy/Sheet';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
-import { toggleSidebar } from '@/lib/utils';
+import { cn, toggleSidebar } from '@/lib/utils';
 import { SiGooglemessages } from 'react-icons/si';
 import { Box, Chip, IconButton, Typography } from '@mui/joy';
 import { useRouter } from 'next/navigation';
@@ -33,8 +33,11 @@ export default function Header() {
         console.log(error)
       })
   }
+
+      
+
   return (
-    <Sheet
+    <Box
       sx={{
         display: {},
         alignItems: 'center',
@@ -50,7 +53,10 @@ export default function Header() {
         borderColor: 'background.level1',
         boxShadow: 'sm',
       }}
-      className="dark:bg-slate-900 flex justify-between items-center w-full"
+      className={cn(
+        "sticky flex flex-row justify-between top-0 inset-x-0 h-14 w-full border-b  z-[99999] select-none border-background/80 bg-background/40 backdrop-blur-md",
+        
+    )}
     >
       <GlobalStyles
         styles={(theme) => ({
@@ -125,6 +131,6 @@ export default function Header() {
         </IconButton>
         <ColorSchemeToggle sx={{ m: 'auto' }} />
       </div>
-    </Sheet>
+    </Box>
   );
 }
