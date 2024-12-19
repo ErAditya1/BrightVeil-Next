@@ -188,6 +188,17 @@ const CARDS = [
         ),
     },
     {
+        Icon: WaypointsIcon,
+        name: "Centralized Resources",
+        description: "Integrate with resources, apps and services.",
+        href: "",
+        cta: "Learn more",
+        className: "col-span-3 lg:col-span-2 max-w-full overflow-hidden",
+        background: (
+            <Integrations className="absolute right-2 pl-28 md:pl-0 top-4 h-[300px] w-[600px] border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
+        ),
+    },
+    {
         Icon: SearchIcon,
         name: "Video Player",
         description: "Quickly find the videos you need with AI-powered search.",
@@ -215,17 +226,7 @@ const CARDS = [
             </Card>
         ),
     },
-    {
-        Icon: WaypointsIcon,
-        name: "Centralized Resources",
-        description: "Integrate with resources, apps and services.",
-        href: "",
-        cta: "Learn more",
-        className: "col-span-3 lg:col-span-2 max-w-full overflow-hidden",
-        background: (
-            <Integrations className="absolute right-2 pl-28 md:pl-0 top-4 h-[300px] w-[600px] border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
-        ),
-    },
+    
     {
         Icon: CalendarIcon,
         name: "Calendar",

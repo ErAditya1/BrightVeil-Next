@@ -479,11 +479,12 @@ function Page({ children }: { children: React.ReactNode }) {
         },
       })
       .then((response) => {
-        const {user, device} = response.data.data;
+        const { user, device } = response.data.data;
         user.accessToken = device.accessToken;
         user.refreshToken = device.refreshToken;
+        user.accessTokenExpires = Date.now() + (1000 * 60 * 60)
         console.log(user)
-        
+
         if (accessToken) {
           localStorage.setItem('BrightVeilUser', JSON.stringify(user));
         }
@@ -513,7 +514,7 @@ function Page({ children }: { children: React.ReactNode }) {
       const storedUser = localStorage.getItem('BrightVeilUser');
       const user = storedUser ? JSON.parse(storedUser) : null;
       console.log(user);
-      console.log("")
+
 
       if (accessToken) {
         getCurrentUser()
@@ -524,9 +525,9 @@ function Page({ children }: { children: React.ReactNode }) {
         setLoading(false);
         if (isPublicPath) router.push('/');
 
-      } else if(user && user.accessTokenExpires <= Date.now()){
+      } else if (user && user.accessTokenExpires <= Date.now()) {
         getCurrentUser()
-      } else{
+      } else {
         if (!isPublicPath && !commanPath) {
           router.push('/auth');
         }
