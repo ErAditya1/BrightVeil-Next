@@ -142,14 +142,14 @@ export default function SignUpForm() {
   }
   const loginWithGithub = async () => {
     try {
-      const result = await api.get('/v1/users/github',{
-        withCredentials: true,
-      });
-      console.log(result);
+      // const result = await api.get('/v1/users/github',{
+      //   withCredentials: true,
+      // });
+      // console.log(result);
 
-      // const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI ||'https://lms-backend-mh2d.onrender.com'}/v1/users/github` : 'http://localhost:8000/api/v1/users/github';
+      const redirectUrl = process.env.NODE_ENV === 'production' ? `${process.env.NEXT_PUBLIC_SERVER_URI ||'https://lms-backend-mh2d.onrender.com/api'}/v1/users/github` : 'http://localhost:8000/api/v1/users/github';
 
-      // window.location.href = `${redirectUrl}`
+      window.location.href = `${redirectUrl}`
       // Handle the result from Google OAuth
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;

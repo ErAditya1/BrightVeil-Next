@@ -479,7 +479,11 @@ function Page({ children }: { children: React.ReactNode }) {
         },
       })
       .then((response) => {
-        const user = response.data.data;
+        const {user, device} = response.data.data;
+        user.accessToken = device.accessToken;
+        user.refreshToken = device.refreshToken;
+        console.log(user)
+        
         if (accessToken) {
           localStorage.setItem('BrightVeilUser', JSON.stringify(user));
         }
