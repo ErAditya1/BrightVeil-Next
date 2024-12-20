@@ -98,7 +98,7 @@ const RazorpayCheckout = () => {
                 description: 'Please check your email name or mobile number in profile',
                 variant: 'destructive',
             });
-            // router.push(`/user/edit-profile`)
+            router.push(`/user/edit-profile`)
             return false
         }
         return true
@@ -152,7 +152,9 @@ const RazorpayCheckout = () => {
 
     const handlePayment = async () => {
         
-        userMandedatoryCheck()
+        // check user details
+        const res =userMandedatoryCheck()
+        if (!res) return
         
         // 1. Create an order on the backend
 

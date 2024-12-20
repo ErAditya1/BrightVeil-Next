@@ -1,9 +1,5 @@
 import axios from 'axios';
 
-
-
-
-
 export const API_URL = process.env.NODE_ENV === 'production' ? 'https://lms-backend-mh2d.onrender.com/api' : 'http://localhost:8000/api';
 
 const api = axios.create({
@@ -13,10 +9,10 @@ const api = axios.create({
 // Request Interceptor
 api.interceptors.request.use(
   async (config) => {
-    // Check if we are running on the client-side
     if (typeof window === 'undefined') {
       return config;
     }
+
     const uniqueId = getUniqueId();
     if (uniqueId) {
       config.headers['X-Unique-ID'] = uniqueId;  // Add the unique ID to the request headers
@@ -25,6 +21,7 @@ api.interceptors.request.use(
     const storedUser = localStorage.getItem('BrightVeilUser');
     const user = storedUser ? JSON.parse(storedUser) : null;
     console.log(user);
+
     // Check for accessToken and if it's expired
     if (user && user.accessToken && isTokenExpired(user.accessTokenExpires)) {
       const newAccessToken = await refreshAccessToken(user.refreshToken);
@@ -47,7 +44,6 @@ function isTokenExpired(expireTime: number): boolean {
 }
 
 // Refresh access token using the refresh token
-// Refresh access token using the refresh token
 async function refreshAccessToken(refreshToken: string): Promise<string | null> {
   try {
     const response = await axios.patch(`${API_URL}/v1/users/refresh-token`, { refreshToken });
@@ -67,22 +63,74 @@ async function refreshAccessToken(refreshToken: string): Promise<string | null> 
 
       return refreshedUser.accessToken;
     }
-  } catch (error) {
+  } catch (error:any) {
     console.error('Error refreshing access token:', error);
 
-    // Redirect to sign-in if refresh fails
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('BrightVeilUser');
-      // Prevent multiple redirects
-      if (!window.location.pathname.startsWith('/auth')) {
-        window.location.href = '/auth/sign-in';
+    // Differentiate between different types of errors
+    if (error.response) {
+      // Server responded, but with an error (e.g., 401 Unauthorized)
+      if (error.response.status === 401) {
+        console.log('Authorization error, invalid refresh token');
+        handleLogout();
+      } else if ([500, 502, 503].includes(error.response.status)) {
+        // Handle server errors (e.g., 500 Internal Server Error, 503 Service Unavailable)
+        console.error('Server error while refreshing token, retrying...', error.response);
+        await retryRefreshToken(refreshToken); // Retry refreshing the token
+      } else {
+        // Handle other response errors, e.g., 400 Bad Request, etc.
+        console.error('Client-side error occurred', error.response);
+        handleLogout();
       }
+    } else if (error.request) {
+      // Network error: No response was received
+      console.error('Network error occurred. Retrying...', error.request);
+      await retryRefreshToken(refreshToken); // Retry the request
+    } else {
+      // Error occurred while setting up the request
+      console.error('Error setting up request', error.message);
     }
-    return null; // Explicit return null in the catch block
+
+    return null;
   }
 
-  // Add this explicit return statement
   return null;
+}
+
+// Retry logic with exponential backoff + jitter
+async function retryRefreshToken(refreshToken: string, attempt = 1): Promise<string | null> {
+  const maxAttempts = 3; // Max retry attempts
+  const baseDelay = Math.pow(2, attempt) * 1000; // Exponential backoff (e.g., 2, 4, 8 seconds)
+  const jitter = Math.random() * 1000; // Random jitter between 0 and 1000ms
+
+  const delay = baseDelay + jitter;
+
+  if (attempt <= maxAttempts) {
+    try {
+      // Try to refresh the token again
+      return await refreshAccessToken(refreshToken);
+    } catch (error) {
+      // Wait for the delay before retrying
+      console.log(`Retrying refresh access token, attempt #${attempt}...`);
+      await new Promise(resolve => setTimeout(resolve, delay));
+      return await retryRefreshToken(refreshToken, attempt + 1); // Retry
+    }
+  } else {
+    // Max retry attempts reached, log out user
+    console.error('Max retry attempts reached, logging out...');
+    handleLogout();
+    return null;
+  }
+}
+
+// Logout function
+function handleLogout() {
+  // Handle logout actions (e.g., clear local storage, redirect to login)
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('BrightVeilUser');
+    if (!window.location.pathname.startsWith('/auth')) {
+      window.location.href = '/auth/sign-in';
+    }
+  }
 }
 
 const getUniqueId = () => {

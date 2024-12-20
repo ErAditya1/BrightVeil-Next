@@ -29,7 +29,7 @@ const MobileNavbar = () => {
     return (
         <div className="flex lg:hidden items-center justify-end">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <ColorSchemeToggle />
+                <ColorSchemeToggle />
                 <SheetTrigger asChild>
                     <Button size="icon" variant="ghost">
                         <Menu className="w-5 h-5" />
@@ -51,10 +51,14 @@ const MobileNavbar = () => {
                             ) : (
                                 <>
                                     <Link href="/auth/sign-in" className={buttonVariants({ variant: "outline", className: "w-full" })}>
-                                        Sign In
+                                        <SheetClose>
+                                            Sign In
+                                        </SheetClose>
                                     </Link>
                                     <Link href="/auth/sign-up" className={buttonVariants({ className: "w-full" })}>
-                                        Sign Up
+                                        <SheetClose>
+                                            Sign Up
+                                        </SheetClose>
                                     </Link>
                                 </>
                             )}
