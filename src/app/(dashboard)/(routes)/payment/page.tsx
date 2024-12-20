@@ -5,16 +5,20 @@ import GoBackButton from '@/components/GoBack';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from '@/components/ui/use-toast';
 import ValidatedImage from '@/components/ValidatedImage';
+import { useAppSelector } from '@/store/hooks';
+import { useTheme } from 'next-themes';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect, useState } from 'react';
 
 const RazorpayCheckout = () => {
+    const {resolvedTheme} = useTheme()
     const params = useSearchParams()
     const course = params.get('course')
     const router = useRouter()
     const [loading, setLoading] = useState(true)
     const [amount, setAmount] = useState<number>(0); // default amount in INR
     const [savedAmount, setSavedAmount] = useState(0)
+    const user = useAppSelector((state)=>state.auth.user)
     const [courseData, setCourseData] = useState({
         title: '',
         printPrice: 0,
@@ -78,6 +82,28 @@ const RazorpayCheckout = () => {
             }).finally(() => setLoading(false))
     }
 
+    const userMandedatoryCheck = ()=>{
+        if (!user) {
+            toast({
+                title: 'Error',
+                description: 'You must be logged in to enroll in this course.',
+                variant: 'destructive',
+            });
+            // router.push(`/auth/login?returnUrl=${router.asPath}`)
+            return false
+        }
+        else if (!user.email || !user.name || !user.email || !user.mobileNumber ){
+            toast({
+                title: 'User details are required',
+                description: 'Please check your email name or mobile number',
+                variant: 'destructive',
+            });
+            // router.push(`/user/edit-profile`)
+            return false
+        }
+        return true
+    }
+
     
 
     const verifyAndEnrollCourse = async ({razorpay_payment_id,razorpay_order_id,razorpay_signature,amount}:{
@@ -125,7 +151,11 @@ const RazorpayCheckout = () => {
 
 
     const handlePayment = async () => {
+        
+        userMandedatoryCheck()
+        
         // 1. Create an order on the backend
+
         await api.post('/v1/payment/create-order', { amount: amount})
             .then((res) => {
                 console.log(res);
@@ -135,20 +165,22 @@ const RazorpayCheckout = () => {
                         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
                         amount: order.amount,
                         currency: 'INR',
-                        name: 'Your Company',
-                        description: 'Test Transaction',
+                        name: 'Bright Veil',
+                        description: 'Transaction of course purchase',
                         order_id: order.id,
+                        image:"/brightveilLight.jpg",
                         handler:  async (response: any) =>{
                             await verifyAndEnrollCourse({...response,amount: order.amount,})
                             
                         },
                         prefill: {
-                            name: 'John Doe',
-                            email: 'john.doe@example.com',
-                            contact: '9876543210',
+                            name: user?.name,
+                            email: user?.email,
+                            contact: user?.mobileNumber,
                         },
                         theme: {
-                            color: '#F37254',
+                            color: resolvedTheme ==='dark'? '#030637':'#C6E7FF',
+                            
                         },
                     };
 
