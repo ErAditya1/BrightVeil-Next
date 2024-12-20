@@ -95,7 +95,7 @@ const RazorpayCheckout = () => {
         else if (!user.email || !user.name || !user.email || !user.mobileNumber ){
             toast({
                 title: 'User details are required',
-                description: 'Please check your email name or mobile number',
+                description: 'Please check your email name or mobile number in profile',
                 variant: 'destructive',
             });
             // router.push(`/user/edit-profile`)
