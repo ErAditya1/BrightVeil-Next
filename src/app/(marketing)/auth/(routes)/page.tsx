@@ -87,7 +87,7 @@ const DEVELOPERS_CARDS = [
                     quality={100}
                     className="rounded-md lg:rounded-xl bg-foreground/10 ring-1 ring-border"
                 />
-               
+
             </Card>
         ),
     },
@@ -108,7 +108,7 @@ const DEVELOPERS_CARDS = [
                     quality={100}
                     className="rounded-md lg:rounded-xl bg-foreground/10 ring-1 ring-border"
                 />
-               
+
             </Card>
         ),
     },
@@ -129,7 +129,7 @@ const DEVELOPERS_CARDS = [
                     quality={100}
                     className="rounded-md lg:rounded-xl bg-foreground/10 ring-1 ring-border"
                 />
-               
+
             </Card>
         ),
     },
@@ -150,12 +150,12 @@ const DEVELOPERS_CARDS = [
                     quality={100}
                     className="rounded-md lg:rounded-xl bg-foreground/10 ring-1 ring-border"
                 />
-               
+
             </Card>
         ),
     },
-    
-    
+
+
 ];
 
 const CARDS = [
@@ -226,7 +226,7 @@ const CARDS = [
             </Card>
         ),
     },
-    
+
     {
         Icon: CalendarIcon,
         name: "Calendar",
@@ -356,21 +356,22 @@ const HomePage = async () => {
                             </Button>
                         </div>
                     </AnimationContainer>
+                    
                     <AnimationContainer delay={0.1}>
-                    <div className="flex flex-col w-full items-center lg:items-center justify-center py-8">
-                        <MagicBadge title="Precautions" />
-                        <h2 className="text-center lg:text-center text-3xl md:text-5xl !leading-[1.1] font-medium font-heading text-foreground mt-6">
-                        ✨ Only For Demo! Don't make any payment. ✨
-                        </h2>
-                        <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
-                            This plateform is not for real user. Anyone can make it yours by contacting to developers directly.
-                        </p>
-                        <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
-                            If you have any questions or problem with this plateform contact us.
-                        </p>
-                        <span className="flex gap-2 flex-row"><PhoneCall/> +91 9473774390</span>
-                    </div>
-                </AnimationContainer>
+                        <div className="flex flex-col w-full items-center lg:items-center justify-center py-8">
+                            <MagicBadge title="Precautions" />
+                            <h2 className="text-center lg:text-center text-3xl md:text-5xl !leading-[1.1] font-medium font-heading text-foreground mt-6">
+                                ✨ Only For Demo! Don't make any payment. ✨
+                            </h2>
+                            <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
+                                This plateform is not for real user. Anyone can make it yours by contacting to developers directly.
+                            </p>
+                            <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
+                                If you have any questions or problem with this plateform contact us.
+                            </p>
+                            <span className="flex gap-2 flex-row"><PhoneCall /> +91 9473774390</span>
+                        </div>
+                    </AnimationContainer>
 
                     <AnimationContainer delay={0.2} className="relative pt-20 pb-20 md:py-32 px-2 bg-transparent w-full">
                         <div className="absolute md:top-[10%] left-1/2 gradient w-3/4 -translate-x-1/2 h-1/4 md:h-1/3 inset-0 blur-[5rem] animate-image-glow"></div>
@@ -403,7 +404,7 @@ const HomePage = async () => {
                 </div>
             </MaxWidthWrapper >
 
-            
+
             <MaxWidthWrapper>
                 <AnimationContainer delay={0.4}>
                     <div className="py-14">
@@ -437,10 +438,10 @@ const HomePage = async () => {
                     <div className="flex flex-col w-full items-center lg:items-center justify-center py-8">
                         <MagicBadge title="Developers" />
                         <h2 className="text-center lg:text-center text-3xl md:text-5xl !leading-[1.1] font-medium font-heading text-foreground mt-6">
-                        Developer’s Role in Enhancing Learning
+                            Developer’s Role in Enhancing Learning
                         </h2>
                         <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
-                        As developers, we create intuitive, responsive tools for seamless course creation, organization, and tracking, ensuring a smooth learning experience.</p>
+                            As developers, we create intuitive, responsive tools for seamless course creation, organization, and tracking, ensuring a smooth learning experience.</p>
                     </div>
                 </AnimationContainer>
 

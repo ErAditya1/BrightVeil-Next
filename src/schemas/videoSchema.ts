@@ -24,12 +24,15 @@ export const createVideoSchema = z.object({
     }),
 });
 export const VideoFileSchema = z.object({
-  title: z.string().min(1, "Title is required"),
+  title: z
+    .string()
+    .min(1, "Title is required")
+    .max(100, "Title must be at most 100 characters"),
   file: z
     .instanceof(File)
     .refine((file) => file.size > 0, { message: "File is required" })
-    .refine((file) => file.type.startsWith("image/"), {
-      message: "Only Image thumbnail are allowed",
+    .refine((file) => file.type.startsWith("application/pdf"), {
+      message: "Only PDF files are allowed",
     }),
 });
 
