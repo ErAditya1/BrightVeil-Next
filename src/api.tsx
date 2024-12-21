@@ -46,9 +46,22 @@ function isTokenExpired(expireTime: number): boolean {
 // Refresh access token using the refresh token
 async function refreshAccessToken(refreshToken: string): Promise<string | null> {
   try {
-    const response = await axios.patch(`${API_URL}/v1/users/refresh-token`, { refreshToken });
+    // Get the device ID (you may use the method you've implemented to retrieve it)
+    const uniqueId = getUniqueId();
+    if (!uniqueId) {
+      console.error('Device ID is missing');
+      return null;
+    }
+
+    // Send the device ID in the request headers along with the refresh token
+    const response = await axios.patch(`${API_URL}/v1/users/refresh-token`, 
+      { refreshToken },
+      { headers: { 'X-Unique-ID': uniqueId } } // Adding the device ID header here
+    );
+
     const refreshedTokens = response.data.data;
     const refreshedUser = response.data.data.user;
+    console.log(refreshedTokens, refreshedUser);
 
     if (response.data.success) {
       refreshedUser.accessToken = refreshedTokens.accessToken;
@@ -95,6 +108,7 @@ async function refreshAccessToken(refreshToken: string): Promise<string | null> 
 
   return null;
 }
+
 
 // Retry logic with exponential backoff + jitter
 async function retryRefreshToken(refreshToken: string, attempt = 1): Promise<string | null> {
