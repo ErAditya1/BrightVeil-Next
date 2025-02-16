@@ -33,7 +33,7 @@ function UserFollowCard({ users }: { users: User }) {
                         </div>
                         {
                             !user?.isSelf &&
-                            <Link href={`/user/profile/${user?.author.username}`}>
+                            <Link href={`/user/profile/${user?.author?.username}`}>
                                 <Button className="" >
                                     {user?.isIamFollowing ? 'Unfollow' : <>{
                                         user?.isFollowingToMe ? 'Follow Back' : "Follow"

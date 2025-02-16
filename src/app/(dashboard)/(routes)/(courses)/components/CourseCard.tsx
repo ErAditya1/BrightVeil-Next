@@ -109,7 +109,7 @@ export default function CourseCard({ _id }: Props) {
                   {courseData?.title}
                 </p>
                 <p className="line-clamp-1 text-xs sm:text-md">
-                  @{courseData?.author.username}
+                  @{courseData?.author?.username}
                 </p>
               </div>
             </div>

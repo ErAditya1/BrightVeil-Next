@@ -42,6 +42,13 @@ function Page() {
 
   }]);
 
+  type File = {
+    _id: string;
+    title: string;
+    file: {
+      url: string
+    }
+  }
 
   const [playingVideoData, setPlayingVideoData] = useState({
     _id: '',
@@ -91,6 +98,7 @@ function Page() {
         
         if (res.status === 200) {
           setPlayingVideoData(res?.data?.data)
+          console.log(res?.data?.data)
           setVideos(res.data.data.relatedVideo)
           setLoading(false)
           setLoadingVideo(false)
@@ -258,7 +266,7 @@ function Page() {
       </div>
       <div className='md:mb-2 w-full gap-4  flex flex-col lg:flex-row '>
 
-        {/* Description */}
+        {/* Description  and files*/}
         <Card className='grow dark:bg-background text-card-foreground '>
 
 
@@ -282,8 +290,36 @@ function Page() {
 
           </CardContent>
 
+          { playingVideoData?.files?.length > 0 &&
+            <CardContent className="">
+            <div className='p-2 bg-muted text-muted-foreground sticky top-0  rounded-t-xl m-0 '>
+              <h1 className='text-2xl font-bold'>Notes/Documents :</h1>
+            </div>
+            <div>
+
+              {
+                loading ? <div className='w-full'>
+                  <Skeleton className=' h-5 w-full' />
+                </div>
+                  :
+                  <div className='flex flex-col gap-2'>
+                    {
+                      playingVideoData?.files?.map((item:File) => (
+                        <FileCard
+                          key={item._id}
+                          item={item}
+                        />
+                      ))
+                    }
+                  </div>
+}
+            </div>
+
+          </CardContent>
+          }
+
         </Card>
-        {/* Right side Relative videos */}
+        {/* Right side Relative videos and comments*/}
         <div className='max-h-dvh w-full flex flex-col lg:flex-none lg:max-h-dvh  lg:min-w-[300px] lg:w-[35%] rounded-xl border overflow-auto relative '>
           <div className='p-2   sticky top-0  rounded-t-xl '>
             <h1 className='text-2xl font-bold '>Comments {playingVideoData?.commentCount}:</h1>

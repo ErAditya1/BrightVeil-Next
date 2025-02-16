@@ -4,6 +4,7 @@ export const API_URL = process.env.NODE_ENV === 'production' ? 'https://lms-back
 
 const api = axios.create({
   baseURL: API_URL,
+  withCredentials: true,
 });
 
 // Request Interceptor
@@ -20,7 +21,7 @@ api.interceptors.request.use(
 
     const storedUser = localStorage.getItem('BrightVeilUser');
     const user = storedUser ? JSON.parse(storedUser) : null;
-    console.log(user);
+    // console.log(user);
 
     // Check for accessToken and if it's expired
     if (user && user.accessToken && isTokenExpired(user.accessTokenExpires)) {
