@@ -43,7 +43,7 @@ export default function PostCard({ _id }: any) {
 
   useEffect(() => {
 
-    api.get(`/v1/posts//get-data/${_id}`)
+    api.get(`/v1/posts/get-data/${_id}`)
       .then((response) => {
         const data = response.data.data
         setPost(data)

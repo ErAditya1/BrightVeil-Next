@@ -36,7 +36,7 @@ export default function ThumbnailForm({ thumbnail }: any) {
     const uploadImage = async () => {
         const formData = new FormData();
         if (file) {
-            setIsSubmitting(false)
+            setIsSubmitting(true)
 
             formData.append('thumbnail', file);
 
