@@ -105,42 +105,42 @@ export default function Sidebar() {
       label: 'Home',
       href: '/',
       icon: <HomeRoundedIcon />,
-      visible: ['admin', 'student', 'teacher', 'parent']
+      visible: ['admin', 'user','student', 'teacher', 'parent']
     },
     {
       label: 'Courses',
       href: '/courses',
       icon: <CastForEducationIcon />,
-      visible: ['admin', 'student', 'teacher', 'parent']
+      visible: ['admin', 'user','student', 'teacher', 'parent']
     },
     {
       label: 'Posts',
       href: '/posts',
       icon: <SiApostrophe />,
-      visible: ['admin', 'student', 'teacher', 'parent']
+      visible: ['admin', 'user','student', 'teacher', 'parent']
     },
     {
       label: 'Messages',
       href: '/chat',
       icon: <QuestionAnswerRoundedIcon />,
-      visible: ['admin', 'student', 'teacher', 'parent']
+      visible: ['admin', 'user','student', 'teacher', 'parent']
     },
     {
       label: 'User',
       icon: <GroupRoundedIcon />,
-      visible: ['admin', 'student', 'teacher', 'parent'],
+      visible: ['admin', 'user','student', 'teacher', 'parent'],
       subMenu: [
         {
           label: 'Profile',
           href: '/user/profile',
           icon: <FaceIcon />,
-          visible: [ 'student', 'teacher', 'parent'],
+          visible: [ 'user','student', 'teacher', 'parent'],
         },
         {
           label: 'Edit Profile',
           href: '/user/edit-profile',
           icon: <PersonAddIcon />,
-          visible: ['admin', 'student', 'teacher', 'parent'],
+          visible: ['admin', 'user','student', 'teacher', 'parent'],
         },
 
       ]
