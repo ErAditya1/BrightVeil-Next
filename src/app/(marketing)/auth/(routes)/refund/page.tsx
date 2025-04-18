@@ -10,7 +10,7 @@ const RefundPolicy = () => {
                     Refund Policy
                 </h1>
                 <p className="text-sm mb-2 italic mt-20">
-                    Last updated: 17th December 2025
+                    Last updated: 18th April 2025
                 </p>
                 <p className="mt-4">
                     At <strong>Bright Veil</strong>, we aim to provide a seamless and enriching learning experience. We understand that sometimes a course may not meet your expectations. This Refund Policy outlines the conditions under which we offer refunds for our paid courses.
@@ -24,8 +24,7 @@ const RefundPolicy = () => {
                     1. Course Cancellation
                 </h3>
                 <p className="mt-8 text-muted-foreground">
-                    If you have purchased a course but decide to cancel your enrollment before starting, you are eligible for a full refund within the first 7 days of purchase. 
-                </p>
+                Approved refunds will be credited to original payment method within 7 business days                </p>
 
                 <h3 className="text-lg mt-8">
                     2. Unavailability of Course Content

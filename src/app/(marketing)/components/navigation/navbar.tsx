@@ -28,6 +28,10 @@ export const NAV_LINKS = [
         href: "/auth",
     },
     {
+        title: "About Us",
+        href: "/auth/about-us",
+    },
+    {
         title: "Features",
         href: "/auth/features",
         menu: [
@@ -58,10 +62,10 @@ export const NAV_LINKS = [
         ],
     },
     
-    {
-        title: "Enterprise",
-        href: "/auth/enterprise",
-    },
+    // {
+    //     title: "Enterprise",
+    //     href: "/auth/enterprise",
+    // },
     {
         title: "Resources",
         href: "/auth/resources",
@@ -75,7 +79,7 @@ export const NAV_LINKS = [
             {
                 title: "Course",
                 tagline: "Read articles on the latest trends in tech.",
-                href: "/auth/resources/blog",
+                href: "/auth/resources/courses",
                 icon: NewspaperIcon,
             },
             
@@ -87,9 +91,13 @@ export const NAV_LINKS = [
             },
         ]
     },
+    // {
+    //     title: "Changelog",
+    //     href: "/auth/changelog",
+    // },
     {
-        title: "Changelog",
-        href: "/auth/changelog",
+        title: "Contact Us",
+        href: "/auth/contact-us",
     },
 ];
 

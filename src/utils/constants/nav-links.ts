@@ -35,10 +35,10 @@ export const NAV_LINKS = [
         title: "Pricing",
         href: "/pricing",
     },
-    {
-        title: "Enterprise",
-        href: "/enterprise",
-    },
+    // {
+    //     title: "Enterprise",
+    //     href: "/enterprise",
+    // },
     {
         title: "Resources",
         href: "/resources",
@@ -57,8 +57,12 @@ export const NAV_LINKS = [
             },
         ]
     },
+    // {
+    //     title: "Changelog",
+    //     href: "/changelog",
+    // },
     {
-        title: "Changelog",
-        href: "/changelog",
+        title: "Contact Us",
+        href: "/auth/countact-us",
     },
 ];

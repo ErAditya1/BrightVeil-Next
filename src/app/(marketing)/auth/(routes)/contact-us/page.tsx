@@ -5,13 +5,13 @@ import MaxWidthWrapper from "../../../components/global/max-width-wrapper";
 
 import Image from "next/image";
 
-const AboutContactPage = () => {
+const ContactPage = () => {
     return (
         <MaxWidthWrapper className="max-w-3xl mx-auto px-8 mb-40">
             <AnimationContainer delay={0.1} className="w-full">
                 {/* About Section */}
                 <h1 className="text-4xl md:text-6xl font-heading font-bold my-12 text-center w-full">
-                    About & Contact
+                    Contact Us!
                 </h1>
 
 
@@ -135,4 +135,4 @@ const AboutContactPage = () => {
     );
 };
 
-export default AboutContactPage;
+export default ContactPage;

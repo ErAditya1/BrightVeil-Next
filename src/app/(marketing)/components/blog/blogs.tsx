@@ -10,7 +10,7 @@ const Blogs = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {blogs.map((blog, id) => (
                     <MagicCard key={id} className="p-0 md:p-0 relative">
-                        <Link href={`/resources/blog/${blog.slug}`} className="w-full h-full absolute -z-1 inset-0"></Link>
+                        <Link href={`/auth/resources/blog/${blog.slug}`} className="w-full h-full absolute -z-1 inset-0"></Link>
                         <Card className="group border-0">
                             <CardContent className="p-4 lg:p-6">
                                 <div className="flex items-center justify-center h-40 lg:h-52 overflow-hidden">
